@@ -1,0 +1,738 @@
+LinINum,LinFMan,LinFecIni,LinFecFin,LinIBlo,LinFManTip,LinNom,LinBarA,LinBarB,LinFOpe,LinPotMaxA->B,LinPotMaxB->A,LinFMax,LinFN-1,LinPotN-1A->B,LinPotN-1B->A,LinVolt,LinR,LinX,LinDisEne,LinVI,LinCOMA,LinFCC
+1,T,*,MesDic-2023,*,F,Los Changos 500->Cumbre 500 I,*,*,*,*,*,*,*,*,*,*,*,35.92203398,*,*,*,*
+2,T,*,MesDic-2023,*,F,Los Changos 500->Cumbre 500 II,*,*,*,*,*,*,*,*,*,*,*,35.92203398,*,*,*,*
+3,T,MesEne-2024,MesAbr-2029,*,F,Los Changos 500->Parinas 500 I,*,*,*,*,*,*,*,*,*,*,*,30.15274575,*,*,*,*
+4,T,MesEne-2024,MesAbr-2029,*,F,Los Changos 500->Parinas 500 II,*,*,*,*,*,*,*,*,*,*,*,30.15274575,*,*,*,*
+5,F,MesAbr-2027,MesAbr-2029,*,F,Los Changos 500->Parinas 500 III,*,*,*,*,*,*,*,*,*,*,*,30.15274575,*,*,*,*
+6,F,MesAbr-2027,MesAbr-2029,*,F,Los Changos 500->Parinas 500 IV,*,*,*,*,*,*,*,*,*,*,*,30.15274575,*,*,*,*
+7,T,MesEne-2024,MesAbr-2029,*,F,Parinas 500->Cumbre 500 I,*,*,*,*,*,*,*,*,*,*,*,7.2841644,*,*,*,*
+8,T,MesEne-2024,MesAbr-2029,*,F,Parinas 500->Cumbre 500 II,*,*,*,*,*,*,*,*,*,*,*,7.2841644,*,*,*,*
+9,F,MesAbr-2027,MesAbr-2029,*,F,Parinas 500->Cumbre 500 III,*,*,*,*,*,*,*,*,*,*,*,7.2841644,*,*,*,*
+10,F,MesAbr-2027,MesAbr-2029,*,F,Parinas 500->Cumbre 500 IV,*,*,*,*,*,*,*,*,*,*,*,7.2841644,*,*,*,*
+11,T,*,MesAbr-2029,*,F,Cumbre 500->Nueva Cardones 500 I,*,*,*,*,*,*,*,*,*,*,*,22.050691,*,*,*,*
+12,T,*,MesAbr-2029,*,F,Cumbre 500->Nueva Cardones 500 II,*,*,*,*,*,*,*,*,*,*,*,22.050691,*,*,*,*
+13,F,MesAbr-2027,MesAbr-2029,*,F,Cumbre 500->Nueva Cardones 500 III,*,*,*,*,*,*,*,*,*,*,*,22.050691,*,*,*,*
+14,F,MesAbr-2027,MesAbr-2029,*,F,Cumbre 500->Nueva Cardones 500 IV,*,*,*,*,*,*,*,*,*,*,*,22.050691,*,*,*,*
+15,T,*,*,*,F,Nueva Maitencillo Aux 500->Nueva Pan de Azucar 500 I,*,*,*,*,*,*,*,*,*,*,*,25.5059212,*,*,*,*
+16,T,*,*,*,F,Nueva Maitencillo Aux 500->Nueva Pan de Azucar 500 II,*,*,*,*,*,*,*,*,*,*,*,25.5059212,*,*,*,*
+17,T,*,*,*,F,Nueva Pan de Azucar Aux 500->Polpaico 500 A,*,*,*,*,*,*,*,*,*,*,*,50.42185741,*,*,*,*
+18,T,*,*,*,F,Nueva Pan de Azucar Aux 500->Polpaico 500 B,*,*,*,*,*,*,*,*,*,*,*,50.42185741,*,*,*,*
+19,T,*,*,*,F,Ancoa Aux 500->Alto Jahuel 500 I,*,*,*,*,*,*,*,*,*,*,*,35.57123388,*,*,*,*
+20,T,*,*,*,F,Ancoa Aux 500->Alto Jahuel 500 II,*,*,*,*,*,*,*,*,*,*,*,30.15996907,*,*,*,*
+21,T,*,*,*,F,Ancoa Aux 500->Alto Jahuel 500 III,*,*,*,*,*,*,*,*,*,*,*,35.31203702,*,*,*,*
+22,T,*,*,*,F,Ancoa Aux 500->Alto Jahuel 500 IV,*,*,*,*,*,*,*,*,*,*,*,35.31203702,*,*,*,*
+23,T,*,*,*,F,Charrua Aux 500->Ancoa 500 I,*,*,*,*,*,*,*,*,*,*,*,30.79113266,*,*,*,*
+24,T,*,*,*,F,Charrua Aux 500->Ancoa 500 II,*,*,*,*,*,*,*,*,*,*,*,30.809535,*,*,*,*
+25,T,*,*,*,F,Charrua Aux 500->Ancoa Aux S 500 III,*,*,*,*,*,*,*,*,*,*,*,30.72345393,*,*,*,*
+26,T,*,*,*,F,Charrua Aux 500->Ancoa Aux S 500 IV,*,*,*,*,*,*,*,*,*,*,*,30.72345393,*,*,*,*
+27,T,*,*,*,F,Nueva Charrua Aux N 500->Ancoa Aux S 500 I,*,*,*,*,*,*,*,*,*,*,*,25.78338266,*,*,*,*
+28,T,*,*,*,F,Nueva Charrua Aux N 500->Ancoa Aux S 500 II,*,*,*,*,*,*,*,*,*,*,*,25.844685,*,*,*,*
+29,T,*,*,*,F,Colbun Aux 220->Candelaria 220 I,*,*,*,*,*,*,*,*,*,*,*,26.81,*,*,*,*
+30,T,*,*,*,F,Colbun Aux 220->Candelaria 220 II,*,*,*,*,*,*,*,*,*,*,*,26.81,*,*,*,*
+31,T,*,*,*,F,Puente Negro 220->Colbun 220 I,*,*,*,*,*,*,*,*,*,*,*,27.71328,*,*,*,*
+32,T,*,*,*,F,Puente Negro 220->Colbun 220 II,*,*,*,*,*,*,*,*,*,*,*,27.71328,*,*,*,*
+33,T,MesAbr-2022,*,*,F,Punta Colorada 220->Pan de Azucar Aux 220 I,*,*,F,*,*,*,*,*,*,*,*,*,*,*,*,*
+34,T,MesAbr-2022,*,*,F,Punta Colorada 220->Pan de Azucar Aux 220 II,*,*,F,*,*,*,*,*,*,*,*,*,*,*,*,*
+35,T,MesEne-2024,*,*,F,La Cebada 220->Punta Sierra Aux 220,*,*,F,*,*,*,*,*,*,*,*,*,*,*,*,*
+36,T,MesEne-2024,*,*,F,Monte Redondo 220->Punta Sierra Aux 220,*,*,F,*,*,*,*,*,*,*,*,*,*,*,*,*
+37,F,MesJul-2021,*,*,F,Pichirropulli Aux S 220->Rahue Aux N 220 I,*,*,F,*,*,*,*,*,*,*,*,*,*,*,*,*
+38,F,MesJul-2021,*,*,F,Pichirropulli Aux S 220->Tap Pichirrahue 220 II,*,*,F,*,*,*,*,*,*,*,*,*,*,*,*,*
+39,T,MesOct-2023,*,*,F,Parral 066->Tap Off Paso Hondo 066,*,*,F,*,*,*,*,*,*,*,*,*,*,*,*,*
+40,T,MesNov-2024,*,*,F,Talca 2 066->La Palma 066 I,*,*,F,*,*,*,*,*,*,*,*,*,*,*,*,*
+41,T,MesSep-2025,*,*,F,San Vicente TT B 066->Las Cabras 066,*,*,F,*,*,*,*,*,*,*,*,*,*,*,*,*
+42,T,MesAbr-2022,*,*,F,Don Hector A 220->Don Hector B 220,*,*,F,*,*,*,*,*,*,*,*,*,*,*,*,*
+43,T,MesJul-2018,*,*,F,Nueva Charrua 500->Nueva Charrua Aux N 500,*,*,*,*,*,*,*,2085,2085,*,*,*,*,*,*,*
+44,F,MesMay-2018,*,*,F,Pichirropulli Aux 220->Pichirropulli 220,*,*,*,*,*,*,F,*,*,*,*,*,*,*,*,*
+45,T,MesAbr-2019,MesMay-2030,*,F,Nueva Valdivia 220->Pichirropulli Aux 220 I,*,*,*,*,*,*,*,97,97,*,*,*,*,*,*,*
+46,T,MesAbr-2019,MesMay-2030,*,F,Nueva Valdivia 220->Pichirropulli Aux 220 II,*,*,*,*,*,*,*,107.6,107.6,*,*,*,*,*,*,*
+47,T,MesJun-2030,*,*,F,Nueva Valdivia 220->Pichirropulli Aux 220 I,*,*,*,*,*,*,*,105.6,105.6,*,*,*,*,*,*,*
+48,T,MesJun-2030,*,*,F,Nueva Valdivia 220->Pichirropulli Aux 220 II,*,*,*,*,*,*,*,116.7,116.7,*,*,*,*,*,*,*
+49,T,*,*,*,F,Los Vilos Aux 220->Los Vilos 220,*,*,*,*,*,*,*,280,280,*,*,*,*,*,*,*
+50,T,*,*,*,F,Nogales Aux 220->Nogales 220,*,*,*,*,*,*,*,295,295,*,*,*,*,*,*,*
+51,T,MesAgo-2028,*,*,F,Quillota Aux S 220->Quillota 220,*,*,*,*,*,*,*,290,290,*,*,*,*,*,*,*
+52,T,MesEne-2016,*,*,F,Ancoa 500->Ancoa Aux 500 III,*,*,*,*,*,*,*,2765,2765,*,*,*,*,*,*,*
+53,T,MesMay-2025,*,*,F,(Ei1) Tap Hospital-San Francisco de Mostazal 066->San Francisco de Mostazal 066,*,*,F,*,*,*,*,*,*,*,*,*,*,*,*,*
+54,F,MesOct-2027,*,*,F,Nueva Pan de Azucar Aux 500->Nogales Aux N 500 I,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*
+55,F,MesOct-2050,*,*,F,Nueva Pan de Azucar Aux 500->Nogales Aux N 500 II,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*
+56,T,MesMay-2029,*,*,F,Cumbre 500->Nueva Cardones 500 V,*,*,*,*,*,*,*,*,*,*,*,22.050691,*,*,*,*
+57,T,MesMay-2029,*,*,F,Cumbre 500->Nueva Cardones 500 VI,*,*,*,*,*,*,*,*,*,*,*,22.050691,*,*,*,*
+58,T,MesMay-2029,*,*,F,Parinas 500->Cumbre 500 V,*,*,*,*,*,*,*,*,*,*,*,7.2841644,*,*,*,*
+59,T,MesMay-2029,*,*,F,Parinas 500->Cumbre 500 VI,*,*,*,*,*,*,*,*,*,*,*,7.2841644,*,*,*,*
+60,T,MesMay-2029,*,*,F,Los Changos 500->Parinas 500 V,*,*,*,*,*,*,*,*,*,*,*,30.15274575,*,*,*,*
+61,T,MesMay-2029,*,*,F,Los Changos 500->Parinas 500 VI,*,*,*,*,*,*,*,*,*,*,*,30.15274575,*,*,*,*
+62,T,*,*,*,F,Salta 345->Andes 345,*,*,*,*,*,*,*,*,*,*,*,84.8462,*,*,*,*
+63,T,MesEne-2028,*,*,F,Laberinto Aux 2 220->El Cobre 220,*,*,*,*,*,F,F,*,*,*,*,*,*,*,*,*
+64,T,MesEne-2028,*,*,F,Laberinto Aux 2 220->Laberinto 220,*,*,*,*,*,F,F,*,*,*,*,*,*,*,*,*
+65,T,MesJun-2027,*,*,F,Kimal 500->Lagunas 500 I,*,*,*,*,*,*,*,*,*,*,*,20.14730151,*,*,*,*
+66,T,MesJun-2027,*,*,F,Kimal 500->Lagunas 500 II,*,*,*,*,*,*,*,*,*,*,*,20.14730151,*,*,*,*
+67,T,MesSep-2024,MesOct-2026,*,F,Licanco 066->Enlace Imperial 066,*,*,*,22.91191712,22.91191712,*,*,22.91191712,22.91191712,*,*,*,*,*,*,*
+68,T,MesEne-2017,*,*,F,Valdivia Aux N 220->Valdivia 220,*,*,*,*,*,*,F,*,*,*,*,*,*,*,*,*
+69,F,MesEne-2022,*,*,F,Nueva Cardones 500->Nueva Cardones Aux 500,*,*,*,*,*,*,*,2140,2140,*,*,*,*,*,*,*
+70,F,MesEne-2022,*,*,F,Nueva Cardones Aux 500->Nueva Maitencillo 500 I,*,*,*,*,*,*,*,2356,2356,*,*,*,*,*,*,*
+71,F,MesEne-2022,*,*,F,Nueva Cardones Aux 500->Nueva Maitencillo 500 II,*,*,*,*,*,*,*,2356,2356,*,*,*,*,*,*,*
+72,F,MesEne-2022,*,*,F,Nueva Maitencillo 500->Nueva Maitencillo Aux 500,*,*,*,*,*,*,*,2356,2356,*,*,*,*,*,*,*
+73,F,MesEne-2022,*,*,F,Nueva Pan de Azucar 500->Nueva Pan de Azucar Aux 500,*,*,*,*,*,*,*,2210,2210,*,*,*,*,*,*,*
+74,T,MesOct-2024,MesMar-*,*,T,Polpaico 500->Polpaico 500 Aux,*,*,*,*,*,*,*,1663,1663,*,*,*,*,*,*,*
+75,T,MesOct-2024,MesMar-*,*,T,Polpaico 500 Aux->Lo Aguirre 500 Aux A,*,*,*,*,*,*,*,1663,1663,*,*,*,*,*,*,*
+76,T,MesOct-2024,MesMar-*,*,T,Polpaico 500 Aux->Lo Aguirre 500 Aux B,*,*,*,*,*,*,*,1663,1663,*,*,*,*,*,*,*
+77,T,MesOct-2024,MesMar-*,*,T,Lo Aguirre 500 Aux->Lo Aguirre 500,*,*,*,*,*,*,*,1663,1663,*,*,*,*,*,*,*
+78,T,MesEne-2022,*,*,F,Lo Aguirre 500->Alto Jahuel Aux 500,*,*,*,*,*,*,*,1663,1663,*,*,*,*,*,*,*
+79,T,MesEne-2022,*,*,F,Lo Aguirre 500->Tap El Rodeo 500,*,*,*,*,*,*,*,1663,1663,*,*,*,*,*,*,*
+80,T,MesEne-2022,*,*,F,Tap El Rodeo 500->Alto Jahuel Aux 500,*,*,*,*,*,*,*,1663,1663,*,*,*,*,*,*,*
+81,T,MesEne-2022,*,*,F,Alto Jahuel Aux 500->Alto Jahuel 500,*,*,*,*,*,*,*,1663,1663,*,*,*,*,*,*,*
+82,T,MesEne-2022,*,*,F,Los Changos 500->Los Changos 220 I,*,*,*,*,*,*,*,1500,1500,*,*,*,*,*,*,*
+83,T,MesEne-2022,*,*,F,Los Changos 500->Los Changos 220 II,*,*,*,*,*,*,*,750,750,*,*,*,*,*,*,*
+84,T,MesEne-2022,*,*,F,Cumbre 500->Cumbre 220 I,*,*,*,*,*,*,*,750,750,*,*,*,*,*,*,*
+85,T,MesEne-2023,*,*,F,Cumbre 500->Cumbre 220 II,*,*,*,*,*,*,*,750,750,*,*,*,*,*,*,*
+86,T,MesEne-2023,*,*,F,Cumbre 500->Cumbre 220 III,*,*,*,*,*,*,*,750,750,*,*,*,*,*,*,*
+87,T,MesJul-2018,*,*,F,Nueva Charrua 220->Nueva Charrua 500,*,*,*,*,*,*,*,750,750,*,*,*,*,*,*,*
+88,T,MesJun-2024,*,*,F,Ancoa 500->Ancoa Aux 500 IV,*,*,*,*,*,*,*,3242,3242,*,*,*,*,*,*,*
+89,T,*,*,*,F,Charrua 220->Charrua 500,*,*,*,*,*,*,*,2250,2250,*,*,*,*,*,*,*
+90,T,MesAbr-2022,MesSep-*,1,T,Rahue Aux N 220->Rahue 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+91,T,MesAbr-2022,MesSep-*,2,T,Rahue Aux N 220->Rahue 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+92,T,MesAbr-2022,MesSep-*,3,T,Rahue Aux N 220->Rahue 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+93,T,MesAbr-2022,MesSep-*,4,T,Rahue Aux N 220->Rahue 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+94,T,MesAbr-2022,MesSep-*,10,T,Rahue Aux N 220->Rahue 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+95,T,MesAbr-2022,MesSep-*,11,T,Rahue Aux N 220->Rahue 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+96,T,MesAbr-2022,MesSep-*,12,T,Rahue Aux N 220->Rahue 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+97,T,MesAbr-2022,MesSep-*,13,T,Rahue Aux N 220->Rahue 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+98,T,MesAbr-2022,MesSep-*,14,T,Rahue Aux N 220->Rahue 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+99,T,MesAbr-2022,MesSep-*,15,T,Rahue Aux N 220->Rahue 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+100,T,MesAbr-2022,MesSep-*,16,T,Rahue Aux N 220->Rahue 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+101,T,MesAbr-2022,MesSep-*,22,T,Rahue Aux N 220->Rahue 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+102,T,MesAbr-2022,MesSep-*,23,T,Rahue Aux N 220->Rahue 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+103,T,MesAbr-2022,MesSep-*,24,T,Rahue Aux N 220->Rahue 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+104,T,MesAbr-2022,MesSep-*,1,T,Rahue 220->Rahue Aux S 220 II,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+105,T,MesAbr-2022,MesSep-*,2,T,Rahue 220->Rahue Aux S 220 II,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+106,T,MesAbr-2022,MesSep-*,3,T,Rahue 220->Rahue Aux S 220 II,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+107,T,MesAbr-2022,MesSep-*,4,T,Rahue 220->Rahue Aux S 220 II,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+108,T,MesAbr-2022,MesSep-*,10,T,Rahue 220->Rahue Aux S 220 II,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+109,T,MesAbr-2022,MesSep-*,11,T,Rahue 220->Rahue Aux S 220 II,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+110,T,MesAbr-2022,MesSep-*,12,T,Rahue 220->Rahue Aux S 220 II,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+111,T,MesAbr-2022,MesSep-*,13,T,Rahue 220->Rahue Aux S 220 II,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+112,T,MesAbr-2022,MesSep-*,14,T,Rahue 220->Rahue Aux S 220 II,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+113,T,MesAbr-2022,MesSep-*,15,T,Rahue 220->Rahue Aux S 220 II,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+114,T,MesAbr-2022,MesSep-*,16,T,Rahue 220->Rahue Aux S 220 II,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+115,T,MesAbr-2022,MesSep-*,22,T,Rahue 220->Rahue Aux S 220 II,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+116,T,MesAbr-2022,MesSep-*,23,T,Rahue 220->Rahue Aux S 220 II,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+117,T,MesAbr-2022,MesSep-*,24,T,Rahue 220->Rahue Aux S 220 II,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+118,T,MesAbr-2022,MesSep-*,1,T,Pichirropulli 220->Pichirropulli Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+119,T,MesAbr-2022,MesSep-*,2,T,Pichirropulli 220->Pichirropulli Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+120,T,MesAbr-2022,MesSep-*,3,T,Pichirropulli 220->Pichirropulli Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+121,T,MesAbr-2022,MesSep-*,4,T,Pichirropulli 220->Pichirropulli Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+122,T,MesAbr-2022,MesSep-*,10,T,Pichirropulli 220->Pichirropulli Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+123,T,MesAbr-2022,MesSep-*,11,T,Pichirropulli 220->Pichirropulli Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+124,T,MesAbr-2022,MesSep-*,12,T,Pichirropulli 220->Pichirropulli Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+125,T,MesAbr-2022,MesSep-*,13,T,Pichirropulli 220->Pichirropulli Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+126,T,MesAbr-2022,MesSep-*,14,T,Pichirropulli 220->Pichirropulli Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+127,T,MesAbr-2022,MesSep-*,15,T,Pichirropulli 220->Pichirropulli Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+128,T,MesAbr-2022,MesSep-*,16,T,Pichirropulli 220->Pichirropulli Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+129,T,MesAbr-2022,MesSep-*,22,T,Pichirropulli 220->Pichirropulli Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+130,T,MesAbr-2022,MesSep-*,23,T,Pichirropulli 220->Pichirropulli Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+131,T,MesAbr-2022,MesSep-*,24,T,Pichirropulli 220->Pichirropulli Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+132,T,MesAbr-2022,MesSep-*,1,T,Valdivia 220->Valdivia Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+133,T,MesAbr-2022,MesSep-*,2,T,Valdivia 220->Valdivia Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+134,T,MesAbr-2022,MesSep-*,3,T,Valdivia 220->Valdivia Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+135,T,MesAbr-2022,MesSep-*,4,T,Valdivia 220->Valdivia Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+136,T,MesAbr-2022,MesSep-*,10,T,Valdivia 220->Valdivia Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+137,T,MesAbr-2022,MesSep-*,11,T,Valdivia 220->Valdivia Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+138,T,MesAbr-2022,MesSep-*,12,T,Valdivia 220->Valdivia Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+139,T,MesAbr-2022,MesSep-*,13,T,Valdivia 220->Valdivia Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+140,T,MesAbr-2022,MesSep-*,14,T,Valdivia 220->Valdivia Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+141,T,MesAbr-2022,MesSep-*,15,T,Valdivia 220->Valdivia Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+142,T,MesAbr-2022,MesSep-*,16,T,Valdivia 220->Valdivia Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+143,T,MesAbr-2022,MesSep-*,22,T,Valdivia 220->Valdivia Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+144,T,MesAbr-2022,MesSep-*,23,T,Valdivia 220->Valdivia Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+145,T,MesAbr-2022,MesSep-*,24,T,Valdivia 220->Valdivia Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+146,T,MesAbr-2022,MesSep-*,1,T,Ciruelos 220->Ciruelos Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+147,T,MesAbr-2022,MesSep-*,2,T,Ciruelos 220->Ciruelos Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+148,T,MesAbr-2022,MesSep-*,3,T,Ciruelos 220->Ciruelos Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+149,T,MesAbr-2022,MesSep-*,4,T,Ciruelos 220->Ciruelos Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+150,T,MesAbr-2022,MesSep-*,10,T,Ciruelos 220->Ciruelos Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+151,T,MesAbr-2022,MesSep-*,11,T,Ciruelos 220->Ciruelos Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+152,T,MesAbr-2022,MesSep-*,12,T,Ciruelos 220->Ciruelos Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+153,T,MesAbr-2022,MesSep-*,13,T,Ciruelos 220->Ciruelos Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+154,T,MesAbr-2022,MesSep-*,14,T,Ciruelos 220->Ciruelos Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+155,T,MesAbr-2022,MesSep-*,15,T,Ciruelos 220->Ciruelos Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+156,T,MesAbr-2022,MesSep-*,16,T,Ciruelos 220->Ciruelos Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+157,T,MesAbr-2022,MesSep-*,22,T,Ciruelos 220->Ciruelos Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+158,T,MesAbr-2022,MesSep-*,23,T,Ciruelos 220->Ciruelos Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+159,T,MesAbr-2022,MesSep-*,24,T,Ciruelos 220->Ciruelos Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+160,T,MesAbr-2022,MesSep-*,1,T,Nueva Puerto Montt 220->Nueva Puerto Montt Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+161,T,MesAbr-2022,MesSep-*,2,T,Nueva Puerto Montt 220->Nueva Puerto Montt Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+162,T,MesAbr-2022,MesSep-*,3,T,Nueva Puerto Montt 220->Nueva Puerto Montt Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+163,T,MesAbr-2022,MesSep-*,4,T,Nueva Puerto Montt 220->Nueva Puerto Montt Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+164,T,MesAbr-2022,MesSep-*,10,T,Nueva Puerto Montt 220->Nueva Puerto Montt Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+165,T,MesAbr-2022,MesSep-*,11,T,Nueva Puerto Montt 220->Nueva Puerto Montt Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+166,T,MesAbr-2022,MesSep-*,12,T,Nueva Puerto Montt 220->Nueva Puerto Montt Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+167,T,MesAbr-2022,MesSep-*,13,T,Nueva Puerto Montt 220->Nueva Puerto Montt Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+168,T,MesAbr-2022,MesSep-*,14,T,Nueva Puerto Montt 220->Nueva Puerto Montt Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+169,T,MesAbr-2022,MesSep-*,15,T,Nueva Puerto Montt 220->Nueva Puerto Montt Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+170,T,MesAbr-2022,MesSep-*,16,T,Nueva Puerto Montt 220->Nueva Puerto Montt Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+171,T,MesAbr-2022,MesSep-*,22,T,Nueva Puerto Montt 220->Nueva Puerto Montt Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+172,T,MesAbr-2022,MesSep-*,23,T,Nueva Puerto Montt 220->Nueva Puerto Montt Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+173,T,MesAbr-2022,MesSep-*,24,T,Nueva Puerto Montt 220->Nueva Puerto Montt Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+174,T,MesAbr-2023,MesSep-*,1,T,Frutillar Norte Aux 220->Frutillar Norte 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+175,T,MesAbr-2023,MesSep-*,2,T,Frutillar Norte Aux 220->Frutillar Norte 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+176,T,MesAbr-2023,MesSep-*,3,T,Frutillar Norte Aux 220->Frutillar Norte 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+177,T,MesAbr-2023,MesSep-*,4,T,Frutillar Norte Aux 220->Frutillar Norte 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+178,T,MesAbr-2023,MesSep-*,10,T,Frutillar Norte Aux 220->Frutillar Norte 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+179,T,MesAbr-2023,MesSep-*,11,T,Frutillar Norte Aux 220->Frutillar Norte 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+180,T,MesAbr-2023,MesSep-*,12,T,Frutillar Norte Aux 220->Frutillar Norte 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+181,T,MesAbr-2023,MesSep-*,13,T,Frutillar Norte Aux 220->Frutillar Norte 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+182,T,MesAbr-2023,MesSep-*,14,T,Frutillar Norte Aux 220->Frutillar Norte 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+183,T,MesAbr-2023,MesSep-*,15,T,Frutillar Norte Aux 220->Frutillar Norte 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+184,T,MesAbr-2023,MesSep-*,16,T,Frutillar Norte Aux 220->Frutillar Norte 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+185,T,MesAbr-2023,MesSep-*,22,T,Frutillar Norte Aux 220->Frutillar Norte 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+186,T,MesAbr-2023,MesSep-*,23,T,Frutillar Norte Aux 220->Frutillar Norte 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+187,T,MesAbr-2023,MesSep-*,24,T,Frutillar Norte Aux 220->Frutillar Norte 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+188,T,MesAbr-2022,MesSep-*,1,T,Mulchen 220 Aux->Mulchen 220,*,*,*,*,*,*,*,670.6500727,670.6500727,*,*,*,*,*,*,*
+189,T,MesAbr-2022,MesSep-*,2,T,Mulchen 220 Aux->Mulchen 220,*,*,*,*,*,*,*,670.6500727,670.6500727,*,*,*,*,*,*,*
+190,T,MesAbr-2022,MesSep-*,3,T,Mulchen 220 Aux->Mulchen 220,*,*,*,*,*,*,*,670.6500727,670.6500727,*,*,*,*,*,*,*
+191,T,MesAbr-2022,MesSep-*,4,T,Mulchen 220 Aux->Mulchen 220,*,*,*,*,*,*,*,670.6500727,670.6500727,*,*,*,*,*,*,*
+192,T,MesAbr-2022,MesSep-*,10,T,Mulchen 220 Aux->Mulchen 220,*,*,*,*,*,*,*,670.6500727,670.6500727,*,*,*,*,*,*,*
+193,T,MesAbr-2022,MesSep-*,11,T,Mulchen 220 Aux->Mulchen 220,*,*,*,*,*,*,*,670.6500727,670.6500727,*,*,*,*,*,*,*
+194,T,MesAbr-2022,MesSep-*,12,T,Mulchen 220 Aux->Mulchen 220,*,*,*,*,*,*,*,670.6500727,670.6500727,*,*,*,*,*,*,*
+195,T,MesAbr-2022,MesSep-*,13,T,Mulchen 220 Aux->Mulchen 220,*,*,*,*,*,*,*,670.6500727,670.6500727,*,*,*,*,*,*,*
+196,T,MesAbr-2022,MesSep-*,14,T,Mulchen 220 Aux->Mulchen 220,*,*,*,*,*,*,*,670.6500727,670.6500727,*,*,*,*,*,*,*
+197,T,MesAbr-2022,MesSep-*,15,T,Mulchen 220 Aux->Mulchen 220,*,*,*,*,*,*,*,670.6500727,670.6500727,*,*,*,*,*,*,*
+198,T,MesAbr-2022,MesSep-*,16,T,Mulchen 220 Aux->Mulchen 220,*,*,*,*,*,*,*,670.6500727,670.6500727,*,*,*,*,*,*,*
+199,T,MesAbr-2022,MesSep-*,22,T,Mulchen 220 Aux->Mulchen 220,*,*,*,*,*,*,*,670.6500727,670.6500727,*,*,*,*,*,*,*
+200,T,MesAbr-2022,MesSep-*,23,T,Mulchen 220 Aux->Mulchen 220,*,*,*,*,*,*,*,670.6500727,670.6500727,*,*,*,*,*,*,*
+201,T,MesAbr-2022,MesSep-*,24,T,Mulchen 220 Aux->Mulchen 220,*,*,*,*,*,*,*,670.6500727,670.6500727,*,*,*,*,*,*,*
+202,T,MesAbr-2022,MesSep-*,1,T,Don Goyo 220 Aux->Don Goyo 220 I,*,*,*,*,*,*,*,*,282.3589226,*,*,*,*,*,*,*
+203,T,MesAbr-2022,MesSep-*,2,T,Don Goyo 220 Aux->Don Goyo 220 I,*,*,*,*,*,*,*,*,282.3589226,*,*,*,*,*,*,*
+204,T,MesAbr-2022,MesSep-*,3,T,Don Goyo 220 Aux->Don Goyo 220 I,*,*,*,*,*,*,*,*,282.3589226,*,*,*,*,*,*,*
+205,T,MesAbr-2022,MesSep-*,4,T,Don Goyo 220 Aux->Don Goyo 220 I,*,*,*,*,*,*,*,*,282.3589226,*,*,*,*,*,*,*
+206,T,MesAbr-2022,MesSep-*,10,T,Don Goyo 220 Aux->Don Goyo 220 I,*,*,*,*,*,*,*,*,282.3589226,*,*,*,*,*,*,*
+207,T,MesAbr-2022,MesSep-*,11,T,Don Goyo 220 Aux->Don Goyo 220 I,*,*,*,*,*,*,*,*,282.3589226,*,*,*,*,*,*,*
+208,T,MesAbr-2022,MesSep-*,12,T,Don Goyo 220 Aux->Don Goyo 220 I,*,*,*,*,*,*,*,*,282.3589226,*,*,*,*,*,*,*
+209,T,MesAbr-2022,MesSep-*,13,T,Don Goyo 220 Aux->Don Goyo 220 I,*,*,*,*,*,*,*,*,282.3589226,*,*,*,*,*,*,*
+210,T,MesAbr-2022,MesSep-*,14,T,Don Goyo 220 Aux->Don Goyo 220 I,*,*,*,*,*,*,*,*,282.3589226,*,*,*,*,*,*,*
+211,T,MesAbr-2022,MesSep-*,15,T,Don Goyo 220 Aux->Don Goyo 220 I,*,*,*,*,*,*,*,*,282.3589226,*,*,*,*,*,*,*
+212,T,MesAbr-2022,MesSep-*,16,T,Don Goyo 220 Aux->Don Goyo 220 I,*,*,*,*,*,*,*,*,282.3589226,*,*,*,*,*,*,*
+213,T,MesAbr-2022,MesSep-*,22,T,Don Goyo 220 Aux->Don Goyo 220 I,*,*,*,*,*,*,*,*,282.3589226,*,*,*,*,*,*,*
+214,T,MesAbr-2022,MesSep-*,23,T,Don Goyo 220 Aux->Don Goyo 220 I,*,*,*,*,*,*,*,*,282.3589226,*,*,*,*,*,*,*
+215,T,MesAbr-2022,MesSep-*,24,T,Don Goyo 220 Aux->Don Goyo 220 I,*,*,*,*,*,*,*,*,282.3589226,*,*,*,*,*,*,*
+216,T,MesAbr-2022,MesSep-*,1,T,Los Peumos 220->Temuco 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+217,T,MesAbr-2022,MesSep-*,2,T,Los Peumos 220->Temuco 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+218,T,MesAbr-2022,MesSep-*,3,T,Los Peumos 220->Temuco 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+219,T,MesAbr-2022,MesSep-*,4,T,Los Peumos 220->Temuco 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+220,T,MesAbr-2022,MesSep-*,10,T,Los Peumos 220->Temuco 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+221,T,MesAbr-2022,MesSep-*,11,T,Los Peumos 220->Temuco 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+222,T,MesAbr-2022,MesSep-*,12,T,Los Peumos 220->Temuco 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+223,T,MesAbr-2022,MesSep-*,13,T,Los Peumos 220->Temuco 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+224,T,MesAbr-2022,MesSep-*,14,T,Los Peumos 220->Temuco 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+225,T,MesAbr-2022,MesSep-*,15,T,Los Peumos 220->Temuco 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+226,T,MesAbr-2022,MesSep-*,16,T,Los Peumos 220->Temuco 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+227,T,MesAbr-2022,MesSep-*,22,T,Los Peumos 220->Temuco 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+228,T,MesAbr-2022,MesSep-*,23,T,Los Peumos 220->Temuco 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+229,T,MesAbr-2022,MesSep-*,24,T,Los Peumos 220->Temuco 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+230,T,MesAbr-2022,MesSep-*,1,T,Tap Bureo 220->Los Peumos 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+231,T,MesAbr-2022,MesSep-*,2,T,Tap Bureo 220->Los Peumos 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+232,T,MesAbr-2022,MesSep-*,3,T,Tap Bureo 220->Los Peumos 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+233,T,MesAbr-2022,MesSep-*,4,T,Tap Bureo 220->Los Peumos 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+234,T,MesAbr-2022,MesSep-*,10,T,Tap Bureo 220->Los Peumos 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+235,T,MesAbr-2022,MesSep-*,11,T,Tap Bureo 220->Los Peumos 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+236,T,MesAbr-2022,MesSep-*,12,T,Tap Bureo 220->Los Peumos 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+237,T,MesAbr-2022,MesSep-*,13,T,Tap Bureo 220->Los Peumos 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+238,T,MesAbr-2022,MesSep-*,14,T,Tap Bureo 220->Los Peumos 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+239,T,MesAbr-2022,MesSep-*,15,T,Tap Bureo 220->Los Peumos 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+240,T,MesAbr-2022,MesSep-*,16,T,Tap Bureo 220->Los Peumos 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+241,T,MesAbr-2022,MesSep-*,22,T,Tap Bureo 220->Los Peumos 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+242,T,MesAbr-2022,MesSep-*,23,T,Tap Bureo 220->Los Peumos 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+243,T,MesAbr-2022,MesSep-*,24,T,Tap Bureo 220->Los Peumos 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+244,T,MesAbr-2022,MesSep-*,1,T,Duqueco 220->Tap Bureo 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+245,T,MesAbr-2022,MesSep-*,2,T,Duqueco 220->Tap Bureo 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+246,T,MesAbr-2022,MesSep-*,3,T,Duqueco 220->Tap Bureo 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+247,T,MesAbr-2022,MesSep-*,4,T,Duqueco 220->Tap Bureo 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+248,T,MesAbr-2022,MesSep-*,10,T,Duqueco 220->Tap Bureo 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+249,T,MesAbr-2022,MesSep-*,11,T,Duqueco 220->Tap Bureo 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+250,T,MesAbr-2022,MesSep-*,12,T,Duqueco 220->Tap Bureo 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+251,T,MesAbr-2022,MesSep-*,13,T,Duqueco 220->Tap Bureo 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+252,T,MesAbr-2022,MesSep-*,14,T,Duqueco 220->Tap Bureo 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+253,T,MesAbr-2022,MesSep-*,15,T,Duqueco 220->Tap Bureo 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+254,T,MesAbr-2022,MesSep-*,16,T,Duqueco 220->Tap Bureo 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+255,T,MesAbr-2022,MesSep-*,22,T,Duqueco 220->Tap Bureo 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+256,T,MesAbr-2022,MesSep-*,23,T,Duqueco 220->Tap Bureo 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+257,T,MesAbr-2022,MesSep-*,24,T,Duqueco 220->Tap Bureo 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+258,T,MesAbr-2022,MesSep-*,1,T,Los Varones 220->Duqueco 220 I,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+259,T,MesAbr-2022,MesSep-*,2,T,Los Varones 220->Duqueco 220 I,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+260,T,MesAbr-2022,MesSep-*,3,T,Los Varones 220->Duqueco 220 I,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+261,T,MesAbr-2022,MesSep-*,4,T,Los Varones 220->Duqueco 220 I,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+262,T,MesAbr-2022,MesSep-*,10,T,Los Varones 220->Duqueco 220 I,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+263,T,MesAbr-2022,MesSep-*,11,T,Los Varones 220->Duqueco 220 I,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+264,T,MesAbr-2022,MesSep-*,12,T,Los Varones 220->Duqueco 220 I,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+265,T,MesAbr-2022,MesSep-*,13,T,Los Varones 220->Duqueco 220 I,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+266,T,MesAbr-2022,MesSep-*,14,T,Los Varones 220->Duqueco 220 I,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+267,T,MesAbr-2022,MesSep-*,15,T,Los Varones 220->Duqueco 220 I,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+268,T,MesAbr-2022,MesSep-*,16,T,Los Varones 220->Duqueco 220 I,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+269,T,MesAbr-2022,MesSep-*,22,T,Los Varones 220->Duqueco 220 I,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+270,T,MesAbr-2022,MesSep-*,23,T,Los Varones 220->Duqueco 220 I,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+271,T,MesAbr-2022,MesSep-*,24,T,Los Varones 220->Duqueco 220 I,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+272,T,MesAbr-2022,MesSep-*,1,T,El Rosal 220->Los Varones 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+273,T,MesAbr-2022,MesSep-*,2,T,El Rosal 220->Los Varones 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+274,T,MesAbr-2022,MesSep-*,3,T,El Rosal 220->Los Varones 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+275,T,MesAbr-2022,MesSep-*,4,T,El Rosal 220->Los Varones 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+276,T,MesAbr-2022,MesSep-*,10,T,El Rosal 220->Los Varones 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+277,T,MesAbr-2022,MesSep-*,11,T,El Rosal 220->Los Varones 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+278,T,MesAbr-2022,MesSep-*,12,T,El Rosal 220->Los Varones 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+279,T,MesAbr-2022,MesSep-*,13,T,El Rosal 220->Los Varones 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+280,T,MesAbr-2022,MesSep-*,14,T,El Rosal 220->Los Varones 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+281,T,MesAbr-2022,MesSep-*,15,T,El Rosal 220->Los Varones 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+282,T,MesAbr-2022,MesSep-*,16,T,El Rosal 220->Los Varones 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+283,T,MesAbr-2022,MesSep-*,22,T,El Rosal 220->Los Varones 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+284,T,MesAbr-2022,MesSep-*,23,T,El Rosal 220->Los Varones 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+285,T,MesAbr-2022,MesSep-*,24,T,El Rosal 220->Los Varones 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+286,T,MesAbr-2022,MesSep-*,1,T,Charrua 220->El Rosal 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+287,T,MesAbr-2022,MesSep-*,2,T,Charrua 220->El Rosal 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+288,T,MesAbr-2022,MesSep-*,3,T,Charrua 220->El Rosal 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+289,T,MesAbr-2022,MesSep-*,4,T,Charrua 220->El Rosal 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+290,T,MesAbr-2022,MesSep-*,10,T,Charrua 220->El Rosal 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+291,T,MesAbr-2022,MesSep-*,11,T,Charrua 220->El Rosal 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+292,T,MesAbr-2022,MesSep-*,12,T,Charrua 220->El Rosal 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+293,T,MesAbr-2022,MesSep-*,13,T,Charrua 220->El Rosal 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+294,T,MesAbr-2022,MesSep-*,14,T,Charrua 220->El Rosal 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+295,T,MesAbr-2022,MesSep-*,15,T,Charrua 220->El Rosal 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+296,T,MesAbr-2022,MesSep-*,16,T,Charrua 220->El Rosal 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+297,T,MesAbr-2022,MesSep-*,22,T,Charrua 220->El Rosal 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+298,T,MesAbr-2022,MesSep-*,23,T,Charrua 220->El Rosal 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+299,T,MesAbr-2022,MesSep-*,24,T,Charrua 220->El Rosal 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+300,T,MesEne-2026,MesMar-*,*,T,Valdivia 220->Valdivia Aux S 220,*,*,*,*,*,*,*,165,165,*,*,*,*,*,*,*
+301,T,MesOct-2026,MesDic-*,*,T,Valdivia 220->Valdivia Aux S 220,*,*,*,*,*,*,*,165,165,*,*,*,*,*,*,*
+302,T,MesAbr-2026,MesSep-*,5,T,Valdivia 220->Valdivia Aux S 220,*,*,*,*,*,*,*,165,165,*,*,*,*,*,*,*
+303,T,MesAbr-2026,MesSep-*,6,T,Valdivia 220->Valdivia Aux S 220,*,*,*,*,*,*,*,165,165,*,*,*,*,*,*,*
+304,T,MesAbr-2026,MesSep-*,7,T,Valdivia 220->Valdivia Aux S 220,*,*,*,*,*,*,*,165,165,*,*,*,*,*,*,*
+305,T,MesAbr-2026,MesSep-*,8,T,Valdivia 220->Valdivia Aux S 220,*,*,*,*,*,*,*,165,165,*,*,*,*,*,*,*
+306,T,MesAbr-2026,MesSep-*,9,T,Valdivia 220->Valdivia Aux S 220,*,*,*,*,*,*,*,165,165,*,*,*,*,*,*,*
+307,T,MesAbr-2026,MesSep-*,17,T,Valdivia 220->Valdivia Aux S 220,*,*,*,*,*,*,*,165,165,*,*,*,*,*,*,*
+308,T,MesAbr-2026,MesSep-*,18,T,Valdivia 220->Valdivia Aux S 220,*,*,*,*,*,*,*,165,165,*,*,*,*,*,*,*
+309,T,MesAbr-2026,MesSep-*,19,T,Valdivia 220->Valdivia Aux S 220,*,*,*,*,*,*,*,165,165,*,*,*,*,*,*,*
+310,T,MesAbr-2026,MesSep-*,20,T,Valdivia 220->Valdivia Aux S 220,*,*,*,*,*,*,*,165,165,*,*,*,*,*,*,*
+311,T,MesAbr-2026,MesSep-*,21,T,Valdivia 220->Valdivia Aux S 220,*,*,*,*,*,*,*,165,165,*,*,*,*,*,*,*
+312,T,MesEne-2026,MesMar-*,*,T,Ciruelos 220->Ciruelos Aux S 220,*,*,*,*,*,*,*,165,165,*,*,*,*,*,*,*
+313,T,MesOct-2026,MesDic-*,*,T,Ciruelos 220->Ciruelos Aux S 220,*,*,*,*,*,*,*,165,165,*,*,*,*,*,*,*
+314,T,MesAbr-2026,MesSep-*,5,T,Ciruelos 220->Ciruelos Aux S 220,*,*,*,*,*,*,*,165,165,*,*,*,*,*,*,*
+315,T,MesAbr-2026,MesSep-*,6,T,Ciruelos 220->Ciruelos Aux S 220,*,*,*,*,*,*,*,165,165,*,*,*,*,*,*,*
+316,T,MesAbr-2026,MesSep-*,7,T,Ciruelos 220->Ciruelos Aux S 220,*,*,*,*,*,*,*,165,165,*,*,*,*,*,*,*
+317,T,MesAbr-2026,MesSep-*,8,T,Ciruelos 220->Ciruelos Aux S 220,*,*,*,*,*,*,*,165,165,*,*,*,*,*,*,*
+318,T,MesAbr-2026,MesSep-*,9,T,Ciruelos 220->Ciruelos Aux S 220,*,*,*,*,*,*,*,165,165,*,*,*,*,*,*,*
+319,T,MesAbr-2026,MesSep-*,17,T,Ciruelos 220->Ciruelos Aux S 220,*,*,*,*,*,*,*,165,165,*,*,*,*,*,*,*
+320,T,MesAbr-2026,MesSep-*,18,T,Ciruelos 220->Ciruelos Aux S 220,*,*,*,*,*,*,*,165,165,*,*,*,*,*,*,*
+321,T,MesAbr-2026,MesSep-*,19,T,Ciruelos 220->Ciruelos Aux S 220,*,*,*,*,*,*,*,165,165,*,*,*,*,*,*,*
+322,T,MesAbr-2026,MesSep-*,20,T,Ciruelos 220->Ciruelos Aux S 220,*,*,*,*,*,*,*,165,165,*,*,*,*,*,*,*
+323,T,MesAbr-2026,MesSep-*,21,T,Ciruelos 220->Ciruelos Aux S 220,*,*,*,*,*,*,*,165,165,*,*,*,*,*,*,*
+324,T,MesAbr-2022,MesSep-*,1,T,Temuco 220->Temuco Aux 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+325,T,MesAbr-2022,MesSep-*,2,T,Temuco 220->Temuco Aux 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+326,T,MesAbr-2022,MesSep-*,3,T,Temuco 220->Temuco Aux 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+327,T,MesAbr-2022,MesSep-*,4,T,Temuco 220->Temuco Aux 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+328,T,MesAbr-2022,MesSep-*,10,T,Temuco 220->Temuco Aux 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+329,T,MesAbr-2022,MesSep-*,11,T,Temuco 220->Temuco Aux 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+330,T,MesAbr-2022,MesSep-*,12,T,Temuco 220->Temuco Aux 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+331,T,MesAbr-2022,MesSep-*,13,T,Temuco 220->Temuco Aux 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+332,T,MesAbr-2022,MesSep-*,14,T,Temuco 220->Temuco Aux 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+333,T,MesAbr-2022,MesSep-*,15,T,Temuco 220->Temuco Aux 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+334,T,MesAbr-2022,MesSep-*,16,T,Temuco 220->Temuco Aux 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+335,T,MesAbr-2022,MesSep-*,22,T,Temuco 220->Temuco Aux 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+336,T,MesAbr-2022,MesSep-*,23,T,Temuco 220->Temuco Aux 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+337,T,MesAbr-2022,MesSep-*,24,T,Temuco 220->Temuco Aux 220,*,*,*,*,*,*,*,332.8108294,332.8108294,*,*,*,*,*,*,*
+338,T,MesAbr-2022,MesSep-2027,1,T,Sauzal 154->Tap M V Central 154,*,*,*,*,*,*,*,120,120,*,*,*,*,*,*,*
+339,T,MesAbr-2022,MesSep-2027,2,T,Sauzal 154->Tap M V Central 154,*,*,*,*,*,*,*,120,120,*,*,*,*,*,*,*
+340,T,MesAbr-2022,MesSep-2027,3,T,Sauzal 154->Tap M V Central 154,*,*,*,*,*,*,*,120,120,*,*,*,*,*,*,*
+341,T,MesAbr-2022,MesSep-2027,4,T,Sauzal 154->Tap M V Central 154,*,*,*,*,*,*,*,120,120,*,*,*,*,*,*,*
+342,T,MesAbr-2022,MesSep-2027,10,T,Sauzal 154->Tap M V Central 154,*,*,*,*,*,*,*,120,120,*,*,*,*,*,*,*
+343,T,MesAbr-2022,MesSep-2027,11,T,Sauzal 154->Tap M V Central 154,*,*,*,*,*,*,*,120,120,*,*,*,*,*,*,*
+344,T,MesAbr-2022,MesSep-2027,12,T,Sauzal 154->Tap M V Central 154,*,*,*,*,*,*,*,120,120,*,*,*,*,*,*,*
+345,T,MesAbr-2022,MesSep-2027,13,T,Sauzal 154->Tap M V Central 154,*,*,*,*,*,*,*,120,120,*,*,*,*,*,*,*
+346,T,MesAbr-2022,MesSep-2027,14,T,Sauzal 154->Tap M V Central 154,*,*,*,*,*,*,*,120,120,*,*,*,*,*,*,*
+347,T,MesAbr-2022,MesSep-2027,15,T,Sauzal 154->Tap M V Central 154,*,*,*,*,*,*,*,120,120,*,*,*,*,*,*,*
+348,T,MesAbr-2022,MesSep-2027,16,T,Sauzal 154->Tap M V Central 154,*,*,*,*,*,*,*,120,120,*,*,*,*,*,*,*
+349,T,MesAbr-2022,MesSep-2027,22,T,Sauzal 154->Tap M V Central 154,*,*,*,*,*,*,*,120,120,*,*,*,*,*,*,*
+350,T,MesAbr-2022,MesSep-2027,23,T,Sauzal 154->Tap M V Central 154,*,*,*,*,*,*,*,120,120,*,*,*,*,*,*,*
+351,T,MesAbr-2022,MesSep-2027,24,T,Sauzal 154->Tap M V Central 154,*,*,*,*,*,*,*,120,120,*,*,*,*,*,*,*
+352,T,MesAbr-2022,MesSep-*,1,T,Rancagua 154->Tap M V Central 154,*,*,*,*,*,*,*,120,120,*,*,*,*,*,*,*
+353,T,MesAbr-2022,MesSep-*,2,T,Rancagua 154->Tap M V Central 154,*,*,*,*,*,*,*,120,120,*,*,*,*,*,*,*
+354,T,MesAbr-2022,MesSep-*,3,T,Rancagua 154->Tap M V Central 154,*,*,*,*,*,*,*,120,120,*,*,*,*,*,*,*
+355,T,MesAbr-2022,MesSep-*,4,T,Rancagua 154->Tap M V Central 154,*,*,*,*,*,*,*,120,120,*,*,*,*,*,*,*
+356,T,MesAbr-2022,MesSep-*,10,T,Rancagua 154->Tap M V Central 154,*,*,*,*,*,*,*,120,120,*,*,*,*,*,*,*
+357,T,MesAbr-2022,MesSep-*,11,T,Rancagua 154->Tap M V Central 154,*,*,*,*,*,*,*,120,120,*,*,*,*,*,*,*
+358,T,MesAbr-2022,MesSep-*,12,T,Rancagua 154->Tap M V Central 154,*,*,*,*,*,*,*,120,120,*,*,*,*,*,*,*
+359,T,MesAbr-2022,MesSep-*,13,T,Rancagua 154->Tap M V Central 154,*,*,*,*,*,*,*,120,120,*,*,*,*,*,*,*
+360,T,MesAbr-2022,MesSep-*,14,T,Rancagua 154->Tap M V Central 154,*,*,*,*,*,*,*,120,120,*,*,*,*,*,*,*
+361,T,MesAbr-2022,MesSep-*,15,T,Rancagua 154->Tap M V Central 154,*,*,*,*,*,*,*,120,120,*,*,*,*,*,*,*
+362,T,MesAbr-2022,MesSep-*,16,T,Rancagua 154->Tap M V Central 154,*,*,*,*,*,*,*,120,120,*,*,*,*,*,*,*
+363,T,MesAbr-2022,MesSep-*,22,T,Rancagua 154->Tap M V Central 154,*,*,*,*,*,*,*,120,120,*,*,*,*,*,*,*
+364,T,MesAbr-2022,MesSep-*,23,T,Rancagua 154->Tap M V Central 154,*,*,*,*,*,*,*,120,120,*,*,*,*,*,*,*
+365,T,MesAbr-2022,MesSep-*,24,T,Rancagua 154->Tap M V Central 154,*,*,*,*,*,*,*,120,120,*,*,*,*,*,*,*
+366,T,MesAbr-2024,MesSep-*,1,T,Rapel Aux 220->Rapel 220 II,*,*,*,*,*,*,*,421.06,421.06,*,*,*,*,*,*,*
+367,T,MesAbr-2024,MesSep-*,2,T,Rapel Aux 220->Rapel 220 II,*,*,*,*,*,*,*,421.06,421.06,*,*,*,*,*,*,*
+368,T,MesAbr-2024,MesSep-*,3,T,Rapel Aux 220->Rapel 220 II,*,*,*,*,*,*,*,421.06,421.06,*,*,*,*,*,*,*
+369,T,MesAbr-2024,MesSep-*,4,T,Rapel Aux 220->Rapel 220 II,*,*,*,*,*,*,*,421.06,421.06,*,*,*,*,*,*,*
+370,T,MesAbr-2024,MesSep-*,10,T,Rapel Aux 220->Rapel 220 II,*,*,*,*,*,*,*,421.06,421.06,*,*,*,*,*,*,*
+371,T,MesAbr-2024,MesSep-*,11,T,Rapel Aux 220->Rapel 220 II,*,*,*,*,*,*,*,421.06,421.06,*,*,*,*,*,*,*
+372,T,MesAbr-2024,MesSep-*,12,T,Rapel Aux 220->Rapel 220 II,*,*,*,*,*,*,*,421.06,421.06,*,*,*,*,*,*,*
+373,T,MesAbr-2024,MesSep-*,13,T,Rapel Aux 220->Rapel 220 II,*,*,*,*,*,*,*,421.06,421.06,*,*,*,*,*,*,*
+374,T,MesAbr-2024,MesSep-*,14,T,Rapel Aux 220->Rapel 220 II,*,*,*,*,*,*,*,421.06,421.06,*,*,*,*,*,*,*
+375,T,MesAbr-2024,MesSep-*,15,T,Rapel Aux 220->Rapel 220 II,*,*,*,*,*,*,*,421.06,421.06,*,*,*,*,*,*,*
+376,T,MesAbr-2024,MesSep-*,16,T,Rapel Aux 220->Rapel 220 II,*,*,*,*,*,*,*,421.06,421.06,*,*,*,*,*,*,*
+377,T,MesAbr-2024,MesSep-*,22,T,Rapel Aux 220->Rapel 220 II,*,*,*,*,*,*,*,421.06,421.06,*,*,*,*,*,*,*
+378,T,MesAbr-2024,MesSep-*,23,T,Rapel Aux 220->Rapel 220 II,*,*,*,*,*,*,*,421.06,421.06,*,*,*,*,*,*,*
+379,T,MesAbr-2024,MesSep-*,24,T,Rapel Aux 220->Rapel 220 II,*,*,*,*,*,*,*,421.06,421.06,*,*,*,*,*,*,*
+380,T,MesAbr-2024,MesSep-*,1,T,Loica 220->Loica Aux 220 I,*,*,*,*,*,*,*,421.06,421.06,*,*,*,*,*,*,*
+381,T,MesAbr-2024,MesSep-*,2,T,Loica 220->Loica Aux 220 I,*,*,*,*,*,*,*,421.06,421.06,*,*,*,*,*,*,*
+382,T,MesAbr-2024,MesSep-*,3,T,Loica 220->Loica Aux 220 I,*,*,*,*,*,*,*,421.06,421.06,*,*,*,*,*,*,*
+383,T,MesAbr-2024,MesSep-*,4,T,Loica 220->Loica Aux 220 I,*,*,*,*,*,*,*,421.06,421.06,*,*,*,*,*,*,*
+384,T,MesAbr-2024,MesSep-*,10,T,Loica 220->Loica Aux 220 I,*,*,*,*,*,*,*,421.06,421.06,*,*,*,*,*,*,*
+385,T,MesAbr-2024,MesSep-*,11,T,Loica 220->Loica Aux 220 I,*,*,*,*,*,*,*,421.06,421.06,*,*,*,*,*,*,*
+386,T,MesAbr-2024,MesSep-*,12,T,Loica 220->Loica Aux 220 I,*,*,*,*,*,*,*,421.06,421.06,*,*,*,*,*,*,*
+387,T,MesAbr-2024,MesSep-*,13,T,Loica 220->Loica Aux 220 I,*,*,*,*,*,*,*,421.06,421.06,*,*,*,*,*,*,*
+388,T,MesAbr-2024,MesSep-*,14,T,Loica 220->Loica Aux 220 I,*,*,*,*,*,*,*,421.06,421.06,*,*,*,*,*,*,*
+389,T,MesAbr-2024,MesSep-*,15,T,Loica 220->Loica Aux 220 I,*,*,*,*,*,*,*,421.06,421.06,*,*,*,*,*,*,*
+390,T,MesAbr-2024,MesSep-*,16,T,Loica 220->Loica Aux 220 I,*,*,*,*,*,*,*,421.06,421.06,*,*,*,*,*,*,*
+391,T,MesAbr-2024,MesSep-*,22,T,Loica 220->Loica Aux 220 I,*,*,*,*,*,*,*,421.06,421.06,*,*,*,*,*,*,*
+392,T,MesAbr-2024,MesSep-*,23,T,Loica 220->Loica Aux 220 I,*,*,*,*,*,*,*,421.06,421.06,*,*,*,*,*,*,*
+393,T,MesAbr-2024,MesSep-*,24,T,Loica 220->Loica Aux 220 I,*,*,*,*,*,*,*,421.06,421.06,*,*,*,*,*,*,*
+394,T,MesAbr-2024,MesSep-*,1,T,Tap Alto Melipilla Aux 220->Tap Alto Melipilla 220 II,*,*,*,*,*,*,*,421.06,421.06,*,*,*,*,*,*,*
+395,T,MesAbr-2024,MesSep-*,2,T,Tap Alto Melipilla Aux 220->Tap Alto Melipilla 220 II,*,*,*,*,*,*,*,421.06,421.06,*,*,*,*,*,*,*
+396,T,MesAbr-2024,MesSep-*,3,T,Tap Alto Melipilla Aux 220->Tap Alto Melipilla 220 II,*,*,*,*,*,*,*,421.06,421.06,*,*,*,*,*,*,*
+397,T,MesAbr-2024,MesSep-*,4,T,Tap Alto Melipilla Aux 220->Tap Alto Melipilla 220 II,*,*,*,*,*,*,*,421.06,421.06,*,*,*,*,*,*,*
+398,T,MesAbr-2024,MesSep-*,10,T,Tap Alto Melipilla Aux 220->Tap Alto Melipilla 220 II,*,*,*,*,*,*,*,421.06,421.06,*,*,*,*,*,*,*
+399,T,MesAbr-2024,MesSep-*,11,T,Tap Alto Melipilla Aux 220->Tap Alto Melipilla 220 II,*,*,*,*,*,*,*,421.06,421.06,*,*,*,*,*,*,*
+400,T,MesAbr-2024,MesSep-*,12,T,Tap Alto Melipilla Aux 220->Tap Alto Melipilla 220 II,*,*,*,*,*,*,*,421.06,421.06,*,*,*,*,*,*,*
+401,T,MesAbr-2024,MesSep-*,13,T,Tap Alto Melipilla Aux 220->Tap Alto Melipilla 220 II,*,*,*,*,*,*,*,421.06,421.06,*,*,*,*,*,*,*
+402,T,MesAbr-2024,MesSep-*,14,T,Tap Alto Melipilla Aux 220->Tap Alto Melipilla 220 II,*,*,*,*,*,*,*,421.06,421.06,*,*,*,*,*,*,*
+403,T,MesAbr-2024,MesSep-*,15,T,Tap Alto Melipilla Aux 220->Tap Alto Melipilla 220 II,*,*,*,*,*,*,*,421.06,421.06,*,*,*,*,*,*,*
+404,T,MesAbr-2024,MesSep-*,16,T,Tap Alto Melipilla Aux 220->Tap Alto Melipilla 220 II,*,*,*,*,*,*,*,421.06,421.06,*,*,*,*,*,*,*
+405,T,MesAbr-2024,MesSep-*,22,T,Tap Alto Melipilla Aux 220->Tap Alto Melipilla 220 II,*,*,*,*,*,*,*,421.06,421.06,*,*,*,*,*,*,*
+406,T,MesAbr-2024,MesSep-*,23,T,Tap Alto Melipilla Aux 220->Tap Alto Melipilla 220 II,*,*,*,*,*,*,*,421.06,421.06,*,*,*,*,*,*,*
+407,T,MesAbr-2024,MesSep-*,24,T,Tap Alto Melipilla Aux 220->Tap Alto Melipilla 220 II,*,*,*,*,*,*,*,421.06,421.06,*,*,*,*,*,*,*
+408,T,MesEne-2022,*,*,F,SUEZ_Los Changos 220->Kapatur 220 I,*,*,*,*,*,*,*,872,872,*,*,*,*,*,*,*
+409,T,MesEne-2022,*,*,F,SUEZ_Los Changos 220->Kapatur 220 II,*,*,*,*,*,*,*,872,872,*,*,*,*,*,*,*
+410,T,MesEne-2022,*,*,F,Los Changos 500->Kimal 500 I,*,*,*,*,*,*,*,1187.5,1187.5,*,*,*,*,*,*,*
+411,T,MesEne-2022,*,*,F,Los Changos 500->Kimal 500 II,*,*,*,*,*,*,*,1187.5,1187.5,*,*,*,*,*,*,*
+412,T,MesEne-2022,*,*,F,Kimal Aux 2 220->Maria Elena 220 I,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*
+413,T,MesEne-2022,*,*,F,Kimal Aux 2 220->Maria Elena 220 II,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*
+414,T,MesEne-2022,*,*,F,Maria Elena Aux 220->Frontera Aux 2 220 I,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*
+415,T,MesEne-2022,*,*,F,Maria Elena Aux 220->Frontera Aux 2 220 II,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*
+416,T,MesEne-2022,*,*,F,Frontera Aux 220->Lagunas Aux 3 220,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*
+417,T,MesEne-2022,*,*,F,Frontera Aux 220->San Simon 220,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*
+418,T,MesEne-2022,*,*,F,San Simon 220->Nueva Victoria 220,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*
+419,T,MesEne-2022,*,*,F,Nueva Victoria 220->Lagunas Aux 3 220,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*
+420,T,MesEne-2022,*,*,F,Lagunas Aux 3 220->Lagunas 220,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*
+421,T,MesEne-2022,*,*,F,Lagunas Aux 4 220->Collahuasi 220 I,*,*,*,*,*,F,F,*,*,*,*,*,*,*,*,*
+422,T,MesEne-2022,*,*,F,Lagunas Aux 4 220->Collahuasi 220 II,*,*,*,*,*,F,F,*,*,*,*,*,*,*,*,*
+423,T,MesEne-2022,*,*,F,Encuentro Aux 2 220->Collahuasi 2 220 I,*,*,*,*,*,F,F,*,*,*,*,*,*,*,*,*
+424,T,MesEne-2022,*,*,F,(Ei) Encuentro 220->Collahuasi 2 220 II,*,*,*,*,*,F,F,*,*,*,*,*,*,*,*,*
+425,T,MesEne-2022,*,*,F,Collahuasi 220->Collahuasi 2 220,*,*,*,*,*,F,F,*,*,*,*,*,*,*,*,*
+426,T,MesEne-2022,*,*,F,Lagunas 220->Lagunas Aux 4 220,*,*,*,*,*,F,F,*,*,*,*,*,*,*,*,*
+427,T,MesEne-2022,*,*,F,Encuentro Aux 2 220->(Ei) Encuentro 220 II,*,*,*,*,*,F,F,*,*,*,*,*,*,*,*,*
+428,T,MesEne-2022,*,*,F,Encuentro 220->Encuentro Aux 2 220,*,*,*,*,*,F,F,*,*,*,*,*,*,*,*,*
+429,T,MesEne-2022,*,*,F,Encuentro 220->Ana Maria Aux 220 I,*,*,*,358.7253892,*,*,*,358.7253892,*,*,*,*,*,*,*,*
+430,T,MesEne-2022,*,*,F,Encuentro 220->Ana Maria Aux 220 II,*,*,*,358.7253892,*,*,*,358.7253892,*,*,*,*,*,*,*,*
+431,T,MesEne-2022,*,*,F,Ana Maria Aux 220->Ana Maria 220,*,*,*,717.4507783,*,*,*,358.7253892,*,*,*,*,*,*,*,*
+432,T,MesEne-2022,*,*,F,Ana Maria 220->Lagunas Aux 220 I,*,*,*,358.7253892,*,*,*,358.7253892,*,*,*,*,*,*,*,*
+433,T,MesEne-2022,*,*,F,Ana Maria 220->Lagunas Aux 220 II,*,*,*,358.7253892,*,*,*,358.7253892,*,*,*,*,*,*,*,*
+434,T,MesEne-2022,*,*,F,Lagunas 220->Lagunas Aux 220,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*
+435,T,MesEne-2022,*,*,F,Bombeo Quebrada Blanca Fase 2 Aux 220->Lagunas 220 I,*,*,*,*,296.7,*,*,*,296.7,*,*,*,*,*,*,*
+436,T,MesEne-2022,*,*,F,Bombeo Quebrada Blanca Fase 2 Aux 220->Lagunas 220 II,*,*,*,*,296.7,*,*,*,296.7,*,*,*,*,*,*,*
+437,T,MesEne-2022,*,*,F,Tarapaca Aux 220->Bombeo Quebrada Blanca Fase 2 220 I,*,*,*,*,296.7,*,*,*,296.7,*,*,*,*,*,*,*
+438,T,MesEne-2022,*,*,F,Tarapaca Aux 220->Bombeo Quebrada Blanca Fase 2 220 II,*,*,*,*,296.7,*,*,*,296.7,*,*,*,*,*,*,*
+439,T,MesEne-2022,*,*,F,Bombeo Quebrada Blanca Fase 2 220->Bombeo Quebrada Blanca Fase 2 Aux 220,*,*,*,*,296.7,*,*,*,296.7,*,*,*,*,*,*,*
+440,T,MesEne-2022,*,*,F,Tarapaca 220->Tarapaca Aux 220,*,*,*,*,296.7,*,*,*,296.7,*,*,*,*,*,*,*
+441,T,MesEne-2022,*,*,F,Tarapaca 220->Patache Aux 220 I,*,*,*,215,*,*,*,215,*,*,*,*,*,*,*,*
+442,T,MesEne-2022,*,*,F,Tarapaca 220->Patache Aux 220 II,*,*,*,215,*,*,*,215,*,*,*,*,*,*,*,*
+443,T,MesEne-2022,*,*,F,Patache Aux 220->Patache 220,*,*,*,215,*,*,*,215,*,*,*,*,*,*,*,*
+444,T,MesEne-2022,*,*,F,Patache 220->Condores Aux 220,*,*,*,215,*,*,*,215,*,*,*,*,*,*,*,*
+445,T,MesEne-2022,*,*,F,Condores 220->Parinacota Aux 220,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*
+446,T,MesEne-2022,*,*,F,Condores Aux 220->Condores 220,*,*,*,215,*,*,*,215,*,*,*,*,*,*,*,*
+447,T,MesFeb-2022,*,*,F,Condores Aux 2 220->Condores 220,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*
+448,T,MesJul-2024,*,*,F,Condores 220->Alto de Ramirez 220,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*
+449,T,MesFeb-2022,*,*,F,Nueva Pozo Almonte 220->Condores Aux 2 220,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*
+450,T,MesJul-2024,*,*,F,Alto de Ramirez 220->Parinacota Aux 220,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*
+451,T,MesFeb-2022,*,*,F,Nueva Pozo Almonte Aux 220->Parinacota 220,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*
+452,T,MesFeb-2022,*,*,F,Nueva Pozo Almonte Aux 220->Nueva Pozo Almonte 220,*,*,*,*,*,*,*,260,260,*,*,*,*,*,*,*
+453,T,MesJul-2020,*,*,F,Nueva Pozo Almonte 220->Pozo Almonte Aux 220,*,*,*,208.1,*,*,*,208.1,*,*,*,*,*,*,*,*
+454,T,MesJul-2020,*,*,F,Lagunas Aux 2 220->Nueva Pozo Almonte 220,*,*,*,208.1,*,*,*,208.1,*,*,*,*,*,*,*,*
+455,T,MesJun-2023,*,*,F,Roncacho 220->Nueva Pozo Almonte Aux 220,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*
+456,T,MesFeb-2022,*,*,F,Nueva Pozo Almonte 220->Pozo Almonte Aux 220 II,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*
+457,T,MesJun-2023,*,*,F,Parinacota 220->Roncacho Aux 220,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*
+458,T,MesJun-2023,*,*,F,Roncacho Aux 220->Roncacho 220,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*
+459,T,MesEne-2022,*,*,F,Parinacota 220->Parinacota Aux 220 I,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*
+460,T,MesAbr-2022,MesSep-*,*,T,Kimal Aux 2 220->Kimal 220,*,*,*,*,*,*,*,*,289.8014073,*,*,*,*,*,*,*
+461,T,MesAbr-2022,MesSep-*,*,T,Frontera Aux 2 220->Frontera 220,*,*,*,*,*,*,*,289.8014073,*,*,*,*,*,*,*,*
+462,T,MesAbr-2022,MesSep-*,*,T,Frontera 220->Frontera Aux 220,*,*,*,*,*,*,*,289.8014073,*,*,*,*,*,*,*,*
+463,T,MesAbr-2022,MesSep-*,*,T,Maria Elena 220->Maria Elena Aux 220,*,*,*,*,*,*,*,289.8014073,*,*,*,*,*,*,*,*
+464,T,MesAbr-2022,MesSep-*,*,T,Encuentro 220->Encuentro Aux 220 III,*,*,*,*,*,*,*,*,672.2218785,*,*,*,*,*,*,*
+465,T,MesOct-2022,MesMar-*,*,T,Encuentro 220->Encuentro Aux 220 III,*,*,*,*,*,*,*,*,638.94472,*,*,*,*,*,*,*
+466,T,*,MesDic-2028,*,F,Nueva Chuquicamata Aux 1 220->Nueva Chuquicamata 220,*,*,*,*,*,*,*,330,330,*,*,*,*,*,*,*
+467,T,*,MesDic-2028,*,F,Nueva Chuquicamata Aux 2 220->Nueva Chuquicamata 220,*,*,*,*,*,*,*,330,330,*,*,*,*,*,*,*
+468,T,MesEne-2029,*,*,F,Nueva Chuquicamata Aux 1 220->Nueva Chuquicamata 220,*,*,*,*,*,*,*,368,368,*,*,*,*,*,*,*
+469,T,MesEne-2029,*,*,F,Nueva Chuquicamata Aux 2 220->Nueva Chuquicamata 220,*,*,*,*,*,*,*,368,368,*,*,*,*,*,*,*
+470,T,MesEne-2029,*,*,F,Tocopilla 110->Tocopilla Booster 110 I,*,*,*,*,*,F,F,*,*,*,*,*,*,*,*,*
+471,T,MesEne-2029,*,*,F,Tocopilla 110->Tocopilla Booster 110 II,*,*,*,*,*,F,F,*,*,*,*,*,*,*,*,*
+472,T,MesJul-2029,*,*,F,Cautin 220->Cautin Aux S 220 II,*,*,*,*,*,*,*,840,457,*,*,*,*,*,*,*
+473,T,MesAbr-2023,MesSep-2027,1,T,Lastarria Aux 220->Lastarria 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+474,T,MesAbr-2023,MesSep-2027,2,T,Lastarria Aux 220->Lastarria 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+475,T,MesAbr-2023,MesSep-2027,3,T,Lastarria Aux 220->Lastarria 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+476,T,MesAbr-2023,MesSep-2027,4,T,Lastarria Aux 220->Lastarria 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+477,T,MesAbr-2023,MesSep-2027,10,T,Lastarria Aux 220->Lastarria 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+478,T,MesAbr-2023,MesSep-2027,11,T,Lastarria Aux 220->Lastarria 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+479,T,MesAbr-2023,MesSep-2027,12,T,Lastarria Aux 220->Lastarria 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+480,T,MesAbr-2023,MesSep-2027,13,T,Lastarria Aux 220->Lastarria 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+481,T,MesAbr-2023,MesSep-2027,14,T,Lastarria Aux 220->Lastarria 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+482,T,MesAbr-2023,MesSep-2027,15,T,Lastarria Aux 220->Lastarria 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+483,T,MesAbr-2023,MesSep-2027,16,T,Lastarria Aux 220->Lastarria 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+484,T,MesAbr-2023,MesSep-2027,22,T,Lastarria Aux 220->Lastarria 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+485,T,MesAbr-2023,MesSep-2027,23,T,Lastarria Aux 220->Lastarria 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+486,T,MesAbr-2023,MesSep-2027,24,T,Lastarria Aux 220->Lastarria 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+1000,T,MesAbr-2028,MesJun-2028,1,F,Lastarria Aux 220->Lastarria 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+1001,T,MesAbr-2028,MesJun-2028,2,F,Lastarria Aux 220->Lastarria 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+1002,T,MesAbr-2028,MesJun-2028,3,F,Lastarria Aux 220->Lastarria 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+1003,T,MesAbr-2028,MesJun-2028,4,F,Lastarria Aux 220->Lastarria 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+1004,T,MesAbr-2028,MesJun-2028,10,F,Lastarria Aux 220->Lastarria 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+1005,T,MesAbr-2028,MesJun-2028,11,F,Lastarria Aux 220->Lastarria 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+1006,T,MesAbr-2028,MesJun-2028,12,F,Lastarria Aux 220->Lastarria 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+1007,T,MesAbr-2028,MesJun-2028,13,F,Lastarria Aux 220->Lastarria 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+1008,T,MesAbr-2028,MesJun-2028,14,F,Lastarria Aux 220->Lastarria 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+1009,T,MesAbr-2028,MesJun-2028,15,F,Lastarria Aux 220->Lastarria 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+1010,T,MesAbr-2028,MesJun-2028,16,F,Lastarria Aux 220->Lastarria 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+1011,T,MesAbr-2028,MesJun-2028,22,F,Lastarria Aux 220->Lastarria 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+1012,T,MesAbr-2028,MesJun-2028,23,F,Lastarria Aux 220->Lastarria 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+1013,T,MesAbr-2028,MesJun-2028,24,F,Lastarria Aux 220->Lastarria 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+1014,T,MesJul-2028,MesSep-2028,*,F,Lastarria Aux 220->Lastarria 220,*,*,*,*,*,*,*,50,50,*,*,*,*,*,*,*
+486,T,MesAbr-2023,MesSep-2028,1,T,Cautin 220->Cautin Aux S 220 I,*,*,*,*,*,*,*,255.3,255.3,*,*,*,*,*,*,*
+487,T,MesAbr-2023,MesSep-2028,2,T,Cautin 220->Cautin Aux S 220 I,*,*,*,*,*,*,*,255.3,255.3,*,*,*,*,*,*,*
+488,T,MesAbr-2023,MesSep-2028,3,T,Cautin 220->Cautin Aux S 220 I,*,*,*,*,*,*,*,255.3,255.3,*,*,*,*,*,*,*
+489,T,MesAbr-2023,MesSep-2028,4,T,Cautin 220->Cautin Aux S 220 I,*,*,*,*,*,*,*,255.3,255.3,*,*,*,*,*,*,*
+490,T,MesAbr-2023,MesSep-2028,10,T,Cautin 220->Cautin Aux S 220 I,*,*,*,*,*,*,*,255.3,255.3,*,*,*,*,*,*,*
+491,T,MesAbr-2023,MesSep-2028,11,T,Cautin 220->Cautin Aux S 220 I,*,*,*,*,*,*,*,255.3,255.3,*,*,*,*,*,*,*
+492,T,MesAbr-2023,MesSep-2028,12,T,Cautin 220->Cautin Aux S 220 I,*,*,*,*,*,*,*,255.3,255.3,*,*,*,*,*,*,*
+493,T,MesAbr-2023,MesSep-2028,13,T,Cautin 220->Cautin Aux S 220 I,*,*,*,*,*,*,*,255.3,255.3,*,*,*,*,*,*,*
+494,T,MesAbr-2023,MesSep-2028,14,T,Cautin 220->Cautin Aux S 220 I,*,*,*,*,*,*,*,255.3,255.3,*,*,*,*,*,*,*
+495,T,MesAbr-2023,MesSep-2028,15,T,Cautin 220->Cautin Aux S 220 I,*,*,*,*,*,*,*,255.3,255.3,*,*,*,*,*,*,*
+496,T,MesAbr-2023,MesSep-2028,16,T,Cautin 220->Cautin Aux S 220 I,*,*,*,*,*,*,*,255.3,255.3,*,*,*,*,*,*,*
+497,T,MesAbr-2023,MesSep-2028,22,T,Cautin 220->Cautin Aux S 220 I,*,*,*,*,*,*,*,255.3,255.3,*,*,*,*,*,*,*
+498,T,MesAbr-2023,MesSep-2028,23,T,Cautin 220->Cautin Aux S 220 I,*,*,*,*,*,*,*,255.3,255.3,*,*,*,*,*,*,*
+499,T,MesAbr-2023,MesSep-2028,24,T,Cautin 220->Cautin Aux S 220 I,*,*,*,*,*,*,*,255.3,255.3,*,*,*,*,*,*,*
+500,T,MesAbr-2024,MesSep-2028,1,T,Metrenco 220->Metrenco Aux 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+501,T,MesAbr-2024,MesSep-2028,2,T,Metrenco 220->Metrenco Aux 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+502,T,MesAbr-2024,MesSep-2028,3,T,Metrenco 220->Metrenco Aux 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+503,T,MesAbr-2024,MesSep-2028,4,T,Metrenco 220->Metrenco Aux 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+504,T,MesAbr-2024,MesSep-2028,10,T,Metrenco 220->Metrenco Aux 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+505,T,MesAbr-2024,MesSep-2028,11,T,Metrenco 220->Metrenco Aux 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+506,T,MesAbr-2024,MesSep-2028,12,T,Metrenco 220->Metrenco Aux 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+507,T,MesAbr-2024,MesSep-2028,13,T,Metrenco 220->Metrenco Aux 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+508,T,MesAbr-2024,MesSep-2028,14,T,Metrenco 220->Metrenco Aux 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+509,T,MesAbr-2024,MesSep-2028,15,T,Metrenco 220->Metrenco Aux 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+510,T,MesAbr-2024,MesSep-2028,16,T,Metrenco 220->Metrenco Aux 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+511,T,MesAbr-2024,MesSep-2028,22,T,Metrenco 220->Metrenco Aux 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+512,T,MesAbr-2024,MesSep-2028,23,T,Metrenco 220->Metrenco Aux 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+513,T,MesAbr-2024,MesSep-2028,24,T,Metrenco 220->Metrenco Aux 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+514,F,MesAbr-2025,MesSep-2025,1,F,Metrenco 220->Metrenco Aux 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+515,F,MesAbr-2025,MesSep-2025,2,F,Metrenco 220->Metrenco Aux 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+516,F,MesAbr-2025,MesSep-2025,3,F,Metrenco 220->Metrenco Aux 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+517,F,MesAbr-2025,MesSep-2025,4,F,Metrenco 220->Metrenco Aux 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+518,F,MesAbr-2025,MesSep-2025,10,F,Metrenco 220->Metrenco Aux 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+519,F,MesAbr-2025,MesSep-2025,11,F,Metrenco 220->Metrenco Aux 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+520,F,MesAbr-2025,MesSep-2025,12,F,Metrenco 220->Metrenco Aux 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+521,F,MesAbr-2025,MesSep-2025,13,F,Metrenco 220->Metrenco Aux 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+522,F,MesAbr-2025,MesSep-2025,14,F,Metrenco 220->Metrenco Aux 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+523,F,MesAbr-2025,MesSep-2025,15,F,Metrenco 220->Metrenco Aux 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+524,F,MesAbr-2025,MesSep-2025,16,F,Metrenco 220->Metrenco Aux 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+525,F,MesAbr-2025,MesSep-2025,22,F,Metrenco 220->Metrenco Aux 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+526,F,MesAbr-2025,MesSep-2025,23,F,Metrenco 220->Metrenco Aux 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+527,F,MesAbr-2025,MesSep-2025,24,F,Metrenco 220->Metrenco Aux 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+528,F,MesAbr-2026,MesSep-2026,1,F,Metrenco 220->Metrenco Aux 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+529,F,MesAbr-2026,MesSep-2026,2,F,Metrenco 220->Metrenco Aux 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+530,F,MesAbr-2026,MesSep-2026,3,F,Metrenco 220->Metrenco Aux 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+531,F,MesAbr-2026,MesSep-2026,4,F,Metrenco 220->Metrenco Aux 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+532,F,MesAbr-2026,MesSep-2026,10,F,Metrenco 220->Metrenco Aux 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+533,F,MesAbr-2026,MesSep-2026,11,F,Metrenco 220->Metrenco Aux 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+534,F,MesAbr-2026,MesSep-2026,12,F,Metrenco 220->Metrenco Aux 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+535,F,MesAbr-2026,MesSep-2026,13,F,Metrenco 220->Metrenco Aux 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+536,F,MesAbr-2026,MesSep-2026,14,F,Metrenco 220->Metrenco Aux 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+537,F,MesAbr-2026,MesSep-2026,15,F,Metrenco 220->Metrenco Aux 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+538,F,MesAbr-2026,MesSep-2026,16,F,Metrenco 220->Metrenco Aux 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+539,F,MesAbr-2026,MesSep-2026,22,F,Metrenco 220->Metrenco Aux 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+540,F,MesAbr-2026,MesSep-2026,23,F,Metrenco 220->Metrenco Aux 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+541,F,MesAbr-2026,MesSep-2026,24,F,Metrenco 220->Metrenco Aux 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+542,T,MesAbr-2024,MesSep-2027,1,T,Ciruelos Aux 220->Ciruelos 220 I,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+543,T,MesAbr-2024,MesSep-2027,2,T,Ciruelos Aux 220->Ciruelos 220 I,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+544,T,MesAbr-2024,MesSep-2027,3,T,Ciruelos Aux 220->Ciruelos 220 I,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+545,T,MesAbr-2024,MesSep-2027,4,T,Ciruelos Aux 220->Ciruelos 220 I,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+546,T,MesAbr-2024,MesSep-2027,10,T,Ciruelos Aux 220->Ciruelos 220 I,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+547,T,MesAbr-2024,MesSep-2027,11,T,Ciruelos Aux 220->Ciruelos 220 I,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+548,T,MesAbr-2024,MesSep-2027,12,T,Ciruelos Aux 220->Ciruelos 220 I,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+549,T,MesAbr-2024,MesSep-2027,13,T,Ciruelos Aux 220->Ciruelos 220 I,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+550,T,MesAbr-2024,MesSep-2027,14,T,Ciruelos Aux 220->Ciruelos 220 I,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+551,T,MesAbr-2024,MesSep-2027,15,T,Ciruelos Aux 220->Ciruelos 220 I,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+552,T,MesAbr-2024,MesSep-2027,16,T,Ciruelos Aux 220->Ciruelos 220 I,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+553,T,MesAbr-2024,MesSep-2027,22,T,Ciruelos Aux 220->Ciruelos 220 I,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+554,T,MesAbr-2024,MesSep-2027,23,T,Ciruelos Aux 220->Ciruelos 220 I,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+555,T,MesAbr-2024,MesSep-2027,24,T,Ciruelos Aux 220->Ciruelos 220 I,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+556,F,MesAbr-2025,MesSep-2025,1,F,Ciruelos Aux 220->Ciruelos 220 I,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+557,F,MesAbr-2025,MesSep-2025,2,F,Ciruelos Aux 220->Ciruelos 220 I,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+558,F,MesAbr-2025,MesSep-2025,3,F,Ciruelos Aux 220->Ciruelos 220 I,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+559,F,MesAbr-2025,MesSep-2025,4,F,Ciruelos Aux 220->Ciruelos 220 I,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+560,F,MesAbr-2025,MesSep-2025,10,F,Ciruelos Aux 220->Ciruelos 220 I,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+561,F,MesAbr-2025,MesSep-2025,11,F,Ciruelos Aux 220->Ciruelos 220 I,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+562,F,MesAbr-2025,MesSep-2025,12,F,Ciruelos Aux 220->Ciruelos 220 I,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+563,F,MesAbr-2025,MesSep-2025,13,F,Ciruelos Aux 220->Ciruelos 220 I,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+564,F,MesAbr-2025,MesSep-2025,14,F,Ciruelos Aux 220->Ciruelos 220 I,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+565,F,MesAbr-2025,MesSep-2025,15,F,Ciruelos Aux 220->Ciruelos 220 I,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+566,F,MesAbr-2025,MesSep-2025,16,F,Ciruelos Aux 220->Ciruelos 220 I,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+567,F,MesAbr-2025,MesSep-2025,22,F,Ciruelos Aux 220->Ciruelos 220 I,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+568,F,MesAbr-2025,MesSep-2025,23,F,Ciruelos Aux 220->Ciruelos 220 I,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+569,F,MesAbr-2025,MesSep-2025,24,F,Ciruelos Aux 220->Ciruelos 220 I,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+570,T,MesAbr-2028,MesAbr-2028,1,F,Ciruelos Aux 220->Ciruelos 220 I,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+571,T,MesAbr-2028,MesAbr-2028,2,F,Ciruelos Aux 220->Ciruelos 220 I,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+572,T,MesAbr-2028,MesAbr-2028,3,F,Ciruelos Aux 220->Ciruelos 220 I,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+573,T,MesAbr-2028,MesAbr-2028,4,F,Ciruelos Aux 220->Ciruelos 220 I,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+574,T,MesAbr-2028,MesAbr-2028,10,F,Ciruelos Aux 220->Ciruelos 220 I,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+575,T,MesAbr-2028,MesAbr-2028,11,F,Ciruelos Aux 220->Ciruelos 220 I,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+576,T,MesAbr-2028,MesAbr-2028,12,F,Ciruelos Aux 220->Ciruelos 220 I,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+577,T,MesAbr-2028,MesAbr-2028,13,F,Ciruelos Aux 220->Ciruelos 220 I,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+578,T,MesAbr-2028,MesAbr-2028,14,F,Ciruelos Aux 220->Ciruelos 220 I,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+579,T,MesAbr-2028,MesAbr-2028,15,F,Ciruelos Aux 220->Ciruelos 220 I,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+580,T,MesAbr-2028,MesAbr-2028,16,F,Ciruelos Aux 220->Ciruelos 220 I,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+581,T,MesAbr-2028,MesAbr-2028,22,F,Ciruelos Aux 220->Ciruelos 220 I,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+582,T,MesAbr-2028,MesAbr-2028,23,F,Ciruelos Aux 220->Ciruelos 220 I,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+583,T,MesAbr-2028,MesAbr-2028,24,F,Ciruelos Aux 220->Ciruelos 220 I,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+584,F,MesAbr-2024,MesSep-2024,1,F,Rio Tolten 220->Rio Tolten Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+585,F,MesAbr-2024,MesSep-2024,2,F,Rio Tolten 220->Rio Tolten Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+586,F,MesAbr-2024,MesSep-2024,3,F,Rio Tolten 220->Rio Tolten Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+587,F,MesAbr-2024,MesSep-2024,4,F,Rio Tolten 220->Rio Tolten Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+588,F,MesAbr-2024,MesSep-2024,10,F,Rio Tolten 220->Rio Tolten Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+589,F,MesAbr-2024,MesSep-2024,11,F,Rio Tolten 220->Rio Tolten Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+590,F,MesAbr-2024,MesSep-2024,12,F,Rio Tolten 220->Rio Tolten Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+591,F,MesAbr-2024,MesSep-2024,13,F,Rio Tolten 220->Rio Tolten Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+592,F,MesAbr-2024,MesSep-2024,14,F,Rio Tolten 220->Rio Tolten Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+593,F,MesAbr-2024,MesSep-2024,15,F,Rio Tolten 220->Rio Tolten Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+594,F,MesAbr-2024,MesSep-2024,16,F,Rio Tolten 220->Rio Tolten Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+595,F,MesAbr-2024,MesSep-2024,22,F,Rio Tolten 220->Rio Tolten Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+596,F,MesAbr-2024,MesSep-2024,23,F,Rio Tolten 220->Rio Tolten Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+597,F,MesAbr-2024,MesSep-2024,24,F,Rio Tolten 220->Rio Tolten Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+598,F,MesAbr-2025,MesSep-2025,1,F,Rio Tolten 220->Rio Tolten Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+599,F,MesAbr-2025,MesSep-2025,2,F,Rio Tolten 220->Rio Tolten Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+600,F,MesAbr-2025,MesSep-2025,3,F,Rio Tolten 220->Rio Tolten Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+601,F,MesAbr-2025,MesSep-2025,4,F,Rio Tolten 220->Rio Tolten Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+602,F,MesAbr-2025,MesSep-2025,10,F,Rio Tolten 220->Rio Tolten Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+603,F,MesAbr-2025,MesSep-2025,11,F,Rio Tolten 220->Rio Tolten Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+604,F,MesAbr-2025,MesSep-2025,12,F,Rio Tolten 220->Rio Tolten Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+605,F,MesAbr-2025,MesSep-2025,13,F,Rio Tolten 220->Rio Tolten Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+606,F,MesAbr-2025,MesSep-2025,14,F,Rio Tolten 220->Rio Tolten Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+607,F,MesAbr-2025,MesSep-2025,15,F,Rio Tolten 220->Rio Tolten Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+608,F,MesAbr-2025,MesSep-2025,16,F,Rio Tolten 220->Rio Tolten Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+609,F,MesAbr-2025,MesSep-2025,22,F,Rio Tolten 220->Rio Tolten Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+610,F,MesAbr-2025,MesSep-2025,23,F,Rio Tolten 220->Rio Tolten Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+611,F,MesAbr-2025,MesSep-2025,24,F,Rio Tolten 220->Rio Tolten Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+612,F,MesAbr-2024,MesSep-2024,1,F,Rio Tolten Aux N 220->Rio Tolten 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+613,F,MesAbr-2024,MesSep-2024,2,F,Rio Tolten Aux N 220->Rio Tolten 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+614,F,MesAbr-2024,MesSep-2024,3,F,Rio Tolten Aux N 220->Rio Tolten 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+615,F,MesAbr-2024,MesSep-2024,4,F,Rio Tolten Aux N 220->Rio Tolten 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+616,F,MesAbr-2024,MesSep-2024,10,F,Rio Tolten Aux N 220->Rio Tolten 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+617,F,MesAbr-2024,MesSep-2024,11,F,Rio Tolten Aux N 220->Rio Tolten 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+618,F,MesAbr-2024,MesSep-2024,12,F,Rio Tolten Aux N 220->Rio Tolten 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+619,F,MesAbr-2024,MesSep-2024,13,F,Rio Tolten Aux N 220->Rio Tolten 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+620,F,MesAbr-2024,MesSep-2024,14,F,Rio Tolten Aux N 220->Rio Tolten 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+621,F,MesAbr-2024,MesSep-2024,15,F,Rio Tolten Aux N 220->Rio Tolten 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+622,F,MesAbr-2024,MesSep-2024,16,F,Rio Tolten Aux N 220->Rio Tolten 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+623,F,MesAbr-2024,MesSep-2024,22,F,Rio Tolten Aux N 220->Rio Tolten 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+624,F,MesAbr-2024,MesSep-2024,23,F,Rio Tolten Aux N 220->Rio Tolten 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+625,F,MesAbr-2024,MesSep-2024,24,F,Rio Tolten Aux N 220->Rio Tolten 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+626,F,MesAbr-2025,MesSep-2025,1,F,Rio Tolten Aux N 220->Rio Tolten 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+627,F,MesAbr-2025,MesSep-2025,2,F,Rio Tolten Aux N 220->Rio Tolten 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+628,F,MesAbr-2025,MesSep-2025,3,F,Rio Tolten Aux N 220->Rio Tolten 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+629,F,MesAbr-2025,MesSep-2025,4,F,Rio Tolten Aux N 220->Rio Tolten 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+630,F,MesAbr-2025,MesSep-2025,10,F,Rio Tolten Aux N 220->Rio Tolten 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+631,F,MesAbr-2025,MesSep-2025,11,F,Rio Tolten Aux N 220->Rio Tolten 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+632,F,MesAbr-2025,MesSep-2025,12,F,Rio Tolten Aux N 220->Rio Tolten 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+633,F,MesAbr-2025,MesSep-2025,13,F,Rio Tolten Aux N 220->Rio Tolten 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+634,F,MesAbr-2025,MesSep-2025,14,F,Rio Tolten Aux N 220->Rio Tolten 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+635,F,MesAbr-2025,MesSep-2025,15,F,Rio Tolten Aux N 220->Rio Tolten 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+636,F,MesAbr-2025,MesSep-2025,16,F,Rio Tolten Aux N 220->Rio Tolten 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+637,F,MesAbr-2025,MesSep-2025,22,F,Rio Tolten Aux N 220->Rio Tolten 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+638,F,MesAbr-2025,MesSep-2025,23,F,Rio Tolten Aux N 220->Rio Tolten 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+639,F,MesAbr-2025,MesSep-2025,24,F,Rio Tolten Aux N 220->Rio Tolten 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+640,T,MesAbr-2029,MesMay-2029,*,F,Cautin 220->Cautin Aux S 220 I,*,*,*,*,*,*,*,50,50,*,*,*,*,*,*,*
+641,T,MesJun-2029,MesJun-2029,*,F,Cautin 220->Cautin Aux S 220 I,*,*,*,*,*,*,*,247.3333333,247.3333333,*,*,*,*,*,*,*
+642,T,MesMay-2028,MesJun-2028,*,F,Ciruelos Aux 220->Ciruelos 220 I,*,*,*,*,*,*,*,50,50,*,*,*,*,*,*,*
+643,F,MesAbr-2026,MesJun-2026,1,F,Rio Tolten 220->Rio Tolten Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+644,F,MesAbr-2026,MesJun-2026,2,F,Rio Tolten 220->Rio Tolten Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+645,F,MesAbr-2026,MesJun-2026,3,F,Rio Tolten 220->Rio Tolten Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+646,F,MesAbr-2026,MesJun-2026,4,F,Rio Tolten 220->Rio Tolten Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+647,F,MesAbr-2026,MesJun-2026,10,F,Rio Tolten 220->Rio Tolten Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+648,F,MesAbr-2026,MesJun-2026,11,F,Rio Tolten 220->Rio Tolten Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+649,F,MesAbr-2026,MesJun-2026,12,F,Rio Tolten 220->Rio Tolten Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+650,F,MesAbr-2026,MesJun-2026,13,F,Rio Tolten 220->Rio Tolten Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+651,F,MesAbr-2026,MesJun-2026,14,F,Rio Tolten 220->Rio Tolten Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+652,F,MesAbr-2026,MesJun-2026,15,F,Rio Tolten 220->Rio Tolten Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+653,F,MesAbr-2026,MesJun-2026,16,F,Rio Tolten 220->Rio Tolten Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+654,F,MesAbr-2026,MesJun-2026,22,F,Rio Tolten 220->Rio Tolten Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+655,F,MesAbr-2026,MesJun-2026,23,F,Rio Tolten 220->Rio Tolten Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+656,F,MesAbr-2026,MesJun-2026,24,F,Rio Tolten 220->Rio Tolten Aux S 220,*,*,*,*,*,*,*,189.5,189.5,*,*,*,*,*,*,*
+657,F,MesJul-2026,MesSep-2026,*,F,Rio Tolten 220->Rio Tolten Aux S 220,*,*,*,*,*,*,*,50,50,*,*,*,*,*,*,*
+658,F,MesAbr-2026,MesSep-2026,1,F,Rio Tolten Aux N 220->Rio Tolten 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+659,F,MesAbr-2026,MesSep-2026,2,F,Rio Tolten Aux N 220->Rio Tolten 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+660,F,MesAbr-2026,MesSep-2026,3,F,Rio Tolten Aux N 220->Rio Tolten 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+661,F,MesAbr-2026,MesSep-2026,4,F,Rio Tolten Aux N 220->Rio Tolten 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+662,F,MesAbr-2026,MesSep-2026,10,F,Rio Tolten Aux N 220->Rio Tolten 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+663,F,MesAbr-2026,MesSep-2026,11,F,Rio Tolten Aux N 220->Rio Tolten 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+664,F,MesAbr-2026,MesSep-2026,12,F,Rio Tolten Aux N 220->Rio Tolten 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+665,F,MesAbr-2026,MesSep-2026,13,F,Rio Tolten Aux N 220->Rio Tolten 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+666,F,MesAbr-2026,MesSep-2026,14,F,Rio Tolten Aux N 220->Rio Tolten 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+667,F,MesAbr-2026,MesSep-2026,15,F,Rio Tolten Aux N 220->Rio Tolten 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+668,F,MesAbr-2026,MesSep-2026,16,F,Rio Tolten Aux N 220->Rio Tolten 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+669,F,MesAbr-2026,MesSep-2026,22,F,Rio Tolten Aux N 220->Rio Tolten 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+670,F,MesAbr-2026,MesSep-2026,23,F,Rio Tolten Aux N 220->Rio Tolten 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+671,F,MesAbr-2026,MesSep-2026,24,F,Rio Tolten Aux N 220->Rio Tolten 220,*,*,*,*,*,*,*,255.304289,255.304289,*,*,*,*,*,*,*
+672,F,MesOct-2026,MesNov-2026,*,F,Rio Tolten Aux N 220->Rio Tolten 220,*,*,*,*,*,*,*,50,50,*,*,*,*,*,*,*
+673,F,MesDic-2026,MesDic-2026,*,F,Rio Tolten Aux N 220->Rio Tolten 220,*,*,*,*,*,*,*,240.9677419,240.9677419,*,*,*,*,*,*,*
+674,T,MesOct-2028,MesNov-2028,*,F,Metrenco 220->Metrenco Aux 220,*,*,*,*,*,*,*,50,50,*,*,*,*,*,*,*
+675,T,MesDic-2028,MesDic-2028,*,F,Metrenco 220->Metrenco Aux 220,*,*,*,*,*,*,*,240.9677419,240.9677419,*,*,*,*,*,*,*
+676,T,MesEne-2025,MesMar-*,1,T,O Higgins Aux 1 220->O Higgins 220 III,*,*,*,*,*,*,*,430,430,*,*,*,*,*,*,*
+677,T,MesEne-2025,MesMar-*,2,T,O Higgins Aux 1 220->O Higgins 220 III,*,*,*,*,*,*,*,430,430,*,*,*,*,*,*,*
+678,T,MesEne-2025,MesMar-*,3,T,O Higgins Aux 1 220->O Higgins 220 III,*,*,*,*,*,*,*,430,430,*,*,*,*,*,*,*
+679,T,MesEne-2025,MesMar-*,4,T,O Higgins Aux 1 220->O Higgins 220 III,*,*,*,*,*,*,*,430,430,*,*,*,*,*,*,*
+680,T,MesEne-2025,MesMar-*,10,T,O Higgins Aux 1 220->O Higgins 220 III,*,*,*,*,*,*,*,430,430,*,*,*,*,*,*,*
+681,T,MesEne-2025,MesMar-*,11,T,O Higgins Aux 1 220->O Higgins 220 III,*,*,*,*,*,*,*,430,430,*,*,*,*,*,*,*
+682,T,MesEne-2025,MesMar-*,12,T,O Higgins Aux 1 220->O Higgins 220 III,*,*,*,*,*,*,*,430,430,*,*,*,*,*,*,*
+683,T,MesEne-2025,MesMar-*,13,T,O Higgins Aux 1 220->O Higgins 220 III,*,*,*,*,*,*,*,430,430,*,*,*,*,*,*,*
+684,T,MesEne-2025,MesMar-*,14,T,O Higgins Aux 1 220->O Higgins 220 III,*,*,*,*,*,*,*,430,430,*,*,*,*,*,*,*
+685,T,MesEne-2025,MesMar-*,15,T,O Higgins Aux 1 220->O Higgins 220 III,*,*,*,*,*,*,*,430,430,*,*,*,*,*,*,*
+686,T,MesEne-2025,MesMar-*,16,T,O Higgins Aux 1 220->O Higgins 220 III,*,*,*,*,*,*,*,430,430,*,*,*,*,*,*,*
+687,T,MesEne-2025,MesMar-*,22,T,O Higgins Aux 1 220->O Higgins 220 III,*,*,*,*,*,*,*,430,430,*,*,*,*,*,*,*
+688,T,MesEne-2025,MesMar-*,23,T,O Higgins Aux 1 220->O Higgins 220 III,*,*,*,*,*,*,*,430,430,*,*,*,*,*,*,*
+689,T,MesEne-2025,MesMar-*,24,T,O Higgins Aux 1 220->O Higgins 220 III,*,*,*,*,*,*,*,430,430,*,*,*,*,*,*,*
+690,T,MesOct-2025,MesDic-*,1,T,O Higgins Aux 1 220->O Higgins 220 III,*,*,*,*,*,*,*,430,430,*,*,*,*,*,*,*
+691,T,MesOct-2025,MesDic-*,2,T,O Higgins Aux 1 220->O Higgins 220 III,*,*,*,*,*,*,*,430,430,*,*,*,*,*,*,*
+692,T,MesOct-2025,MesDic-*,3,T,O Higgins Aux 1 220->O Higgins 220 III,*,*,*,*,*,*,*,430,430,*,*,*,*,*,*,*
+693,T,MesOct-2025,MesDic-*,4,T,O Higgins Aux 1 220->O Higgins 220 III,*,*,*,*,*,*,*,430,430,*,*,*,*,*,*,*
+694,T,MesOct-2025,MesDic-*,10,T,O Higgins Aux 1 220->O Higgins 220 III,*,*,*,*,*,*,*,430,430,*,*,*,*,*,*,*
+695,T,MesOct-2025,MesDic-*,11,T,O Higgins Aux 1 220->O Higgins 220 III,*,*,*,*,*,*,*,430,430,*,*,*,*,*,*,*
+696,T,MesOct-2025,MesDic-*,12,T,O Higgins Aux 1 220->O Higgins 220 III,*,*,*,*,*,*,*,430,430,*,*,*,*,*,*,*
+697,T,MesOct-2025,MesDic-*,13,T,O Higgins Aux 1 220->O Higgins 220 III,*,*,*,*,*,*,*,430,430,*,*,*,*,*,*,*
+698,T,MesOct-2025,MesDic-*,14,T,O Higgins Aux 1 220->O Higgins 220 III,*,*,*,*,*,*,*,430,430,*,*,*,*,*,*,*
+699,T,MesOct-2025,MesDic-*,15,T,O Higgins Aux 1 220->O Higgins 220 III,*,*,*,*,*,*,*,430,430,*,*,*,*,*,*,*
+700,T,MesOct-2025,MesDic-*,16,T,O Higgins Aux 1 220->O Higgins 220 III,*,*,*,*,*,*,*,430,430,*,*,*,*,*,*,*
+701,T,MesOct-2025,MesDic-*,22,T,O Higgins Aux 1 220->O Higgins 220 III,*,*,*,*,*,*,*,430,430,*,*,*,*,*,*,*
+702,T,MesOct-2025,MesDic-*,23,T,O Higgins Aux 1 220->O Higgins 220 III,*,*,*,*,*,*,*,430,430,*,*,*,*,*,*,*
+703,T,MesOct-2025,MesDic-*,24,T,O Higgins Aux 1 220->O Higgins 220 III,*,*,*,*,*,*,*,430,430,*,*,*,*,*,*,*
+704,T,MesEne-2025,MesOct-2027,*,F,Likanantai 220->Likanantai Aux 220,*,*,F,*,*,*,*,*,*,*,*,*,*,*,*,*
+705,F,MesEne-2025,MesOct-2027,1,F,Likanantai 220->Likanantai Aux 220,*,*,*,*,*,*,*,347,347,*,*,*,*,*,*,*
+706,F,MesEne-2025,MesOct-2027,2,F,Likanantai 220->Likanantai Aux 220,*,*,*,*,*,*,*,347,347,*,*,*,*,*,*,*
+707,F,MesEne-2025,MesOct-2027,3,F,Likanantai 220->Likanantai Aux 220,*,*,*,*,*,*,*,347,347,*,*,*,*,*,*,*
+708,F,MesEne-2025,MesOct-2027,4,F,Likanantai 220->Likanantai Aux 220,*,*,*,*,*,*,*,347,347,*,*,*,*,*,*,*
+709,F,MesEne-2025,MesOct-2027,10,F,Likanantai 220->Likanantai Aux 220,*,*,*,*,*,*,*,347,347,*,*,*,*,*,*,*
+710,F,MesEne-2025,MesOct-2027,11,F,Likanantai 220->Likanantai Aux 220,*,*,*,*,*,*,*,347,347,*,*,*,*,*,*,*
+711,F,MesEne-2025,MesOct-2027,12,F,Likanantai 220->Likanantai Aux 220,*,*,*,*,*,*,*,347,347,*,*,*,*,*,*,*
+712,F,MesEne-2025,MesOct-2027,13,F,Likanantai 220->Likanantai Aux 220,*,*,*,*,*,*,*,347,347,*,*,*,*,*,*,*
+713,F,MesEne-2025,MesOct-2027,14,F,Likanantai 220->Likanantai Aux 220,*,*,*,*,*,*,*,347,347,*,*,*,*,*,*,*
+714,F,MesEne-2025,MesOct-2027,15,F,Likanantai 220->Likanantai Aux 220,*,*,*,*,*,*,*,347,347,*,*,*,*,*,*,*
+715,F,MesEne-2025,MesOct-2027,16,F,Likanantai 220->Likanantai Aux 220,*,*,*,*,*,*,*,347,347,*,*,*,*,*,*,*
+716,F,MesEne-2025,MesOct-2027,22,F,Likanantai 220->Likanantai Aux 220,*,*,*,*,*,*,*,347,347,*,*,*,*,*,*,*
+717,F,MesEne-2025,MesOct-2027,23,F,Likanantai 220->Likanantai Aux 220,*,*,*,*,*,*,*,347,347,*,*,*,*,*,*,*
+718,F,MesEne-2025,MesOct-2027,24,F,Likanantai 220->Likanantai Aux 220,*,*,*,*,*,*,*,347,347,*,*,*,*,*,*,*
+719,F,MesEne-2025,MesOct-2027,*,F,Likanantai 220->Andes 220 I,*,*,F,*,*,*,*,*,*,*,*,*,*,*,*,*
+720,F,MesEne-2025,MesOct-2027,*,F,Likanantai 220->Andes 220 II,*,*,F,*,*,*,*,*,*,*,*,*,*,*,*,*
+721,T,MesEne-2025,MesOct-2027,*,F,Parinas 500->Parinas 220 I,*,*,*,*,*,*,*,400,400,*,*,*,*,*,*,*
