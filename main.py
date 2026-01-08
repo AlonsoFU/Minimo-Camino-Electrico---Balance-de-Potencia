@@ -8,7 +8,9 @@ from src import (
     cargar_lineas_operacion,
     cargar_lineas_mantenimiento,
     cargar_lineas_ent,
-    aplicar_reemplazo_por_mes
+    aplicar_reemplazo_por_mes,
+    homologar_lineas,
+    resumen_homologacion
 )
 
 
@@ -38,6 +40,25 @@ def main():
     df_ent = cargar_lineas_ent()
     print(f"OK - {len(df_ent)} filas")
     print(df_ent.head())
+
+    print("\n" + "="*50 + "\n")
+
+    # Homologación ENT vs Operación
+    print("Homologando líneas ENT con Operación...")
+    df_homologado = homologar_lineas(df_ent, df_operacion)
+
+    resumen = resumen_homologacion(df_homologado)
+    print(f"\n--- RESUMEN HOMOLOGACIÓN ---")
+    print(f"Total líneas ENT: {resumen['total_lineas']}")
+    print(f"Con match (>=50%): {resumen['con_match']} ({resumen['porcentaje_match']}%)")
+    print(f"Sin match: {resumen['sin_match']}")
+    print(f"Confianza >=90%: {resumen['confianza_90_100']}")
+    print(f"Confianza 70-89%: {resumen['confianza_70_89']}")
+    print(f"Confianza 50-69%: {resumen['confianza_50_69']}")
+    print(f"Matches invertidos: {resumen['invertidos']}")
+
+    print("\nPrimeras 10 líneas homologadas:")
+    print(df_homologado[['nombre', 'match_linnom', 'confianza']].head(10).to_string())
 
     print("\n" + "="*50 + "\n")
 
