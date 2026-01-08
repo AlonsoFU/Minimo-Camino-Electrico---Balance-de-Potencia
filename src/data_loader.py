@@ -387,7 +387,22 @@ def aplicar_reemplazo_por_mes(mes_trabajo: str,
         lambda x: 'mantenimiento' if x else 'operacion'
     )
 
-    return df_cruce
+    # Seleccionar solo columnas relevantes
+    columnas_finales = [
+        'LinNom',                # Nombre de la línea
+        'LinR', 'LinX',          # Resistencia y reactancia
+        'LinFecOpeIni', 'LinFecOpeFin',  # Fechas operación
+        'man_LinFecIni', 'man_LinFecFin',  # Fechas mantenimiento
+        'mes_trabajo',           # Mes de trabajo (input)
+        'hay_reemplazo',         # Si hay reemplazo activo
+        'fuente'                 # Origen de los datos
+    ]
+
+    # Filtrar solo columnas que existen
+    columnas_presentes = [col for col in columnas_finales if col in df_cruce.columns]
+    df_resultado = df_cruce[columnas_presentes].copy()
+
+    return df_resultado
 
 
 def cargar_todos_los_datos() -> dict:

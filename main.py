@@ -62,9 +62,14 @@ def main():
 
     print("\n" + "-"*50 + "\n")
 
-    print("Líneas CON reemplazo activo (primeras 15):")
-    cols = ['LinNom', 'mes_trabajo', 'hay_reemplazo', 'fuente', 'man_LinFecIni', 'man_LinFecFin']
-    print(df_resultado[df_resultado['hay_reemplazo']][cols].head(15).to_string())
+    print(f"Columnas del resultado: {df_resultado.columns.tolist()}")
+    print("\nPrimeras 15 filas:")
+    print(df_resultado.head(15).to_string())
+
+    print("\n" + "-"*50 + "\n")
+
+    print("Líneas CON reemplazo activo (primeras 10):")
+    print(df_resultado[df_resultado['hay_reemplazo']].head(10).to_string())
 
     return df_resultado
 
