@@ -5,17 +5,85 @@ Módulo para cargar datos de líneas eléctricas desde archivos CSV y Excel.
 import pandas as pd
 from pathlib import Path
 from typing import Optional
+from datetime import datetime
 
 # Ruta base del proyecto
 BASE_PATH = Path(__file__).parent.parent
 
+# Mapeo de meses en español a número
+MESES = {
+    'Ene': 1, 'Feb': 2, 'Mar': 3, 'Abr': 4,
+    'May': 5, 'Jun': 6, 'Jul': 7, 'Ago': 8,
+    'Sep': 9, 'Oct': 10, 'Nov': 11, 'Dic': 12
+}
 
-def cargar_lineas_operacion(filepath: Optional[str] = None) -> pd.DataFrame:
+
+def convertir_fecha(fecha_str: str) -> Optional[datetime]:
+    """
+    Convierte fecha del formato 'MesXXX-YYYY' a datetime.
+
+    Args:
+        fecha_str: Fecha en formato 'MesNov-2017', 'MesDic-2023', etc.
+                   '*' indica sin fecha.
+
+    Returns:
+        datetime o None si no tiene fecha válida.
+
+    Ejemplos:
+        'MesNov-2017' -> datetime(2017, 11, 1)
+        'MesDic-2023' -> datetime(2023, 12, 1)
+        '*' -> None
+    """
+    if pd.isna(fecha_str) or fecha_str == '*':
+        return None
+
+    try:
+        # Formato: MesXXX-YYYY
+        if fecha_str.startswith('Mes') and '-' in fecha_str:
+            partes = fecha_str.replace('Mes', '').split('-')
+            mes_str = partes[0]
+            anio_str = partes[1]
+
+            # Si el año es '*', no hay fecha válida
+            if anio_str == '*':
+                return None
+
+            mes = MESES.get(mes_str)
+            anio = int(anio_str)
+
+            if mes:
+                return datetime(anio, mes, 1)
+    except (ValueError, IndexError, KeyError):
+        pass
+
+    return None
+
+
+def aplicar_conversion_fechas(df: pd.DataFrame, columnas: list) -> pd.DataFrame:
+    """
+    Aplica conversión de fechas a las columnas especificadas.
+
+    Args:
+        df: DataFrame a modificar
+        columnas: Lista de columnas a convertir
+
+    Returns:
+        DataFrame con columnas de fecha convertidas
+    """
+    df = df.copy()
+    for col in columnas:
+        if col in df.columns:
+            df[col] = df[col].apply(convertir_fecha)
+    return df
+
+
+def cargar_lineas_operacion(filepath: Optional[str] = None, convertir_fechas: bool = True) -> pd.DataFrame:
     """
     Carga el archivo CSV de parámetros de operación de líneas.
 
     Args:
         filepath: Ruta al archivo CSV. Si es None, usa la ruta por defecto.
+        convertir_fechas: Si True, convierte fechas a formato datetime.
 
     Returns:
         DataFrame con los datos de operación de líneas.
@@ -47,15 +115,20 @@ def cargar_lineas_operacion(filepath: Optional[str] = None) -> pd.DataFrame:
         if col in df.columns:
             df[col] = df[col].map({'T': True, 'F': False})
 
+    # Convertir fechas
+    if convertir_fechas:
+        df = aplicar_conversion_fechas(df, ['LinFecOpeIni', 'LinFecOpeFin'])
+
     return df
 
 
-def cargar_lineas_mantenimiento(filepath: Optional[str] = None) -> pd.DataFrame:
+def cargar_lineas_mantenimiento(filepath: Optional[str] = None, convertir_fechas: bool = True) -> pd.DataFrame:
     """
     Carga el archivo CSV de mantenimiento de líneas.
 
     Args:
         filepath: Ruta al archivo CSV. Si es None, usa la ruta por defecto.
+        convertir_fechas: Si True, convierte fechas a formato datetime.
 
     Returns:
         DataFrame con los datos de mantenimiento de líneas.
@@ -82,6 +155,10 @@ def cargar_lineas_mantenimiento(filepath: Optional[str] = None) -> pd.DataFrame:
     for col in cols_booleanas:
         if col in df.columns:
             df[col] = df[col].map({'T': True, 'F': False})
+
+    # Convertir fechas
+    if convertir_fechas:
+        df = aplicar_conversion_fechas(df, ['LinFecIni', 'LinFecFin'])
 
     return df
 
@@ -142,6 +219,81 @@ def cargar_lineas_ent(filepath: Optional[str] = None, sheet_name: str = 'lineas'
     df_limpio = df_limpio.dropna(how='all')
 
     return df_limpio
+
+
+def cruzar_operacion_mantenimiento(df_operacion: Optional[pd.DataFrame] = None,
+                                    df_mantenimiento: Optional[pd.DataFrame] = None) -> pd.DataFrame:
+    """
+    Cruza los datos de operación con los de mantenimiento para detectar
+    los mantenimientos programados de cada línea.
+
+    El cruce se hace por el nombre de la línea (LinNom).
+
+    Args:
+        df_operacion: DataFrame de operación. Si es None, se carga automáticamente.
+        df_mantenimiento: DataFrame de mantenimiento. Si es None, se carga automáticamente.
+
+    Returns:
+        DataFrame con las líneas de operación y sus mantenimientos asociados.
+        Columnas adicionales con prefijo 'man_' para datos de mantenimiento.
+    """
+    if df_operacion is None:
+        df_operacion = cargar_lineas_operacion()
+    if df_mantenimiento is None:
+        df_mantenimiento = cargar_lineas_mantenimiento()
+
+    # Renombrar columnas de mantenimiento para evitar conflictos
+    cols_man_rename = {col: f'man_{col}' for col in df_mantenimiento.columns if col != 'LinNom'}
+    df_man_renamed = df_mantenimiento.rename(columns=cols_man_rename)
+
+    # Hacer el cruce por nombre de línea
+    df_cruce = df_operacion.merge(
+        df_man_renamed,
+        on='LinNom',
+        how='left',
+        indicator=True
+    )
+
+    # Agregar columna para indicar si tiene mantenimiento
+    df_cruce['tiene_mantenimiento'] = df_cruce['_merge'] == 'both'
+    df_cruce = df_cruce.drop(columns=['_merge'])
+
+    return df_cruce
+
+
+def obtener_mantenimientos_linea(nombre_linea: str,
+                                  df_operacion: Optional[pd.DataFrame] = None,
+                                  df_mantenimiento: Optional[pd.DataFrame] = None) -> dict:
+    """
+    Obtiene los datos de operación y mantenimientos de una línea específica.
+
+    Args:
+        nombre_linea: Nombre de la línea a buscar (parcial o completo).
+        df_operacion: DataFrame de operación. Si es None, se carga automáticamente.
+        df_mantenimiento: DataFrame de mantenimiento. Si es None, se carga automáticamente.
+
+    Returns:
+        Diccionario con:
+        - 'operacion': DataFrame con datos de operación de la línea
+        - 'mantenimientos': DataFrame con mantenimientos de la línea
+    """
+    if df_operacion is None:
+        df_operacion = cargar_lineas_operacion()
+    if df_mantenimiento is None:
+        df_mantenimiento = cargar_lineas_mantenimiento()
+
+    # Buscar en operación
+    mask_op = df_operacion['LinNom'].str.contains(nombre_linea, case=False, na=False)
+    lineas_op = df_operacion[mask_op]
+
+    # Buscar en mantenimiento
+    mask_man = df_mantenimiento['LinNom'].str.contains(nombre_linea, case=False, na=False)
+    lineas_man = df_mantenimiento[mask_man]
+
+    return {
+        'operacion': lineas_op,
+        'mantenimientos': lineas_man
+    }
 
 
 def cargar_todos_los_datos() -> dict:

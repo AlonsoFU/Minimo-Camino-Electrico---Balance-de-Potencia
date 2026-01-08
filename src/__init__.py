@@ -6,12 +6,18 @@ from .data_loader import (
     cargar_lineas_operacion,
     cargar_lineas_mantenimiento,
     cargar_lineas_ent,
-    cargar_todos_los_datos
+    cargar_todos_los_datos,
+    convertir_fecha,
+    cruzar_operacion_mantenimiento,
+    obtener_mantenimientos_linea
 )
 
 __all__ = [
     'cargar_lineas_operacion',
     'cargar_lineas_mantenimiento',
     'cargar_lineas_ent',
-    'cargar_todos_los_datos'
+    'cargar_todos_los_datos',
+    'convertir_fecha',
+    'cruzar_operacion_mantenimiento',
+    'obtener_mantenimientos_linea'
 ]
