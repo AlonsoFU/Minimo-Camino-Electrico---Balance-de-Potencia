@@ -3,9 +3,11 @@ Módulo para cargar datos de líneas eléctricas desde archivos CSV y Excel.
 """
 
 import pandas as pd
+import re
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Tuple
 from datetime import datetime
+from rapidfuzz import fuzz
 
 # Ruta base del proyecto
 BASE_PATH = Path(__file__).parent.parent
@@ -406,6 +408,252 @@ def cargar_todos_los_datos() -> dict:
         'operacion': cargar_lineas_operacion(),
         'mantenimiento': cargar_lineas_mantenimiento(),
         'ent_lineas': cargar_lineas_ent()
+    }
+
+
+def normalizar_barra_ent(barra: str) -> str:
+    """
+    Normaliza el nombre de una barra del archivo ENT.
+
+    El formato ENT es: NOMBRE_PADDED_VOLTAJE (ej: PAPOSO________220)
+    - Elimina el sufijo de voltaje (últimos 2-3 dígitos)
+    - Reemplaza guiones bajos y puntos por espacios
+    - Convierte a minúsculas
+
+    Args:
+        barra: Nombre de la barra del ENT
+
+    Returns:
+        Nombre normalizado
+    """
+    barra = str(barra)
+    # Eliminar sufijo de voltaje (últimos 2-3 dígitos precedidos de _)
+    barra = re.sub(r'_*(\d{2,3})$', '', barra)
+    # Reemplazar caracteres especiales
+    barra = barra.replace('_', ' ').replace('.', ' ')
+    # Limpiar espacios múltiples y convertir a minúsculas
+    return ' '.join(barra.split()).lower().strip()
+
+
+def normalizar_barra_op(barra: str) -> str:
+    """
+    Normaliza el nombre de una barra del archivo de operación.
+
+    Extrae el nombre de la barra desde el formato "NOMBRE VOLTAJE CIRCUITO"
+    eliminando el sufijo de voltaje al final.
+
+    Args:
+        barra: Nombre de la barra del archivo de operación (extraído de LinNom)
+
+    Returns:
+        Nombre normalizado
+    """
+    barra = str(barra)
+    # Eliminar sufijo de voltaje
+    barra = re.sub(r'\s+\d{2,3}$', '', barra)
+    # Reemplazar guiones bajos y puntos por espacios
+    barra = barra.replace('_', ' ').replace('.', ' ')
+    # Limpiar espacios múltiples y convertir a minúsculas
+    return ' '.join(barra.split()).lower().strip()
+
+
+def extraer_barras_de_linnom(linnom: str) -> Tuple[str, str, Optional[float]]:
+    """
+    Extrae las barras A y B y el voltaje desde el nombre de línea LinNom.
+
+    El formato de LinNom es: "BARRA_A VOLTAJE->BARRA_B VOLTAJE CIRCUITO"
+    Ejemplo: "SUEZ_Los Changos 220->Kapatur 220 I"
+             "Los Changos 500->Kimal 500 II"
+
+    Args:
+        linnom: Nombre de la línea en formato operación
+
+    Returns:
+        Tupla con (barra_a, barra_b, voltaje)
+    """
+    if pd.isna(linnom):
+        return ('', '', None)
+
+    linnom = str(linnom)
+
+    # Separar por "->" (el separador real del archivo de operación)
+    partes = linnom.split('->')
+    if len(partes) < 2:
+        # Intentar con " - " como fallback
+        partes = linnom.split(' - ')
+        if len(partes) < 2:
+            return (linnom, '', None)
+
+    barra_a_raw = partes[0].strip()
+    resto = '->'.join(partes[1:]).strip()
+
+    # Extraer voltaje de barra_a (último número de 2-3 dígitos)
+    match_volt = re.search(r'\s+(\d{2,3})\s*$', barra_a_raw)
+    voltaje = float(match_volt.group(1)) if match_volt else None
+
+    # Limpiar barra_a quitando el voltaje
+    barra_a = re.sub(r'\s+\d{2,3}\s*$', '', barra_a_raw)
+
+    # Limpiar barra_b quitando voltaje y circuito (ej: "I", "II", "C1", "C2")
+    # Formato: "Kapatur 220 I" -> "Kapatur"
+    barra_b = re.sub(r'\s+\d{2,3}\s*[IVX]*\s*$', '', resto)  # Romanos I, II, III, IV, V
+    barra_b = re.sub(r'\s+\d{2,3}\s*C?\d*\s*$', '', barra_b)  # C1, C2
+    barra_b = re.sub(r'\s+[IVX]+\s*$', '', barra_b)  # Romanos solos al final
+
+    return (barra_a.strip(), barra_b.strip(), voltaje)
+
+
+def calcular_similitud_barras(barra_ent: str, barra_op: str) -> float:
+    """
+    Calcula la similitud entre dos nombres de barras.
+
+    Usa fuzzy matching (token_sort_ratio) para comparar los nombres
+    normalizados de las barras.
+
+    Args:
+        barra_ent: Nombre de barra del ENT (ya normalizado)
+        barra_op: Nombre de barra de operación (ya normalizado)
+
+    Returns:
+        Porcentaje de similitud (0-100)
+    """
+    return fuzz.token_sort_ratio(barra_ent, barra_op)
+
+
+def homologar_lineas(df_ent: Optional[pd.DataFrame] = None,
+                     df_operacion: Optional[pd.DataFrame] = None,
+                     umbral_confianza: float = 50.0) -> pd.DataFrame:
+    """
+    Homologa las líneas del archivo ENT con las líneas de operación.
+
+    Busca el mejor match para cada línea ENT comparando:
+    1. Voltaje debe coincidir (o ser cercano)
+    2. Similitud de nombres de barras (A y B)
+
+    También prueba el match invertido (A->B vs B->A) y usa el mejor.
+
+    Args:
+        df_ent: DataFrame de líneas ENT. Si es None, se carga automáticamente.
+        df_operacion: DataFrame de operación. Si es None, se carga automáticamente.
+        umbral_confianza: Porcentaje mínimo de confianza para considerar un match (default 50%)
+
+    Returns:
+        DataFrame con las líneas ENT más columnas adicionales:
+        - 'match_linnom': Nombre de línea operación que matchea
+        - 'confianza': Porcentaje de confianza del match (0-100)
+        - 'match_invertido': True si el match fue con barras invertidas
+    """
+    if df_ent is None:
+        df_ent = cargar_lineas_ent()
+    if df_operacion is None:
+        df_operacion = cargar_lineas_operacion()
+
+    # Filtrar solo líneas operativas
+    df_op = df_operacion[df_operacion['LinFOpe'] == True].copy()
+
+    # Pre-procesar líneas de operación
+    lineas_op_info = []
+    for _, row in df_op.iterrows():
+        barra_a, barra_b, voltaje = extraer_barras_de_linnom(row['LinNom'])
+        lineas_op_info.append({
+            'linnom': row['LinNom'],
+            'barra_a': normalizar_barra_op(barra_a),
+            'barra_b': normalizar_barra_op(barra_b),
+            'voltaje': voltaje,
+            'linr': row.get('LinR'),
+            'linx': row.get('LinX')
+        })
+
+    # Procesar cada línea ENT
+    resultados = []
+
+    for idx, row_ent in df_ent.iterrows():
+        barra_a_ent = normalizar_barra_ent(row_ent['barra_a'])
+        barra_b_ent = normalizar_barra_ent(row_ent['barra_b'])
+        voltaje_ent = row_ent['voltaje_kv']
+
+        mejor_match = None
+        mejor_confianza = 0
+        match_invertido = False
+
+        for info_op in lineas_op_info:
+            # Filtrar por voltaje (debe coincidir aproximadamente)
+            if pd.notna(voltaje_ent) and pd.notna(info_op['voltaje']):
+                if abs(voltaje_ent - info_op['voltaje']) > 10:
+                    continue
+
+            # Calcular similitud normal (A-A, B-B)
+            sim_a = calcular_similitud_barras(barra_a_ent, info_op['barra_a'])
+            sim_b = calcular_similitud_barras(barra_b_ent, info_op['barra_b'])
+            confianza_normal = (sim_a + sim_b) / 2
+
+            # Calcular similitud invertida (A-B, B-A)
+            sim_a_inv = calcular_similitud_barras(barra_a_ent, info_op['barra_b'])
+            sim_b_inv = calcular_similitud_barras(barra_b_ent, info_op['barra_a'])
+            confianza_invertida = (sim_a_inv + sim_b_inv) / 2
+
+            # Usar la mejor de las dos
+            if confianza_normal >= confianza_invertida:
+                confianza = confianza_normal
+                invertido = False
+            else:
+                confianza = confianza_invertida
+                invertido = True
+
+            if confianza > mejor_confianza:
+                mejor_confianza = confianza
+                mejor_match = info_op
+                match_invertido = invertido
+
+        # Agregar resultado
+        resultado = {
+            'nombre': row_ent['nombre'],
+            'barra_a': row_ent['barra_a'],
+            'barra_b': row_ent['barra_b'],
+            'voltaje_kv': voltaje_ent,
+            'resistencia_ohm': row_ent['resistencia_ohm'],
+            'reactancia_ohm': row_ent['reactancia_ohm'],
+            'match_linnom': mejor_match['linnom'] if mejor_match and mejor_confianza >= umbral_confianza else None,
+            'confianza': round(mejor_confianza, 1),
+            'match_invertido': match_invertido if mejor_match and mejor_confianza >= umbral_confianza else None,
+            'match_linr': mejor_match['linr'] if mejor_match and mejor_confianza >= umbral_confianza else None,
+            'match_linx': mejor_match['linx'] if mejor_match and mejor_confianza >= umbral_confianza else None
+        }
+        resultados.append(resultado)
+
+    return pd.DataFrame(resultados)
+
+
+def resumen_homologacion(df_homologado: pd.DataFrame) -> dict:
+    """
+    Genera un resumen estadístico de la homologación.
+
+    Args:
+        df_homologado: DataFrame resultado de homologar_lineas()
+
+    Returns:
+        Diccionario con estadísticas de la homologación
+    """
+    total = len(df_homologado)
+    con_match = df_homologado['match_linnom'].notna().sum()
+    sin_match = total - con_match
+
+    # Distribución por rangos de confianza
+    conf_90_100 = ((df_homologado['confianza'] >= 90) & df_homologado['match_linnom'].notna()).sum()
+    conf_70_89 = ((df_homologado['confianza'] >= 70) & (df_homologado['confianza'] < 90) & df_homologado['match_linnom'].notna()).sum()
+    conf_50_69 = ((df_homologado['confianza'] >= 50) & (df_homologado['confianza'] < 70) & df_homologado['match_linnom'].notna()).sum()
+    conf_bajo_50 = (df_homologado['confianza'] < 50).sum()
+
+    return {
+        'total_lineas': total,
+        'con_match': con_match,
+        'sin_match': sin_match,
+        'porcentaje_match': round(con_match / total * 100, 1) if total > 0 else 0,
+        'confianza_90_100': conf_90_100,
+        'confianza_70_89': conf_70_89,
+        'confianza_50_69': conf_50_69,
+        'confianza_bajo_50': conf_bajo_50,
+        'invertidos': df_homologado['match_invertido'].sum() if 'match_invertido' in df_homologado.columns else 0
     }
 
 
