@@ -507,17 +507,33 @@ def calcular_similitud_barras(barra_ent: str, barra_op: str) -> float:
     """
     Calcula la similitud entre dos nombres de barras.
 
-    Usa fuzzy matching (token_sort_ratio) para comparar los nombres
-    normalizados de las barras.
+    Usa múltiples estrategias:
+    1. Comparación sin espacios (para nombres concatenados como TAPTALTAL1 vs Tap Taltal 1)
+    2. Token sort ratio (para reordenamientos)
+    3. Bonus si uno contiene al otro
 
     Args:
-        barra_ent: Nombre de barra del ENT (ya normalizado)
-        barra_op: Nombre de barra de operación (ya normalizado)
+        barra_ent: Nombre de barra del ENT (ya normalizado con espacios)
+        barra_op: Nombre de barra de operación (ya normalizado con espacios)
 
     Returns:
         Porcentaje de similitud (0-100)
     """
-    return fuzz.token_sort_ratio(barra_ent, barra_op)
+    # Versión sin espacios para comparar nombres concatenados
+    ent_sin_espacios = barra_ent.replace(' ', '')
+    op_sin_espacios = barra_op.replace(' ', '')
+
+    # Estrategia 1: Comparación directa sin espacios
+    score_sin_espacios = fuzz.ratio(ent_sin_espacios, op_sin_espacios)
+
+    # Estrategia 2: Token sort (con espacios)
+    score_token = fuzz.token_sort_ratio(barra_ent, barra_op)
+
+    # Estrategia 3: Si uno contiene al otro, bonus
+    if ent_sin_espacios in op_sin_espacios or op_sin_espacios in ent_sin_espacios:
+        score_sin_espacios = max(score_sin_espacios, 90)
+
+    return max(score_sin_espacios, score_token)
 
 
 def homologar_lineas(df_ent: Optional[pd.DataFrame] = None,
@@ -528,40 +544,51 @@ def homologar_lineas(df_ent: Optional[pd.DataFrame] = None,
 
     Busca el mejor match para cada línea ENT comparando:
     1. Voltaje debe coincidir (o ser cercano)
-    2. Similitud de nombres de barras (A y B)
+    2. Similitud de nombres de barras (A y B) - usa MÍNIMO de ambas
 
     También prueba el match invertido (A->B vs B->A) y usa el mejor.
 
+    IMPORTANTE: df_operacion puede ser el resultado de aplicar_reemplazo_por_mes()
+    (ya filtrado por mes de trabajo y con valores R/X correctos).
+
     Args:
         df_ent: DataFrame de líneas ENT. Si es None, se carga automáticamente.
-        df_operacion: DataFrame de operación. Si es None, se carga automáticamente.
-        umbral_confianza: Porcentaje mínimo de confianza para considerar un match (default 50%)
+        df_operacion: DataFrame de operación (puede ser df_resultado filtrado).
+                      Si es None, se carga automáticamente.
+        umbral_confianza: Porcentaje mínimo de confianza para considerar match (default 50%)
 
     Returns:
         DataFrame con las líneas ENT más columnas adicionales:
         - 'match_linnom': Nombre de línea operación que matchea
-        - 'confianza': Porcentaje de confianza del match (0-100)
+        - 'confianza': Porcentaje de confianza (MÍNIMO de ambas barras)
+        - 'sim_barra_a', 'sim_barra_b': Similitud individual de cada barra
         - 'match_invertido': True si el match fue con barras invertidas
+        - 'requiere_revision': True si confianza entre 50-80%
     """
     if df_ent is None:
         df_ent = cargar_lineas_ent()
     if df_operacion is None:
         df_operacion = cargar_lineas_operacion()
-
-    # Filtrar solo líneas operativas
-    df_op = df_operacion[df_operacion['LinFOpe'] == True].copy()
+        # Solo filtrar si es df crudo (tiene columna LinFOpe)
+        if 'LinFOpe' in df_operacion.columns:
+            df_operacion = df_operacion[df_operacion['LinFOpe'] == True].copy()
 
     # Pre-procesar líneas de operación
     lineas_op_info = []
-    for _, row in df_op.iterrows():
-        barra_a, barra_b, voltaje = extraer_barras_de_linnom(row['LinNom'])
+    for _, row in df_operacion.iterrows():
+        linnom = row.get('LinNom')
+        if pd.isna(linnom):
+            continue
+        barra_a, barra_b, voltaje = extraer_barras_de_linnom(linnom)
         lineas_op_info.append({
-            'linnom': row['LinNom'],
+            'linnom': linnom,
             'barra_a': normalizar_barra_op(barra_a),
             'barra_b': normalizar_barra_op(barra_b),
             'voltaje': voltaje,
             'linr': row.get('LinR'),
-            'linx': row.get('LinX')
+            'linx': row.get('LinX'),
+            'hay_reemplazo': row.get('hay_reemplazo'),
+            'fuente': row.get('fuente')
         })
 
     # Procesar cada línea ENT
@@ -574,36 +601,45 @@ def homologar_lineas(df_ent: Optional[pd.DataFrame] = None,
 
         mejor_match = None
         mejor_confianza = 0
+        mejor_sim_a = 0
+        mejor_sim_b = 0
         match_invertido = False
 
         for info_op in lineas_op_info:
-            # Filtrar por voltaje (debe coincidir aproximadamente)
+            # Filtrar por voltaje (debe coincidir exactamente o muy cercano)
             if pd.notna(voltaje_ent) and pd.notna(info_op['voltaje']):
-                if abs(voltaje_ent - info_op['voltaje']) > 10:
+                if abs(voltaje_ent - info_op['voltaje']) > 5:  # Más estricto: 5kV
                     continue
 
             # Calcular similitud normal (A-A, B-B)
             sim_a = calcular_similitud_barras(barra_a_ent, info_op['barra_a'])
             sim_b = calcular_similitud_barras(barra_b_ent, info_op['barra_b'])
-            confianza_normal = (sim_a + sim_b) / 2
+            # Usar MÍNIMO: ambas barras deben matchear bien
+            confianza_normal = min(sim_a, sim_b)
 
             # Calcular similitud invertida (A-B, B-A)
             sim_a_inv = calcular_similitud_barras(barra_a_ent, info_op['barra_b'])
             sim_b_inv = calcular_similitud_barras(barra_b_ent, info_op['barra_a'])
-            confianza_invertida = (sim_a_inv + sim_b_inv) / 2
+            confianza_invertida = min(sim_a_inv, sim_b_inv)
 
             # Usar la mejor de las dos
             if confianza_normal >= confianza_invertida:
                 confianza = confianza_normal
+                sims = (sim_a, sim_b)
                 invertido = False
             else:
                 confianza = confianza_invertida
+                sims = (sim_a_inv, sim_b_inv)
                 invertido = True
 
             if confianza > mejor_confianza:
                 mejor_confianza = confianza
+                mejor_sim_a, mejor_sim_b = sims
                 mejor_match = info_op
                 match_invertido = invertido
+
+        # Determinar si requiere revisión
+        requiere_revision = umbral_confianza <= mejor_confianza < 80
 
         # Agregar resultado
         resultado = {
@@ -611,13 +647,18 @@ def homologar_lineas(df_ent: Optional[pd.DataFrame] = None,
             'barra_a': row_ent['barra_a'],
             'barra_b': row_ent['barra_b'],
             'voltaje_kv': voltaje_ent,
-            'resistencia_ohm': row_ent['resistencia_ohm'],
-            'reactancia_ohm': row_ent['reactancia_ohm'],
+            'resistencia_ohm_ent': row_ent['resistencia_ohm'],
+            'reactancia_ohm_ent': row_ent['reactancia_ohm'],
             'match_linnom': mejor_match['linnom'] if mejor_match and mejor_confianza >= umbral_confianza else None,
             'confianza': round(mejor_confianza, 1),
+            'sim_barra_a': round(mejor_sim_a, 1),
+            'sim_barra_b': round(mejor_sim_b, 1),
             'match_invertido': match_invertido if mejor_match and mejor_confianza >= umbral_confianza else None,
+            'requiere_revision': requiere_revision,
             'match_linr': mejor_match['linr'] if mejor_match and mejor_confianza >= umbral_confianza else None,
-            'match_linx': mejor_match['linx'] if mejor_match and mejor_confianza >= umbral_confianza else None
+            'match_linx': mejor_match['linx'] if mejor_match and mejor_confianza >= umbral_confianza else None,
+            'match_hay_reemplazo': mejor_match.get('hay_reemplazo') if mejor_match and mejor_confianza >= umbral_confianza else None,
+            'match_fuente': mejor_match.get('fuente') if mejor_match and mejor_confianza >= umbral_confianza else None
         }
         resultados.append(resultado)
 
@@ -640,9 +681,12 @@ def resumen_homologacion(df_homologado: pd.DataFrame) -> dict:
 
     # Distribución por rangos de confianza
     conf_90_100 = ((df_homologado['confianza'] >= 90) & df_homologado['match_linnom'].notna()).sum()
-    conf_70_89 = ((df_homologado['confianza'] >= 70) & (df_homologado['confianza'] < 90) & df_homologado['match_linnom'].notna()).sum()
-    conf_50_69 = ((df_homologado['confianza'] >= 50) & (df_homologado['confianza'] < 70) & df_homologado['match_linnom'].notna()).sum()
+    conf_80_89 = ((df_homologado['confianza'] >= 80) & (df_homologado['confianza'] < 90) & df_homologado['match_linnom'].notna()).sum()
+    conf_50_79 = ((df_homologado['confianza'] >= 50) & (df_homologado['confianza'] < 80) & df_homologado['match_linnom'].notna()).sum()
     conf_bajo_50 = (df_homologado['confianza'] < 50).sum()
+
+    # Contar los que requieren revisión
+    requiere_revision = df_homologado['requiere_revision'].sum() if 'requiere_revision' in df_homologado.columns else 0
 
     return {
         'total_lineas': total,
@@ -650,9 +694,10 @@ def resumen_homologacion(df_homologado: pd.DataFrame) -> dict:
         'sin_match': sin_match,
         'porcentaje_match': round(con_match / total * 100, 1) if total > 0 else 0,
         'confianza_90_100': conf_90_100,
-        'confianza_70_89': conf_70_89,
-        'confianza_50_69': conf_50_69,
+        'confianza_80_89': conf_80_89,
+        'confianza_50_79': conf_50_79,
         'confianza_bajo_50': conf_bajo_50,
+        'requiere_revision': requiere_revision,
         'invertidos': df_homologado['match_invertido'].sum() if 'match_invertido' in df_homologado.columns else 0
     }
 
