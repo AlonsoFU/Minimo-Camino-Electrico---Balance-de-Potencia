@@ -340,6 +340,13 @@ def aplicar_reemplazo_por_mes(mes_trabajo: str,
     # Convertir mes_trabajo a datetime (primer día del mes)
     fecha_trabajo = pd.to_datetime(mes_trabajo + '-01')
 
+    # Filtrar líneas que aún no existen en el mes de trabajo
+    # Si LinFecOpeIni > fecha_trabajo, la línea aún no está operativa
+    df_operacion = df_operacion[
+        (df_operacion['LinFecOpeIni'].isna()) |  # Sin fecha = existe desde siempre
+        (df_operacion['LinFecOpeIni'] <= fecha_trabajo)  # Ya está operativa
+    ].copy()
+
     # Primero hacer el cruce
     df_cruce = cruzar_operacion_mantenimiento(df_operacion, df_mantenimiento)
 
