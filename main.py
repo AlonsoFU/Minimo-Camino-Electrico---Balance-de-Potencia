@@ -3,12 +3,19 @@ Script para probar la carga de datos y reemplazos por mes.
 """
 
 import sys
+import re
 from src import (
     cargar_lineas_operacion,
     cargar_lineas_mantenimiento,
     cargar_lineas_ent,
     aplicar_reemplazo_por_mes
 )
+
+
+def validar_mes(mes: str) -> bool:
+    """Valida que el mes tenga formato YYYY-MM."""
+    patron = r'^\d{4}-(0[1-9]|1[0-2])$'
+    return bool(re.match(patron, mes))
 
 
 def main():
@@ -36,11 +43,15 @@ def main():
 
     # Obtener mes de trabajo
     if len(sys.argv) > 1:
-        # Si se pasa como argumento: python main.py 2025-06
         mes_trabajo = sys.argv[1]
     else:
-        # Si no, pedir por terminal
-        mes_trabajo = input("Ingresa el mes de trabajo (YYYY-MM): ")
+        mes_trabajo = input("Ingresa el mes de trabajo (YYYY-MM, ej: 2025-06): ").strip()
+
+    # Validar formato
+    if not mes_trabajo or not validar_mes(mes_trabajo):
+        print(f"Error: Formato de mes inválido '{mes_trabajo}'")
+        print("Debe ser YYYY-MM, ejemplo: 2025-06")
+        return None
 
     print(f"\nAplicando reemplazos para el mes: {mes_trabajo}")
     df_resultado = aplicar_reemplazo_por_mes(mes_trabajo, df_operacion, df_mantenimiento)
