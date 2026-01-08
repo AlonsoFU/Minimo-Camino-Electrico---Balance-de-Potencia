@@ -503,6 +503,58 @@ def extraer_barras_de_linnom(linnom: str) -> Tuple[str, str, Optional[float]]:
     return (barra_a.strip(), barra_b.strip(), voltaje)
 
 
+def extraer_circuito_ent(nombre: str) -> Optional[int]:
+    """
+    Extrae el número de circuito del nombre ENT.
+
+    Patrones:
+    - '_1de2' -> 1
+    - '_2de3' -> 2
+    - Sin patrón -> None
+
+    Args:
+        nombre: Nombre de la línea ENT
+
+    Returns:
+        Número de circuito (1, 2, 3...) o None
+    """
+    match = re.search(r'_(\d+)de\d+$', str(nombre))
+    if match:
+        return int(match.group(1))
+    return None
+
+
+def extraer_circuito_op(linnom: str) -> Optional[int]:
+    """
+    Extrae el número de circuito del nombre de operación.
+
+    Patrones:
+    - 'I' -> 1, 'II' -> 2, 'III' -> 3, 'IV' -> 4, 'V' -> 5
+    - 'C1' -> 1, 'C2' -> 2
+
+    Args:
+        linnom: Nombre de la línea de operación
+
+    Returns:
+        Número de circuito (1, 2, 3...) o None
+    """
+    linnom = str(linnom).strip()
+
+    # Buscar romano al final
+    romanos = {'I': 1, 'II': 2, 'III': 3, 'IV': 4, 'V': 5, 'VI': 6}
+    match = re.search(r'\s+([IVX]+)\s*$', linnom)
+    if match:
+        romano = match.group(1)
+        return romanos.get(romano)
+
+    # Buscar C1, C2, etc
+    match = re.search(r'\s+C(\d+)\s*$', linnom)
+    if match:
+        return int(match.group(1))
+
+    return None
+
+
 def calcular_similitud_barras(barra_ent: str, barra_op: str) -> float:
     """
     Calcula la similitud entre dos nombres de barras.
@@ -580,11 +632,13 @@ def homologar_lineas(df_ent: Optional[pd.DataFrame] = None,
         if pd.isna(linnom):
             continue
         barra_a, barra_b, voltaje = extraer_barras_de_linnom(linnom)
+        circuito_op = extraer_circuito_op(linnom)
         lineas_op_info.append({
             'linnom': linnom,
             'barra_a': normalizar_barra_op(barra_a),
             'barra_b': normalizar_barra_op(barra_b),
             'voltaje': voltaje,
+            'circuito': circuito_op,
             'linr': row.get('LinR'),
             'linx': row.get('LinX'),
             'hay_reemplazo': row.get('hay_reemplazo'),
@@ -598,18 +652,26 @@ def homologar_lineas(df_ent: Optional[pd.DataFrame] = None,
         barra_a_ent = normalizar_barra_ent(row_ent['barra_a'])
         barra_b_ent = normalizar_barra_ent(row_ent['barra_b'])
         voltaje_ent = row_ent['voltaje_kv']
+        circuito_ent = extraer_circuito_ent(row_ent['nombre'])
 
         mejor_match = None
         mejor_confianza = 0
         mejor_sim_a = 0
         mejor_sim_b = 0
         match_invertido = False
+        circuito_coincide = None
 
         for info_op in lineas_op_info:
             # Filtrar por voltaje (debe coincidir exactamente o muy cercano)
             if pd.notna(voltaje_ent) and pd.notna(info_op['voltaje']):
                 if abs(voltaje_ent - info_op['voltaje']) > 5:  # Más estricto: 5kV
                     continue
+
+            # Verificar circuito: si ambos tienen, deben coincidir
+            circuito_op = info_op['circuito']
+            if circuito_ent is not None and circuito_op is not None:
+                if circuito_ent != circuito_op:
+                    continue  # No matchear si circuitos son diferentes
 
             # Calcular similitud normal (A-A, B-B)
             sim_a = calcular_similitud_barras(barra_a_ent, info_op['barra_a'])
@@ -635,6 +697,7 @@ def homologar_lineas(df_ent: Optional[pd.DataFrame] = None,
             if confianza > mejor_confianza:
                 mejor_confianza = confianza
                 mejor_sim_a, mejor_sim_b = sims
+                circuito_coincide = (circuito_ent == circuito_op) if (circuito_ent and circuito_op) else None
                 mejor_match = info_op
                 match_invertido = invertido
 
@@ -652,6 +715,9 @@ def homologar_lineas(df_ent: Optional[pd.DataFrame] = None,
             'sim_barra_b': round(mejor_sim_b, 1),
             'match_invertido': match_invertido if mejor_match and mejor_confianza >= umbral_confianza else None,
             'requiere_revision': requiere_revision,
+            # Circuitos
+            'circuito_ent': circuito_ent,
+            'circuito_op': mejor_match['circuito'] if mejor_match and mejor_confianza >= umbral_confianza else None,
             # Barras ENT
             'barra_a': row_ent['barra_a'],
             'barra_b': row_ent['barra_b'],
