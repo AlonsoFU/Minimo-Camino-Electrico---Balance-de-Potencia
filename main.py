@@ -1,8 +1,13 @@
 """
-Script para probar la carga de datos.
+Script para probar la carga de datos y reemplazos por mes.
 """
 
-from src import cargar_lineas_operacion, cargar_lineas_mantenimiento, cargar_lineas_ent, cruzar_operacion_mantenimiento
+from src import (
+    cargar_lineas_operacion,
+    cargar_lineas_mantenimiento,
+    cargar_lineas_ent,
+    aplicar_reemplazo_por_mes
+)
 
 
 # Cargar datos
@@ -27,14 +32,18 @@ print(df_ent.head())
 
 print("\n" + "="*50 + "\n")
 
-print("Cruzando operación con mantenimiento...")
-df_cruce = cruzar_operacion_mantenimiento(df_operacion, df_mantenimiento)
-print(f"OK - {len(df_cruce)} filas")
-print(f"Líneas CON mantenimiento: {df_cruce['tiene_mantenimiento'].sum()}")
-print(f"Líneas SIN mantenimiento: {(~df_cruce['tiene_mantenimiento']).sum()}")
+# Solicitar mes al usuario
+mes_trabajo = input("Ingresa el mes de trabajo (formato YYYY-MM, ej: 2025-06): ")
+
+print(f"\nAplicando reemplazos para el mes: {mes_trabajo}")
+df_resultado = aplicar_reemplazo_por_mes(mes_trabajo, df_operacion, df_mantenimiento)
+
+print(f"OK - {len(df_resultado)} filas procesadas")
+print(f"Líneas CON reemplazo activo: {df_resultado['hay_reemplazo'].sum()}")
+print(f"Líneas SIN reemplazo: {(~df_resultado['hay_reemplazo']).sum()}")
 
 print("\n" + "-"*50 + "\n")
 
-print("Líneas CON mantenimiento (primeras 10):")
-cols = ['LinNom', 'LinFecOpeIni', 'LinFecOpeFin', 'man_LinFecIni', 'man_LinFecFin']
-print(df_cruce[df_cruce['tiene_mantenimiento']][cols].head(10))
+print("Líneas CON reemplazo activo (primeras 15):")
+cols = ['LinNom', 'mes_trabajo', 'hay_reemplazo', 'fuente', 'man_LinFecIni', 'man_LinFecFin']
+print(df_resultado[df_resultado['hay_reemplazo']][cols].head(15).to_string())

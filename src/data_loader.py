@@ -296,6 +296,72 @@ def obtener_mantenimientos_linea(nombre_linea: str,
     }
 
 
+def aplicar_reemplazo_por_mes(mes_trabajo: str,
+                              df_operacion: Optional[pd.DataFrame] = None,
+                              df_mantenimiento: Optional[pd.DataFrame] = None) -> pd.DataFrame:
+    """
+    Determina para cada línea si hay un reemplazo de mantenimiento activo
+    en el mes especificado.
+
+    Si el mes_trabajo cae dentro del período de mantenimiento (LinFecIni a LinFecFin),
+    se usa el valor del mantenimiento. Si no, se usa el valor de operación.
+
+    Args:
+        mes_trabajo: Mes a evaluar en formato 'YYYY-MM' (ej: '2025-06').
+        df_operacion: DataFrame de operación. Si es None, se carga automáticamente.
+        df_mantenimiento: DataFrame de mantenimiento. Si es None, se carga automáticamente.
+
+    Returns:
+        DataFrame con columnas adicionales:
+        - 'mes_trabajo': El mes evaluado
+        - 'hay_reemplazo': True si hay mantenimiento activo en ese mes
+        - 'fuente': 'mantenimiento' o 'operacion' según corresponda
+    """
+    if df_operacion is None:
+        df_operacion = cargar_lineas_operacion()
+    if df_mantenimiento is None:
+        df_mantenimiento = cargar_lineas_mantenimiento()
+
+    # Convertir mes_trabajo a datetime (primer día del mes)
+    fecha_trabajo = pd.to_datetime(mes_trabajo + '-01')
+
+    # Primero hacer el cruce
+    df_cruce = cruzar_operacion_mantenimiento(df_operacion, df_mantenimiento)
+
+    # Agregar columna mes_trabajo
+    df_cruce['mes_trabajo'] = mes_trabajo
+
+    # Determinar si hay reemplazo activo en ese mes
+    # El reemplazo está activo si: LinFecIni <= fecha_trabajo <= LinFecFin
+    # Si LinFecIni es NaT, se considera desde siempre
+    # Si LinFecFin es NaT, se considera hasta siempre
+    def verificar_reemplazo(row):
+        if not row['tiene_mantenimiento']:
+            return False
+
+        fecha_ini = row['man_LinFecIni']
+        fecha_fin = row['man_LinFecFin']
+
+        # Si no hay fechas de mantenimiento, no hay reemplazo
+        if pd.isna(fecha_ini) and pd.isna(fecha_fin):
+            return False
+
+        # Verificar si fecha_trabajo está en el rango
+        inicio_ok = pd.isna(fecha_ini) or fecha_trabajo >= fecha_ini
+        fin_ok = pd.isna(fecha_fin) or fecha_trabajo <= fecha_fin
+
+        return inicio_ok and fin_ok
+
+    df_cruce['hay_reemplazo'] = df_cruce.apply(verificar_reemplazo, axis=1)
+
+    # Agregar columna fuente
+    df_cruce['fuente'] = df_cruce['hay_reemplazo'].apply(
+        lambda x: 'mantenimiento' if x else 'operacion'
+    )
+
+    return df_cruce
+
+
 def cargar_todos_los_datos() -> dict:
     """
     Carga todos los DataFrames de datos de líneas.

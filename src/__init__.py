@@ -9,7 +9,8 @@ from .data_loader import (
     cargar_todos_los_datos,
     convertir_fecha,
     cruzar_operacion_mantenimiento,
-    obtener_mantenimientos_linea
+    obtener_mantenimientos_linea,
+    aplicar_reemplazo_por_mes
 )
 
 __all__ = [
@@ -19,5 +20,6 @@ __all__ = [
     'cargar_todos_los_datos',
     'convertir_fecha',
     'cruzar_operacion_mantenimiento',
-    'obtener_mantenimientos_linea'
+    'obtener_mantenimientos_linea',
+    'aplicar_reemplazo_por_mes'
 ]
