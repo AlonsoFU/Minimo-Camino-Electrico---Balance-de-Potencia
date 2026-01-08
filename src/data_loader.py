@@ -306,6 +306,15 @@ def aplicar_reemplazo_por_mes(mes_trabajo: str,
     Si el mes_trabajo cae dentro del período de mantenimiento (LinFecIni a LinFecFin),
     se usa el valor del mantenimiento. Si no, se usa el valor de operación.
 
+    Reglas de fechas en mantenimiento:
+    - LinFecIni = * (NaT): el mantenimiento viene desde siempre
+    - LinFecFin = * (NaT): el mantenimiento sigue operativo hasta siempre
+    - Ambos = * (NaT): mantenimiento siempre operativo
+
+    Filtros de validez:
+    - LinFOpe = F en operación: línea no operativa, se dropea
+    - LinFMan = F en mantenimiento: mantenimiento no válido, se ignora
+
     Args:
         mes_trabajo: Mes a evaluar en formato 'YYYY-MM' (ej: '2025-06').
         df_operacion: DataFrame de operación. Si es None, se carga automáticamente.
@@ -322,6 +331,12 @@ def aplicar_reemplazo_por_mes(mes_trabajo: str,
     if df_mantenimiento is None:
         df_mantenimiento = cargar_lineas_mantenimiento()
 
+    # Filtrar líneas de operación donde LinFOpe = True (líneas operativas)
+    df_operacion = df_operacion[df_operacion['LinFOpe'] == True].copy()
+
+    # Filtrar mantenimientos donde LinFMan = True (mantenimientos válidos)
+    df_mantenimiento = df_mantenimiento[df_mantenimiento['LinFMan'] == True].copy()
+
     # Convertir mes_trabajo a datetime (primer día del mes)
     fecha_trabajo = pd.to_datetime(mes_trabajo + '-01')
 
@@ -332,21 +347,27 @@ def aplicar_reemplazo_por_mes(mes_trabajo: str,
     df_cruce['mes_trabajo'] = mes_trabajo
 
     # Determinar si hay reemplazo activo en ese mes
-    # El reemplazo está activo si: LinFecIni <= fecha_trabajo <= LinFecFin
-    # Si LinFecIni es NaT, se considera desde siempre
-    # Si LinFecFin es NaT, se considera hasta siempre
+    # Reglas:
+    # - Si LinFecIni es NaT (asterisco): viene desde siempre
+    # - Si LinFecFin es NaT (asterisco): sigue hasta siempre
+    # - Si ambos son NaT: mantenimiento siempre operativo
     def verificar_reemplazo(row):
         if not row['tiene_mantenimiento']:
+            return False
+
+        # Verificar que el mantenimiento sea válido (man_LinFMan = True)
+        if 'man_LinFMan' in row and row['man_LinFMan'] == False:
             return False
 
         fecha_ini = row['man_LinFecIni']
         fecha_fin = row['man_LinFecFin']
 
-        # Si no hay fechas de mantenimiento, no hay reemplazo
+        # Si ambas fechas son NaT (asterisco), el mantenimiento está siempre operativo
         if pd.isna(fecha_ini) and pd.isna(fecha_fin):
-            return False
+            return True
 
         # Verificar si fecha_trabajo está en el rango
+        # NaT en inicio = desde siempre, NaT en fin = hasta siempre
         inicio_ok = pd.isna(fecha_ini) or fecha_trabajo >= fecha_ini
         fin_ok = pd.isna(fecha_fin) or fecha_trabajo <= fecha_fin
 
