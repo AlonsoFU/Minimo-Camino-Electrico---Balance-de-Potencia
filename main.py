@@ -92,7 +92,12 @@ def main():
 
     print("Primeras 10 líneas con match:")
     cols_mostrar = ['nombre', 'match_linnom', 'confianza', 'sim_barra_a', 'sim_barra_b']
-    print(df_homologado[df_homologado['match_linnom'].notna()][cols_mostrar].head(10).to_string())
+    df_con_match = df_homologado[df_homologado['match_linnom'].notna()]
+    print(df_con_match[cols_mostrar].head(10).to_string())
+
+    print("\nComparación R/X (primeras 5 con match):")
+    cols_rx = ['nombre', 'match_linnom', 'R_ent', 'R_op', 'X_ent', 'X_op']
+    print(df_con_match[cols_rx].head(5).to_string())
 
     print("\nLíneas que REQUIEREN REVISIÓN (confianza 50-80%):")
     df_revisar = df_homologado[df_homologado['requiere_revision'] == True]
