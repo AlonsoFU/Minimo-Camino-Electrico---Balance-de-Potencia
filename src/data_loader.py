@@ -180,25 +180,14 @@ def cargar_lineas_ent(filepath: Optional[str] = None, sheet_name: str = 'lineas'
     # Leer con header en fila 4 (0-indexed)
     df = pd.read_excel(filepath, sheet_name=sheet_name, header=4)
 
-    # Seleccionar y renombrar columnas útiles
+    # Seleccionar solo columnas necesarias
     columnas_utiles = {
+        'Nombre A->B': 'nombre',
         'Barra A': 'barra_a',
         'Barra B': 'barra_b',
-        'Sector A': 'sector_a',
-        'Sector B': 'sector_b',
-        'Tension A': 'tension_a',
-        'Tension B': 'tension_b',
-        'Trafo o Linea': 'tipo',  # L=Linea, T=Trafo
-        'Nº': 'numero',
-        'Nombre A->B': 'nombre',
         'V [kV]': 'voltaje_kv',
         'R [ohm]': 'resistencia_ohm',
-        'X [ohm]': 'reactancia_ohm',
-        'Operativa': 'operativa',
-        'Tronc': 'troncal',
-        'Zona': 'zona',
-        'dir': 'direccion',
-        'Area': 'area'
+        'X [ohm]': 'reactancia_ohm'
     }
 
     # Filtrar columnas que existen
@@ -206,10 +195,8 @@ def cargar_lineas_ent(filepath: Optional[str] = None, sheet_name: str = 'lineas'
     df_limpio = df[list(columnas_presentes.keys())].copy()
     df_limpio.rename(columns=columnas_presentes, inplace=True)
 
-    # Convertir tipos de datos
-    cols_numericas = ['tension_a', 'tension_b', 'numero', 'voltaje_kv',
-                      'resistencia_ohm', 'reactancia_ohm', 'operativa',
-                      'troncal', 'zona', 'direccion', 'area']
+    # Convertir tipos de datos numéricos
+    cols_numericas = ['voltaje_kv', 'resistencia_ohm', 'reactancia_ohm']
 
     for col in cols_numericas:
         if col in df_limpio.columns:
