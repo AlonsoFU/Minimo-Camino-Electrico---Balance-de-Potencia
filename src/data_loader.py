@@ -210,6 +210,44 @@ def cargar_lineas_ent(filepath: Optional[str] = None, sheet_name: str = 'lineas'
     return df_limpio
 
 
+def cargar_lineas_infotecnica(filepath: Optional[str] = None) -> pd.DataFrame:
+    """
+    Carga el archivo Excel de Infotécnica (reporte secciones-tramos).
+
+    Args:
+        filepath: Ruta al archivo Excel. Si es None, usa la ruta por defecto.
+
+    Returns:
+        DataFrame con columnas: nombre, R_infotec, X_infotec
+    """
+    if filepath is None:
+        filepath = BASE_PATH / "inputs" / "Actualizacion Infotecnica" / "reporte_secciones-tramos.xlsx"
+
+    # Leer con header en fila 6 (0-indexed)
+    df = pd.read_excel(filepath, sheet_name=0, header=6)
+
+    # Seleccionar columnas requeridas
+    columnas_origen = [
+        'Nombre',
+        '1.3 Resistencia de secuencia positiva a 20°C (50 Hz)',
+        '1.4 Reactancia de Secuencia positiva  X (50Hz)'
+    ]
+
+    df_filtrado = df[columnas_origen].copy()
+
+    # Renombrar columnas
+    df_filtrado.columns = ['nombre', 'R_infotec', 'X_infotec']
+
+    # Convertir a numérico
+    df_filtrado['R_infotec'] = pd.to_numeric(df_filtrado['R_infotec'], errors='coerce')
+    df_filtrado['X_infotec'] = pd.to_numeric(df_filtrado['X_infotec'], errors='coerce')
+
+    # Eliminar filas vacías
+    df_filtrado = df_filtrado.dropna(how='all')
+
+    return df_filtrado
+
+
 def cruzar_operacion_mantenimiento(df_operacion: Optional[pd.DataFrame] = None,
                                     df_mantenimiento: Optional[pd.DataFrame] = None) -> pd.DataFrame:
     """
