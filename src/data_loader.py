@@ -91,7 +91,7 @@ def cargar_lineas_operacion(filepath: Optional[str] = None, convertir_fechas: bo
         DataFrame con los datos de operación de líneas.
     """
     if filepath is None:
-        filepath = BASE_PATH / "inputs" / "Actualizacion" / "LinDatParOpe_2024_PNCP.csv"
+        filepath = BASE_PATH / "inputs" / "Actualizacion CNE" / "LinDatParOpe_2024_PNCP.csv"
 
     df = pd.read_csv(filepath, encoding='latin-1')
 
@@ -136,7 +136,7 @@ def cargar_lineas_mantenimiento(filepath: Optional[str] = None, convertir_fechas
         DataFrame con los datos de mantenimiento de líneas.
     """
     if filepath is None:
-        filepath = BASE_PATH / "inputs" / "Mantenimiento" / "LinDatManOpe_2024_PNCP.csv"
+        filepath = BASE_PATH / "inputs" / "Mantenimiento CNE" / "LinDatManOpe_2024_PNCP.csv"
 
     df = pd.read_csv(filepath, encoding='latin-1')
 
