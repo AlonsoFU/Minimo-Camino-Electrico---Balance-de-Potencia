@@ -4,6 +4,7 @@ Script para probar la carga de datos y reemplazos por mes.
 
 import sys
 import re
+from pathlib import Path
 from src import (
     cargar_lineas_operacion,
     cargar_lineas_mantenimiento,
@@ -12,6 +13,9 @@ from src import (
     homologar_lineas,
     resumen_homologacion
 )
+
+# Ruta de outputs
+OUTPUT_PATH = Path(__file__).parent / "outputs"
 
 
 def validar_mes(mes: str) -> bool:
@@ -112,6 +116,17 @@ def main():
         print(df_sin_match[['nombre', 'barra_a', 'barra_b', 'confianza']].head(10).to_string())
     else:
         print("  (ninguna)")
+
+    # 6. Exportar a CSV
+    print("\n" + "-"*50)
+    print("EXPORTACIÓN")
+    print("-"*50 + "\n")
+
+    OUTPUT_PATH.mkdir(exist_ok=True)
+    archivo_csv = OUTPUT_PATH / f"homologacion_{mes_trabajo}.csv"
+    df_homologado.to_csv(archivo_csv, index=False, sep=',', encoding='utf-8')
+    print(f"Archivo exportado: {archivo_csv}")
+    print(f"Total filas: {len(df_homologado)}")
 
     return df_homologado
 
