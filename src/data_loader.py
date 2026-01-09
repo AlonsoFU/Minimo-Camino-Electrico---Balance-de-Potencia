@@ -218,7 +218,11 @@ def cargar_lineas_infotecnica(filepath: Optional[str] = None) -> pd.DataFrame:
         filepath: Ruta al archivo Excel. Si es None, usa la ruta por defecto.
 
     Returns:
-        DataFrame con columnas: nombre, R_infotec, X_infotec
+        DataFrame con columnas:
+        - nombre, nombre_centro_control
+        - tension_nominal, longitud
+        - R_unitaria, X_unitaria (ohm/km)
+        - R_total, X_total (ohm) = R/X_unitaria * longitud
     """
     if filepath is None:
         filepath = BASE_PATH / "inputs" / "Actualizacion Infotecnica" / "reporte_secciones-tramos.xlsx"
@@ -229,6 +233,9 @@ def cargar_lineas_infotecnica(filepath: Optional[str] = None) -> pd.DataFrame:
     # Seleccionar columnas requeridas
     columnas_origen = [
         'Nombre',
+        'Nombre Centro Control',
+        '1.1 Tensión nominal',
+        '1.2 Longitud conductor',
         '1.3 Resistencia de secuencia positiva a 20°C (50 Hz)',
         '1.4 Reactancia de Secuencia positiva  X (50Hz)'
     ]
@@ -236,11 +243,23 @@ def cargar_lineas_infotecnica(filepath: Optional[str] = None) -> pd.DataFrame:
     df_filtrado = df[columnas_origen].copy()
 
     # Renombrar columnas
-    df_filtrado.columns = ['nombre', 'R_infotec', 'X_infotec']
+    df_filtrado.columns = [
+        'nombre',
+        'nombre_centro_control',
+        'tension_nominal',
+        'longitud',
+        'R_unitaria',
+        'X_unitaria'
+    ]
 
     # Convertir a numérico
-    df_filtrado['R_infotec'] = pd.to_numeric(df_filtrado['R_infotec'], errors='coerce')
-    df_filtrado['X_infotec'] = pd.to_numeric(df_filtrado['X_infotec'], errors='coerce')
+    cols_numericas = ['tension_nominal', 'longitud', 'R_unitaria', 'X_unitaria']
+    for col in cols_numericas:
+        df_filtrado[col] = pd.to_numeric(df_filtrado[col], errors='coerce')
+
+    # Calcular R_total y X_total (R/X unitaria * longitud)
+    df_filtrado['R_total'] = df_filtrado['R_unitaria'] * df_filtrado['longitud']
+    df_filtrado['X_total'] = df_filtrado['X_unitaria'] * df_filtrado['longitud']
 
     # Eliminar filas vacías
     df_filtrado = df_filtrado.dropna(how='all')
