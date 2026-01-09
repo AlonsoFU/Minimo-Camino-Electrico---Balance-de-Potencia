@@ -831,6 +831,181 @@ def resumen_homologacion(df_homologado: pd.DataFrame) -> dict:
     }
 
 
+def extraer_barras_infotecnica(nombre: str) -> Tuple[str, str, Optional[float]]:
+    """
+    Extrae las barras A, B y voltaje del nombre de línea Infotécnica.
+
+    Formato: "BARRA A - BARRA B VVVkV C#"
+    Ejemplo: "PAPOSO - TAP TAL TAL 220KV C1"
+
+    Args:
+        nombre: Nombre de la línea Infotécnica
+
+    Returns:
+        Tupla con (barra_a, barra_b, voltaje)
+    """
+    if pd.isna(nombre):
+        return ('', '', None)
+
+    nombre = str(nombre)
+
+    # Patrón: BARRA_A - BARRA_B VVVkV C#
+    match = re.match(r'(.+?)\s*-\s*(.+?)\s+(\d{2,3})KV\s+C\d+$', nombre, re.IGNORECASE)
+    if match:
+        return (match.group(1).strip(), match.group(2).strip(), float(match.group(3)))
+
+    # Fallback: intentar sin el circuito
+    match = re.match(r'(.+?)\s*-\s*(.+?)\s+(\d{2,3})KV', nombre, re.IGNORECASE)
+    if match:
+        return (match.group(1).strip(), match.group(2).strip(), float(match.group(3)))
+
+    return (nombre, '', None)
+
+
+def normalizar_nombre_infotec(nombre: str) -> str:
+    """
+    Normaliza un nombre de barra de Infotécnica para comparación.
+
+    Args:
+        nombre: Nombre de la barra
+
+    Returns:
+        Nombre normalizado (minúsculas, sin caracteres especiales)
+    """
+    nombre = str(nombre).lower()
+    # Reemplazar caracteres especiales
+    nombre = nombre.replace('.', ' ').replace('_', ' ')
+    # Eliminar números de tap/seccionadora al final
+    nombre = re.sub(r'\s+\d+$', '', nombre)
+    return ' '.join(nombre.split()).strip()
+
+
+def homologar_con_infotecnica(df_homologado: pd.DataFrame,
+                               df_infotec: Optional[pd.DataFrame] = None,
+                               umbral_confianza: float = 50.0) -> pd.DataFrame:
+    """
+    Agrega datos de Infotécnica al DataFrame homologado ENT-CNE.
+
+    Busca el mejor match de cada línea ENT en Infotécnica comparando:
+    1. Voltaje debe coincidir (o ser cercano)
+    2. Similitud de nombres de barras (A y B) - usa MÍNIMO de ambas
+
+    Args:
+        df_homologado: DataFrame resultado de homologar_lineas()
+        df_infotec: DataFrame de Infotécnica. Si es None, se carga automáticamente.
+        umbral_confianza: Porcentaje mínimo de confianza para considerar match (default 50%)
+
+    Returns:
+        DataFrame con columnas adicionales de Infotécnica y columnas renombradas:
+        - nombre_ENT, nombre_CNE, nombre_Infotec
+        - R_ENT, R_CNE, R_Infotec
+        - X_ENT, X_CNE, X_Infotec
+    """
+    if df_infotec is None:
+        df_infotec = cargar_lineas_infotecnica()
+
+    # Pre-procesar líneas de Infotécnica
+    infotec_info = []
+    for _, row in df_infotec.iterrows():
+        nombre = row['nombre']
+        barra_a, barra_b, voltaje = extraer_barras_infotecnica(nombre)
+        infotec_info.append({
+            'nombre_original': nombre,
+            'barra_a': normalizar_nombre_infotec(barra_a),
+            'barra_b': normalizar_nombre_infotec(barra_b),
+            'voltaje': voltaje,
+            'R_total': row['R_total'],
+            'X_total': row['X_total']
+        })
+
+    # Procesar cada línea del homologado
+    resultados = []
+
+    for idx, row in df_homologado.iterrows():
+        # Extraer barras normalizadas del ENT
+        barra_a_ent = normalizar_barra_ent(row['barra_a']) if pd.notna(row['barra_a']) else ''
+        barra_b_ent = normalizar_barra_ent(row['barra_b']) if pd.notna(row['barra_b']) else ''
+        voltaje_ent = row['voltaje_kv']
+
+        mejor_match = None
+        mejor_confianza = 0
+        mejor_sim_a = 0
+        mejor_sim_b = 0
+        match_invertido = False
+
+        for info in infotec_info:
+            # Filtrar por voltaje
+            if pd.notna(voltaje_ent) and pd.notna(info['voltaje']):
+                if abs(voltaje_ent - info['voltaje']) > 5:
+                    continue
+
+            # Calcular similitud normal (A-A, B-B)
+            sim_a = calcular_similitud_barras(barra_a_ent, info['barra_a'])
+            sim_b = calcular_similitud_barras(barra_b_ent, info['barra_b'])
+            confianza_normal = min(sim_a, sim_b)
+
+            # Calcular similitud invertida (A-B, B-A)
+            sim_a_inv = calcular_similitud_barras(barra_a_ent, info['barra_b'])
+            sim_b_inv = calcular_similitud_barras(barra_b_ent, info['barra_a'])
+            confianza_invertida = min(sim_a_inv, sim_b_inv)
+
+            # Usar la mejor
+            if confianza_normal >= confianza_invertida:
+                confianza = confianza_normal
+                sims = (sim_a, sim_b)
+                invertido = False
+            else:
+                confianza = confianza_invertida
+                sims = (sim_a_inv, sim_b_inv)
+                invertido = True
+
+            if confianza > mejor_confianza:
+                mejor_confianza = confianza
+                mejor_sim_a, mejor_sim_b = sims
+                mejor_match = info
+                match_invertido = invertido
+
+        # Construir resultado con columnas ordenadas para comparación
+        resultado = {
+            # Nombres de las 3 fuentes (para comparación)
+            'nombre_ENT': row['nombre'],
+            'nombre_CNE': row['match_linnom'],
+            'nombre_Infotec': mejor_match['nombre_original'] if mejor_match and mejor_confianza >= umbral_confianza else None,
+
+            # Confianza ENT-CNE (original)
+            'conf_CNE': row['confianza'],
+            # Confianza ENT-Infotec (nueva)
+            'conf_Infotec': round(mejor_confianza, 1),
+
+            # Valores R de las 3 fuentes (para comparación rápida)
+            'R_ENT': row['R_ent'],
+            'R_CNE': row['R_op'],
+            'R_Infotec': mejor_match['R_total'] if mejor_match and mejor_confianza >= umbral_confianza else None,
+
+            # Valores X de las 3 fuentes (para comparación rápida)
+            'X_ENT': row['X_ent'],
+            'X_CNE': row['X_op'],
+            'X_Infotec': mejor_match['X_total'] if mejor_match and mejor_confianza >= umbral_confianza else None,
+
+            # Info adicional
+            'voltaje_kv': voltaje_ent,
+            'barra_a': row['barra_a'],
+            'barra_b': row['barra_b'],
+
+            # Similitudes Infotec
+            'sim_infotec_a': round(mejor_sim_a, 1) if mejor_match else None,
+            'sim_infotec_b': round(mejor_sim_b, 1) if mejor_match else None,
+            'inv_infotec': match_invertido if mejor_match and mejor_confianza >= umbral_confianza else None,
+
+            # Info de reemplazo CNE
+            'hay_reemplazo': row.get('hay_reemplazo'),
+            'fuente_CNE': row.get('fuente')
+        }
+        resultados.append(resultado)
+
+    return pd.DataFrame(resultados)
+
+
 if __name__ == "__main__":
     # Ejemplo de uso
     print("Cargando datos de líneas eléctricas...")

@@ -12,6 +12,7 @@ from src import (
     cargar_lineas_infotecnica,
     aplicar_reemplazo_por_mes,
     homologar_lineas,
+    homologar_con_infotecnica,
     resumen_homologacion
 )
 
@@ -122,45 +123,65 @@ def main():
     else:
         print("  (ninguna)")
 
-    # 6. Datos Infotécnica
+    # 6. Homologación con Infotécnica
     print("\n" + "-"*50)
-    print("DATOS INFOTÉCNICA (R/X por tramo)")
+    print("HOMOLOGACIÓN CON INFOTÉCNICA")
     print("-"*50 + "\n")
 
-    print(f"Total tramos: {len(df_infotec)}")
-    print(f"Columnas: {df_infotec.columns.tolist()}\n")
+    print("Homologando líneas ENT con Infotécnica...")
+    df_final = homologar_con_infotecnica(df_homologado, df_infotec)
 
-    print("Primeras 10 filas:")
-    cols_infotec = ['nombre', 'nombre_centro_control', 'tension_nominal', 'longitud', 'R_total', 'X_total']
-    print(df_infotec[cols_infotec].head(10).to_string())
+    con_infotec = df_final['nombre_Infotec'].notna().sum()
+    total = len(df_final)
+    print(f"\n--- RESUMEN INFOTÉCNICA ---")
+    print(f"Con match Infotécnica (>=50%): {con_infotec}/{total} ({round(con_infotec/total*100, 1)}%)")
 
-    print("\nResumen por tensión nominal:")
-    resumen_tension = df_infotec.groupby('tension_nominal').agg({
-        'nombre': 'count',
-        'longitud': 'sum',
-        'R_total': 'mean',
-        'X_total': 'mean'
-    }).rename(columns={'nombre': 'cantidad'}).round(3)
-    print(resumen_tension.to_string())
+    # Distribución por confianza Infotécnica
+    conf_90_inf = (df_final['conf_Infotec'] >= 90).sum()
+    conf_80_inf = ((df_final['conf_Infotec'] >= 80) & (df_final['conf_Infotec'] < 90)).sum()
+    conf_50_inf = ((df_final['conf_Infotec'] >= 50) & (df_final['conf_Infotec'] < 80)).sum()
+    print(f"  Confianza >=90%: {conf_90_inf}")
+    print(f"  Confianza 80-89%: {conf_80_inf}")
+    print(f"  Confianza 50-79%: {conf_50_inf}")
 
-    # 7. Exportar a CSV
+    # 7. Comparación de R/X de las 3 fuentes
+    print("\n" + "-"*50)
+    print("COMPARACIÓN R/X (ENT vs CNE vs INFOTÉCNICA)")
+    print("-"*50 + "\n")
+
+    # Mostrar comparación de nombres
+    print("Comparación de nombres (primeras 10 con las 3 fuentes):")
+    df_con_3 = df_final[df_final['nombre_Infotec'].notna() & df_final['nombre_CNE'].notna()]
+    cols_nombres = ['nombre_ENT', 'nombre_CNE', 'nombre_Infotec']
+    print(df_con_3[cols_nombres].head(10).to_string())
+
+    print("\nComparación de R (primeras 10):")
+    cols_r = ['nombre_ENT', 'R_ENT', 'R_CNE', 'R_Infotec']
+    print(df_con_3[cols_r].head(10).to_string())
+
+    print("\nComparación de X (primeras 10):")
+    cols_x = ['nombre_ENT', 'X_ENT', 'X_CNE', 'X_Infotec']
+    print(df_con_3[cols_x].head(10).to_string())
+
+    # 8. Exportar a CSV
     print("\n" + "-"*50)
     print("EXPORTACIÓN")
     print("-"*50 + "\n")
 
     OUTPUT_PATH.mkdir(exist_ok=True)
 
-    # Exportar homologación
-    archivo_homolog = OUTPUT_PATH / f"homologacion_{mes_trabajo}.csv"
-    df_homologado.to_csv(archivo_homolog, index=False, sep=',', encoding='utf-8')
-    print(f"Homologación: {archivo_homolog} ({len(df_homologado)} filas)")
+    # Exportar resultado final consolidado
+    archivo_final = OUTPUT_PATH / f"comparacion_RX_{mes_trabajo}.csv"
+    df_final.to_csv(archivo_final, index=False, sep=',', encoding='utf-8')
+    print(f"Comparación R/X: {archivo_final} ({len(df_final)} filas)")
 
-    # Exportar infotécnica
-    archivo_infotec = OUTPUT_PATH / "infotecnica.csv"
+    # Exportar infotécnica raw
+    archivo_infotec = OUTPUT_PATH / "infotecnica_raw.csv"
     df_infotec.to_csv(archivo_infotec, index=False, sep=',', encoding='utf-8')
-    print(f"Infotécnica: {archivo_infotec} ({len(df_infotec)} filas)")
+    print(f"Infotécnica raw: {archivo_infotec} ({len(df_infotec)} filas)")
 
     return {
+        'final': df_final,
         'homologado': df_homologado,
         'infotecnica': df_infotec
     }

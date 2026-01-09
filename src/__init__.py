@@ -13,6 +13,7 @@ from .data_loader import (
     obtener_mantenimientos_linea,
     aplicar_reemplazo_por_mes,
     homologar_lineas,
+    homologar_con_infotecnica,
     resumen_homologacion
 )
 
@@ -27,5 +28,6 @@ __all__ = [
     'obtener_mantenimientos_linea',
     'aplicar_reemplazo_por_mes',
     'homologar_lineas',
+    'homologar_con_infotecnica',
     'resumen_homologacion'
 ]
