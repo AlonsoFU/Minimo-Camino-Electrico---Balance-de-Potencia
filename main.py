@@ -9,6 +9,7 @@ from src import (
     cargar_lineas_operacion,
     cargar_lineas_mantenimiento,
     cargar_lineas_ent,
+    cargar_lineas_infotecnica,
     aplicar_reemplazo_por_mes,
     homologar_lineas,
     resumen_homologacion
@@ -57,7 +58,11 @@ def main():
 
     print("Cargando datos ENT (Excel)...")
     df_ent = cargar_lineas_ent()
-    print(f"OK - {len(df_ent)} filas totales\n")
+    print(f"OK - {len(df_ent)} filas totales")
+
+    print("Cargando datos Infotécnica (R/X por tramo)...")
+    df_infotec = cargar_lineas_infotecnica()
+    print(f"OK - {len(df_infotec)} filas totales\n")
 
     # 3. Aplicar filtros por mes de trabajo
     print("-"*50)
@@ -117,18 +122,48 @@ def main():
     else:
         print("  (ninguna)")
 
-    # 6. Exportar a CSV
+    # 6. Datos Infotécnica
+    print("\n" + "-"*50)
+    print("DATOS INFOTÉCNICA (R/X por tramo)")
+    print("-"*50 + "\n")
+
+    print(f"Total tramos: {len(df_infotec)}")
+    print(f"Columnas: {df_infotec.columns.tolist()}\n")
+
+    print("Primeras 10 filas:")
+    cols_infotec = ['nombre', 'nombre_centro_control', 'tension_nominal', 'longitud', 'R_total', 'X_total']
+    print(df_infotec[cols_infotec].head(10).to_string())
+
+    print("\nResumen por tensión nominal:")
+    resumen_tension = df_infotec.groupby('tension_nominal').agg({
+        'nombre': 'count',
+        'longitud': 'sum',
+        'R_total': 'mean',
+        'X_total': 'mean'
+    }).rename(columns={'nombre': 'cantidad'}).round(3)
+    print(resumen_tension.to_string())
+
+    # 7. Exportar a CSV
     print("\n" + "-"*50)
     print("EXPORTACIÓN")
     print("-"*50 + "\n")
 
     OUTPUT_PATH.mkdir(exist_ok=True)
-    archivo_csv = OUTPUT_PATH / f"homologacion_{mes_trabajo}.csv"
-    df_homologado.to_csv(archivo_csv, index=False, sep=',', encoding='utf-8')
-    print(f"Archivo exportado: {archivo_csv}")
-    print(f"Total filas: {len(df_homologado)}")
 
-    return df_homologado
+    # Exportar homologación
+    archivo_homolog = OUTPUT_PATH / f"homologacion_{mes_trabajo}.csv"
+    df_homologado.to_csv(archivo_homolog, index=False, sep=',', encoding='utf-8')
+    print(f"Homologación: {archivo_homolog} ({len(df_homologado)} filas)")
+
+    # Exportar infotécnica
+    archivo_infotec = OUTPUT_PATH / "infotecnica.csv"
+    df_infotec.to_csv(archivo_infotec, index=False, sep=',', encoding='utf-8')
+    print(f"Infotécnica: {archivo_infotec} ({len(df_infotec)} filas)")
+
+    return {
+        'homologado': df_homologado,
+        'infotecnica': df_infotec
+    }
 
 
 if __name__ == "__main__":
