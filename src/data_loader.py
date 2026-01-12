@@ -972,9 +972,8 @@ def homologar_con_infotecnica(df_homologado: pd.DataFrame,
             'nombre_CNE': row['match_linnom'],
             'nombre_Infotec': mejor_match['nombre_original'] if mejor_match and mejor_confianza >= umbral_confianza else None,
 
-            # Confianza ENT-CNE (original)
+            # Confianza general (no por barra)
             'conf_CNE': row['confianza'],
-            # Confianza ENT-Infotec (nueva)
             'conf_Infotec': round(mejor_confianza, 1),
 
             # Valores R de las 3 fuentes (para comparación rápida)
@@ -991,11 +990,6 @@ def homologar_con_infotecnica(df_homologado: pd.DataFrame,
             'voltaje_kv': voltaje_ent,
             'barra_a': row['barra_a'],
             'barra_b': row['barra_b'],
-
-            # Similitudes Infotec
-            'sim_infotec_a': round(mejor_sim_a, 1) if mejor_match else None,
-            'sim_infotec_b': round(mejor_sim_b, 1) if mejor_match else None,
-            'inv_infotec': match_invertido if mejor_match and mejor_confianza >= umbral_confianza else None,
 
             # Info de reemplazo CNE
             'hay_reemplazo': row.get('hay_reemplazo'),
