@@ -19,6 +19,22 @@ MESES = {
     'Sep': 9, 'Oct': 10, 'Nov': 11, 'Dic': 12
 }
 
+# Diccionario de abreviaciones comunes en nombres de barras
+ABREVIACIONES = {
+    'D.ALMAGRO': 'DIEGO DE ALMAGRO',
+    'D. ALMAGRO': 'DIEGO DE ALMAGRO',
+    'D .ALMAGRO': 'DIEGO DE ALMAGRO',
+    'DALMAGRO': 'DIEGO DE ALMAGRO',
+    'S.': 'SAN',
+    'S ': 'SAN ',
+    'STA.': 'SANTA',
+    'STA ': 'SANTA ',
+    'PTO.': 'PUERTO',
+    'PTO ': 'PUERTO ',
+    'GRAL.': 'GENERAL',
+    'GRAL ': 'GENERAL ',
+}
+
 
 def convertir_fecha(fecha_str: str) -> Optional[datetime]:
     """
@@ -468,12 +484,36 @@ def cargar_todos_los_datos() -> dict:
     }
 
 
+def expandir_abreviaciones(texto: str) -> str:
+    """
+    Expande abreviaciones comunes en nombres de barras.
+
+    Ejemplos:
+        'D.ALMAGRO' -> 'DIEGO DE ALMAGRO'
+        'S. VICENTE' -> 'SAN VICENTE'
+
+    Args:
+        texto: Texto con posibles abreviaciones
+
+    Returns:
+        Texto con abreviaciones expandidas
+    """
+    texto_upper = texto.upper()
+
+    # Aplicar reemplazos del diccionario (ordenados por longitud para evitar conflictos)
+    for abrev, expansion in sorted(ABREVIACIONES.items(), key=lambda x: len(x[0]), reverse=True):
+        texto_upper = texto_upper.replace(abrev, expansion)
+
+    return texto_upper
+
+
 def normalizar_barra_ent(barra: str) -> str:
     """
     Normaliza el nombre de una barra del archivo ENT.
 
     El formato ENT es: NOMBRE_PADDED_VOLTAJE (ej: PAPOSO________220)
     - Elimina el sufijo de voltaje (últimos 2-3 dígitos)
+    - Expande abreviaciones (D.ALMAGRO -> DIEGO DE ALMAGRO)
     - Reemplaza guiones bajos y puntos por espacios
     - Convierte a minúsculas
 
@@ -486,6 +526,8 @@ def normalizar_barra_ent(barra: str) -> str:
     barra = str(barra)
     # Eliminar sufijo de voltaje (últimos 2-3 dígitos precedidos de _)
     barra = re.sub(r'_*(\d{2,3})$', '', barra)
+    # Expandir abreviaciones ANTES de normalizar
+    barra = expandir_abreviaciones(barra)
     # Reemplazar caracteres especiales
     barra = barra.replace('_', ' ').replace('.', ' ')
     # Limpiar espacios múltiples y convertir a minúsculas
@@ -498,6 +540,7 @@ def normalizar_barra_op(barra: str) -> str:
 
     Extrae el nombre de la barra desde el formato "NOMBRE VOLTAJE CIRCUITO"
     eliminando el sufijo de voltaje al final.
+    Expande abreviaciones (D.ALMAGRO -> DIEGO DE ALMAGRO, S. -> SAN)
 
     Args:
         barra: Nombre de la barra del archivo de operación (extraído de LinNom)
@@ -508,6 +551,8 @@ def normalizar_barra_op(barra: str) -> str:
     barra = str(barra)
     # Eliminar sufijo de voltaje
     barra = re.sub(r'\s+\d{2,3}$', '', barra)
+    # Expandir abreviaciones ANTES de normalizar
+    barra = expandir_abreviaciones(barra)
     # Reemplazar guiones bajos y puntos por espacios
     barra = barra.replace('_', ' ').replace('.', ' ')
     # Limpiar espacios múltiples y convertir a minúsculas
@@ -609,6 +654,26 @@ def extraer_circuito_op(linnom: str) -> Optional[int]:
     if match:
         return int(match.group(1))
 
+    return None
+
+
+def extraer_circuito_infotec(nombre: str) -> Optional[int]:
+    """
+    Extrae el número de circuito del nombre de línea Infotécnica.
+
+    Patrones:
+    - 'C1' -> 1, 'C2' -> 2, 'C3' -> 3
+    - Sin patrón -> None
+
+    Args:
+        nombre: Nombre de la línea Infotécnica (ej: "PAPOSO - TAP TAL TAL 220KV C1")
+
+    Returns:
+        Número de circuito (1, 2, 3...) o None
+    """
+    match = re.search(r'\s+C(\d+)\s*$', str(nombre), re.IGNORECASE)
+    if match:
+        return int(match.group(1))
     return None
 
 
@@ -838,6 +903,8 @@ def extraer_barras_infotecnica(nombre: str) -> Tuple[str, str, Optional[float]]:
     Formato: "BARRA A - BARRA B VVVkV C#"
     Ejemplo: "PAPOSO - TAP TAL TAL 220KV C1"
 
+    Normaliza guiones: acepta tanto – (en-dash) como - (hyphen)
+
     Args:
         nombre: Nombre de la línea Infotécnica
 
@@ -848,6 +915,8 @@ def extraer_barras_infotecnica(nombre: str) -> Tuple[str, str, Optional[float]]:
         return ('', '', None)
 
     nombre = str(nombre)
+    # Normalizar en-dash (–) a hyphen (-) para el regex
+    nombre = nombre.replace('–', '-')
 
     # Patrón: BARRA_A - BARRA_B VVVkV C#
     match = re.match(r'(.+?)\s*-\s*(.+?)\s+(\d{2,3})KV\s+C\d+$', nombre, re.IGNORECASE)
@@ -866,18 +935,27 @@ def normalizar_nombre_infotec(nombre: str) -> str:
     """
     Normaliza un nombre de barra de Infotécnica para comparación.
 
+    Mejoras:
+    - Expande abreviaciones (D.ALMAGRO -> DIEGO DE ALMAGRO, S. -> SAN)
+    - Normaliza guiones: en-dash (–) y hyphen (-) a espacios
+
     Args:
         nombre: Nombre de la barra
 
     Returns:
         Nombre normalizado (minúsculas, sin caracteres especiales)
     """
-    nombre = str(nombre).lower()
+    nombre = str(nombre)
+    # Expandir abreviaciones ANTES de normalizar
+    nombre = expandir_abreviaciones(nombre)
+    # Normalizar guiones: en-dash (U+2013) y hyphen (U+002D) a espacios
+    nombre = nombre.replace('–', ' ').replace('-', ' ')
     # Reemplazar caracteres especiales
     nombre = nombre.replace('.', ' ').replace('_', ' ')
     # Eliminar números de tap/seccionadora al final
     nombre = re.sub(r'\s+\d+$', '', nombre)
-    return ' '.join(nombre.split()).strip()
+    # Limpiar espacios múltiples y convertir a minúsculas
+    return ' '.join(nombre.split()).lower().strip()
 
 
 def homologar_con_infotecnica(df_homologado: pd.DataFrame,
@@ -888,7 +966,8 @@ def homologar_con_infotecnica(df_homologado: pd.DataFrame,
 
     Busca el mejor match de cada línea ENT en Infotécnica comparando:
     1. Voltaje debe coincidir (o ser cercano)
-    2. Similitud de nombres de barras (A y B) - usa MÍNIMO de ambas
+    2. Circuito debe coincidir si ambos lo tienen (_1de2 ↔ C1)
+    3. Similitud de nombres de barras (A y B) - usa MÍNIMO de ambas
 
     Args:
         df_homologado: DataFrame resultado de homologar_lineas()
@@ -909,11 +988,13 @@ def homologar_con_infotecnica(df_homologado: pd.DataFrame,
     for _, row in df_infotec.iterrows():
         nombre = row['nombre']
         barra_a, barra_b, voltaje = extraer_barras_infotecnica(nombre)
+        circuito = extraer_circuito_infotec(nombre)
         infotec_info.append({
             'nombre_original': nombre,
             'barra_a': normalizar_nombre_infotec(barra_a),
             'barra_b': normalizar_nombre_infotec(barra_b),
             'voltaje': voltaje,
+            'circuito': circuito,
             'R_total': row['R_total'],
             'X_total': row['X_total']
         })
@@ -926,6 +1007,7 @@ def homologar_con_infotecnica(df_homologado: pd.DataFrame,
         barra_a_ent = normalizar_barra_ent(row['barra_a']) if pd.notna(row['barra_a']) else ''
         barra_b_ent = normalizar_barra_ent(row['barra_b']) if pd.notna(row['barra_b']) else ''
         voltaje_ent = row['voltaje_kv']
+        circuito_ent = row.get('circuito_ent')  # Viene de homologar_lineas()
 
         mejor_match = None
         mejor_confianza = 0
@@ -938,6 +1020,12 @@ def homologar_con_infotecnica(df_homologado: pd.DataFrame,
             if pd.notna(voltaje_ent) and pd.notna(info['voltaje']):
                 if abs(voltaje_ent - info['voltaje']) > 5:
                     continue
+
+            # Verificar circuito: si ambos tienen, deben coincidir
+            circuito_infotec = info['circuito']
+            if circuito_ent is not None and circuito_infotec is not None:
+                if circuito_ent != circuito_infotec:
+                    continue  # No matchear si circuitos son diferentes
 
             # Calcular similitud normal (A-A, B-B)
             sim_a = calcular_similitud_barras(barra_a_ent, info['barra_a'])
