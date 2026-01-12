@@ -965,6 +965,20 @@ def homologar_con_infotecnica(df_homologado: pd.DataFrame,
                 mejor_match = info
                 match_invertido = invertido
 
+        # Obtener valores para cálculos
+        X_ent_val = row['X_ent']
+        X_cne_val = row['X_op']
+        X_infotec_val = mejor_match['X_total'] if mejor_match and mejor_confianza >= umbral_confianza else None
+
+        # Calcular diferencias porcentuales respecto a X_ENT
+        def calc_diff_pct(valor, referencia):
+            if pd.notna(valor) and pd.notna(referencia) and referencia != 0:
+                return round(((valor - referencia) / referencia) * 100, 1)
+            return None
+
+        diff_X_CNE = calc_diff_pct(X_cne_val, X_ent_val)
+        diff_X_Infotec = calc_diff_pct(X_infotec_val, X_ent_val)
+
         # Construir resultado con columnas ordenadas para comparación
         resultado = {
             # Nombres de las 3 fuentes (para comparación)
@@ -982,9 +996,13 @@ def homologar_con_infotecnica(df_homologado: pd.DataFrame,
             'R_Infotec': mejor_match['R_total'] if mejor_match and mejor_confianza >= umbral_confianza else None,
 
             # Valores X de las 3 fuentes (para comparación rápida)
-            'X_ENT': row['X_ent'],
-            'X_CNE': row['X_op'],
-            'X_Infotec': mejor_match['X_total'] if mejor_match and mejor_confianza >= umbral_confianza else None,
+            'X_ENT': X_ent_val,
+            'X_CNE': X_cne_val,
+            'X_Infotec': X_infotec_val,
+
+            # Diferencias porcentuales de X respecto a ENT
+            'diff_X_CNE_%': diff_X_CNE,
+            'diff_X_Infotec_%': diff_X_Infotec,
 
             # Info adicional
             'voltaje_kv': voltaje_ent,
