@@ -171,20 +171,12 @@ def main():
     OUTPUT_PATH.mkdir(exist_ok=True)
 
     # Exportar resultado final consolidado
-    archivo_final = OUTPUT_PATH / f"comparacion_RX_{mes_trabajo}.csv"
-    df_final.to_csv(archivo_final, index=False, sep=',', encoding='utf-8')
-    print(f"Comparación R/X: {archivo_final} ({len(df_final)} filas)")
+    archivo_csv = OUTPUT_PATH / f"homologacion_{mes_trabajo}.csv"
+    df_final.to_csv(archivo_csv, index=False, sep=',', encoding='utf-8')
+    print(f"Archivo exportado: {archivo_csv}")
+    print(f"Total filas: {len(df_final)}")
 
-    # Exportar infotécnica raw
-    archivo_infotec = OUTPUT_PATH / "infotecnica_raw.csv"
-    df_infotec.to_csv(archivo_infotec, index=False, sep=',', encoding='utf-8')
-    print(f"Infotécnica raw: {archivo_infotec} ({len(df_infotec)} filas)")
-
-    return {
-        'final': df_final,
-        'homologado': df_homologado,
-        'infotecnica': df_infotec
-    }
+    return df_final
 
 
 if __name__ == "__main__":
