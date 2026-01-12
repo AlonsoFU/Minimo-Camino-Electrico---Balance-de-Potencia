@@ -20,7 +20,7 @@ MESES = {
 }
 
 # Diccionario de abreviaciones - SOLO casos confirmados en datos reales
-# Basado en análisis exhaustivo de 5,261 barras (ver analizar_nombres_geograficos.py)
+# Basado en análisis exhaustivo de 5,261 barras (ver analizar_abreviaciones_confirmadas.py)
 ABREVIACIONES = {
     # D.ALMAGRO → DIEGO DE ALMAGRO (11 variantes confirmadas en datos)
     'D.ALMAGRO': 'DIEGO DE ALMAGRO',
@@ -532,7 +532,7 @@ def expandir_abreviaciones(texto: str) -> str:
     Expande abreviaciones comunes en nombres de barras.
 
     IMPORTANTE: Solo expande casos CONFIRMADOS en análisis de datos reales
-    (ver analizar_nombres_geograficos.py). Total: 47 expansiones verificadas.
+    (ver analizar_abreviaciones_confirmadas.py). Total: 47 expansiones verificadas.
 
     Ejemplos:
         'D.ALMAGRO' -> 'DIEGO DE ALMAGRO'

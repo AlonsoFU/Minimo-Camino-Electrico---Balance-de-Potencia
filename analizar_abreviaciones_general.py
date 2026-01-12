@@ -1,13 +1,20 @@
 """
-Script para analizar TODAS las abreviaciones presentes en los datos reales
-y generar un diccionario seguro sin ambigüedades.
+Análisis GENERAL de todas las abreviaciones (con punto) en los datos.
+
+Este script analiza TODOS los tokens que contienen punto (.) sin filtros.
+Útil para estadísticas generales y detectar patrones, pero genera mucho ruido
+(códigos técnicos, números, etc.).
+
+Para el diccionario de abreviaciones geográficas confirmadas,
+ver: analizar_abreviaciones_confirmadas.py
 
 Estrategia:
-1. Extraer todos los nombres únicos de las 3 fuentes (ENT, CNE, Infotécnica)
-2. Identificar patrones de abreviación (palabras con punto, palabras cortas)
-3. Validar que no haya colisiones (ej: D.ALMAGRO → DIEGO vs DAVID)
-4. Solo agregar expansiones 100% seguras
-5. Reportar casos ambiguos para revisión manual
+1. Extraer TODOS los tokens de las 3 fuentes (ENT, CNE, Infotécnica)
+2. Buscar tokens con punto (.) - posibles abreviaciones
+3. Buscar expansiones automáticamente
+4. Reportar ambigüedades y casos seguros
+
+Resultado: Principalmente códigos técnicos (0.4→044, E.B.→EB2), pocos geográficos.
 """
 
 import pandas as pd

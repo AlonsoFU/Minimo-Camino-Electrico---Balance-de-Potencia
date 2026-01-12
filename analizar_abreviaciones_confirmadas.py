@@ -1,11 +1,16 @@
 """
-Análisis específico para nombres geográficos con abreviaciones.
+Análisis de abreviaciones CONFIRMADAS en nombres geográficos.
+
+Este script genera el diccionario ABREVIACIONES usado en data_loader.py.
+Solo incluye casos 100% verificados sin ambigüedad.
 
 Estrategia:
-1. Buscar nombres que empiecen con "L.", "D.", "S." (posibles Los, Diego, San)
-2. Buscar sus versiones completas en los datos
-3. Validar que sean el mismo lugar
-4. Solo agregar si NO hay ambigüedad
+1. Buscar patrones específicos: "L.", "D.", "S.", "STA.", "C."
+2. Buscar versiones completas en los mismos datos
+3. Validar que NO haya ambigüedad (ej: D. → DIEGO vs DON)
+4. Solo agregar si la expansión es única y confirmada
+
+Resultado: 47 expansiones seguras de nombres geográficos.
 """
 
 import pandas as pd
