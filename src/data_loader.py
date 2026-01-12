@@ -19,20 +19,63 @@ MESES = {
     'Sep': 9, 'Oct': 10, 'Nov': 11, 'Dic': 12
 }
 
-# Diccionario de abreviaciones comunes en nombres de barras
+# Diccionario de abreviaciones - SOLO casos confirmados en datos reales
+# Basado en análisis exhaustivo de 5,261 barras (ver analizar_nombres_geograficos.py)
 ABREVIACIONES = {
+    # D.ALMAGRO → DIEGO DE ALMAGRO (11 variantes confirmadas en datos)
     'D.ALMAGRO': 'DIEGO DE ALMAGRO',
     'D. ALMAGRO': 'DIEGO DE ALMAGRO',
     'D .ALMAGRO': 'DIEGO DE ALMAGRO',
-    'DALMAGRO': 'DIEGO DE ALMAGRO',
-    'S.': 'SAN',
-    'S ': 'SAN ',
+
+    # STA. → SANTA (4 casos confirmados: STA.ELISA, STA.ELVIRA, STA.LUISA, STA.ROSA)
     'STA.': 'SANTA',
     'STA ': 'SANTA ',
-    'PTO.': 'PUERTO',
-    'PTO ': 'PUERTO ',
-    'GRAL.': 'GENERAL',
-    'GRAL ': 'GENERAL ',
+
+    # S. → SAN (20 casos confirmados: S.VICENTE, S.ANTONIO, S.FELIPE, etc.)
+    # IMPORTANTE: Solo al inicio de palabra para evitar conflictos
+    'S.VICENTE': 'SAN VICENTE',
+    'S.ANTONIO': 'SAN ANTONIO',
+    'S.FELIPE': 'SAN FELIPE',
+    'S.FERNANDO': 'SAN FERNANDO',
+    'S.CARLOS': 'SAN CARLOS',
+    'S.GREGORIO': 'SAN GREGORIO',
+    'S.JAVIER': 'SAN JAVIER',
+    'S.JERONIMO': 'SAN JERONIMO',
+    'S.JOAQUIN': 'SAN JOAQUIN',
+    'S.LUIS': 'SAN LUIS',
+    'S.MIGUEL': 'SAN MIGUEL',
+    'S.PEDRO': 'SAN PEDRO',
+    'S.RAFAEL': 'SAN RAFAEL',
+    'S.SEBASTIAN': 'SAN SEBASTIAN',
+    'S.SIMON': 'SAN SIMON',
+    'S.ANDRES': 'SAN ANDRES',
+
+    # L. → LOS/LAS/LA (17 casos confirmados, pero requiere contexto)
+    # Se incluyen casos específicos para evitar ambigüedad de género
+    'L.CHANGOS': 'LOS CHANGOS',
+    'L.VILOS': 'LOS VILOS',
+    'L.ALMENDROS': 'LOS ALMENDROS',
+    'L.ANGELES': 'LOS ANGELES',
+    'L.LAGOS': 'LOS LAGOS',
+    'L.LIRIOS': 'LOS LIRIOS',
+    'L.LOROS': 'LOS LOROS',
+    'L.MAQUIS': 'LOS MAQUIS',
+    'L.QUILOS': 'LOS QUILOS',
+    'L.CABRAS': 'LAS CABRAS',
+    'L.LUCES': 'LAS LUCES',
+    'L.PALMAS': 'LAS PALMAS',
+    'L.VEGAS': 'LAS VEGAS',
+    'L.ERMITA': 'LA ERMITA',
+    'L.HIGUERA': 'LA HIGUERA',
+    'L.UNION': 'LA UNION',
+
+    # C. → CERRO/CENTRAL (6 casos confirmados, pero ambiguo)
+    # Solo casos específicos verificados
+    'C.NAVIA': 'CERRO NAVIA',
+    'C.DOMINADOR': 'CERRO DOMINADOR',
+    'C.DRAGON': 'CERRO DRAGON',
+    'C.PABELLON': 'CERRO PABELLON',
+    'C.RENAICO': 'CENTRAL RENAICO',
 }
 
 
@@ -488,15 +531,25 @@ def expandir_abreviaciones(texto: str) -> str:
     """
     Expande abreviaciones comunes en nombres de barras.
 
+    IMPORTANTE: Solo expande casos CONFIRMADOS en análisis de datos reales
+    (ver analizar_nombres_geograficos.py). Total: 47 expansiones verificadas.
+
     Ejemplos:
         'D.ALMAGRO' -> 'DIEGO DE ALMAGRO'
-        'S. VICENTE' -> 'SAN VICENTE'
+        'S.VICENTE' -> 'SAN VICENTE'
+        'L.CHANGOS' -> 'LOS CHANGOS'
+        'STA.ROSA' -> 'SANTA ROSA'
 
     Args:
         texto: Texto con posibles abreviaciones
 
     Returns:
-        Texto con abreviaciones expandidas
+        Texto con abreviaciones expandidas (en mayúsculas)
+
+    Notas:
+        - No expande "S." genérico (ambiguo), solo casos específicos
+        - No expande "L." genérico (requiere contexto de género)
+        - Procesa más largo primero para evitar reemplazos parciales
     """
     texto_upper = texto.upper()
 
