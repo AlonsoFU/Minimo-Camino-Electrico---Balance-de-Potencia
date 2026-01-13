@@ -994,12 +994,6 @@ def homologar_con_infotecnica(df_homologado: pd.DataFrame,
                 if abs(voltaje_ent - info['voltaje']) > 5:
                     continue
 
-            # Filtrar por circuito: si ambos tienen circuito, deben coincidir
-            circuito_infotec = info['circuito']
-            if circuito_ent is not None and circuito_infotec is not None:
-                if circuito_ent != circuito_infotec:
-                    continue  # No matchear si circuitos son diferentes
-
             # Calcular similitud normal (A-A, B-B)
             sim_a = calcular_similitud_barras(barra_a_ent, info['barra_a'])
             sim_b = calcular_similitud_barras(barra_b_ent, info['barra_b'])
@@ -1019,6 +1013,12 @@ def homologar_con_infotecnica(df_homologado: pd.DataFrame,
                 confianza = confianza_invertida
                 sims = (sim_a_inv, sim_b_inv)
                 invertido = True
+
+            # BONUS LEVE: Si los circuitos coinciden, dar +5 puntos de confianza
+            circuito_infotec = info['circuito']
+            if circuito_ent is not None and circuito_infotec is not None:
+                if circuito_ent == circuito_infotec:
+                    confianza = min(100, confianza + 5)  # Bonus leve, máximo 100
 
             if confianza > mejor_confianza:
                 mejor_confianza = confianza
