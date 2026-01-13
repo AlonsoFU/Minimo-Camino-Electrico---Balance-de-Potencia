@@ -468,7 +468,7 @@ def aplicar_reemplazo_por_mes(mes_trabajo: str,
     # Seleccionar solo columnas relevantes
     columnas_finales = [
         'LinNom',                # Nombre de la línea
-        'LinR', 'LinX',          # Resistencia y reactancia
+        'LinR', 'LinX',          # Resistencia y reactancia (serán reemplazadas si hay mantenimiento)
         'LinFecOpeIni', 'LinFecOpeFin',  # Fechas operación
         'man_LinFecIni', 'man_LinFecFin',  # Fechas mantenimiento
         'mes_trabajo',           # Mes de trabajo (input)
@@ -479,6 +479,25 @@ def aplicar_reemplazo_por_mes(mes_trabajo: str,
     # Filtrar solo columnas que existen
     columnas_presentes = [col for col in columnas_finales if col in df_cruce.columns]
     df_resultado = df_cruce[columnas_presentes].copy()
+
+    # REEMPLAZAR valores R y X con los de mantenimiento cuando:
+    # 1. hay_reemplazo = True
+    # 2. man_LinR / man_LinX NO son vacíos (NaN)
+    # Si man_LinR/man_LinX son vacíos → mantener valores de operación
+    if 'hay_reemplazo' in df_resultado.columns:
+        for idx, row in df_resultado.iterrows():
+            if row['hay_reemplazo']:
+                # Reemplazar LinR si man_LinR existe y NO es vacío
+                if f'man_LinR' in df_cruce.columns:
+                    man_r = df_cruce.loc[idx, 'man_LinR']
+                    if pd.notna(man_r):
+                        df_resultado.loc[idx, 'LinR'] = man_r
+
+                # Reemplazar LinX si man_LinX existe y NO es vacío
+                if f'man_LinX' in df_cruce.columns:
+                    man_x = df_cruce.loc[idx, 'man_LinX']
+                    if pd.notna(man_x):
+                        df_resultado.loc[idx, 'LinX'] = man_x
 
     return df_resultado
 
