@@ -565,22 +565,22 @@ def normalizar_barra_op(barra: str) -> str:
     return ' '.join(barra.split()).lower().strip()
 
 
-def extraer_barras_de_linnom(linnom: str) -> Tuple[str, str, Optional[float]]:
+def extraer_barras_de_linnom(linnom: str) -> Tuple[str, str, Optional[float], Optional[float]]:
     """
-    Extrae las barras A y B y el voltaje desde el nombre de línea LinNom.
+    Extrae las barras A y B y sus voltajes desde el nombre de línea LinNom.
 
-    El formato de LinNom es: "BARRA_A VOLTAJE->BARRA_B VOLTAJE CIRCUITO"
-    Ejemplo: "SUEZ_Los Changos 220->Kapatur 220 I"
-             "Los Changos 500->Kimal 500 II"
+    El formato de LinNom es: "BARRA_A VOLTAJE_A->BARRA_B VOLTAJE_B CIRCUITO"
+    Ejemplo: "SUEZ_Los Changos 220->Kapatur 220 I" → ("SUEZ_Los Changos", "Kapatur", 220, 220)
+             "Cardones 220->Cardones 110 I" → ("Cardones", "Cardones", 220, 110)
 
     Args:
         linnom: Nombre de la línea en formato operación
 
     Returns:
-        Tupla con (barra_a, barra_b, voltaje)
+        Tupla con (barra_a, barra_b, voltaje_a, voltaje_b)
     """
     if pd.isna(linnom):
-        return ('', '', None)
+        return ('', '', None, None)
 
     linnom = str(linnom)
 
@@ -590,17 +590,25 @@ def extraer_barras_de_linnom(linnom: str) -> Tuple[str, str, Optional[float]]:
         # Intentar con " - " como fallback
         partes = linnom.split(' - ')
         if len(partes) < 2:
-            return (linnom, '', None)
+            return (linnom, '', None, None)
 
     barra_a_raw = partes[0].strip()
     resto = '->'.join(partes[1:]).strip()
 
     # Extraer voltaje de barra_a (último número de 2-3 dígitos)
-    match_volt = re.search(r'\s+(\d{2,3})\s*$', barra_a_raw)
-    voltaje = float(match_volt.group(1)) if match_volt else None
+    match_volt_a = re.search(r'\s+(\d{2,3})\s*$', barra_a_raw)
+    voltaje_a = float(match_volt_a.group(1)) if match_volt_a else None
 
     # Limpiar barra_a quitando el voltaje
     barra_a = re.sub(r'\s+\d{2,3}\s*$', '', barra_a_raw)
+
+    # Extraer voltaje de barra_b (antes de limpiar la barra)
+    # Formato: "Kapatur 220 I" → voltaje_b = 220
+    # Formato: "Cardones 110 I" → voltaje_b = 110
+    match_volt_b = re.search(r'\s+(\d{2,3})\s+[IVXCivxc]', resto)  # Voltaje seguido de circuito
+    if not match_volt_b:
+        match_volt_b = re.search(r'\s+(\d{2,3})\s*$', resto)  # Voltaje al final sin circuito
+    voltaje_b = float(match_volt_b.group(1)) if match_volt_b else None
 
     # Limpiar barra_b quitando voltaje y circuito (ej: "I", "II", "C1", "C2")
     # Formato: "Kapatur 220 I" -> "Kapatur"
@@ -608,7 +616,7 @@ def extraer_barras_de_linnom(linnom: str) -> Tuple[str, str, Optional[float]]:
     barra_b = re.sub(r'\s+\d{2,3}\s*C?\d*\s*$', '', barra_b)  # C1, C2
     barra_b = re.sub(r'\s+[IVX]+\s*$', '', barra_b)  # Romanos solos al final
 
-    return (barra_a.strip(), barra_b.strip(), voltaje)
+    return (barra_a.strip(), barra_b.strip(), voltaje_a, voltaje_b)
 
 
 def extraer_circuito_ent(nombre: str) -> Optional[int]:
@@ -758,13 +766,14 @@ def homologar_lineas(df_ent: Optional[pd.DataFrame] = None,
         linnom = row.get('LinNom')
         if pd.isna(linnom):
             continue
-        barra_a, barra_b, voltaje = extraer_barras_de_linnom(linnom)
+        barra_a, barra_b, voltaje_a, voltaje_b = extraer_barras_de_linnom(linnom)
         circuito_op = extraer_circuito_op(linnom)
         lineas_op_info.append({
             'linnom': linnom,
             'barra_a': normalizar_barra_op(barra_a),
             'barra_b': normalizar_barra_op(barra_b),
-            'voltaje': voltaje,
+            'voltaje_a': voltaje_a,
+            'voltaje_b': voltaje_b,
             'circuito': circuito_op,
             'linr': row.get('LinR'),
             'linx': row.get('LinX'),
@@ -789,10 +798,21 @@ def homologar_lineas(df_ent: Optional[pd.DataFrame] = None,
         circuito_coincide = None
 
         for info_op in lineas_op_info:
-            # Filtrar por voltaje (debe coincidir exactamente o muy cercano)
-            if pd.notna(voltaje_ent) and pd.notna(info_op['voltaje']):
-                if abs(voltaje_ent - info_op['voltaje']) > 5:  # Más estricto: 5kV
-                    continue
+            # CRÍTICO: Verificar que AMBAS barras tengan el mismo nivel de tensión
+            # ENT tiene un solo voltaje → ambas barras están a ese voltaje
+            # CNE puede tener voltajes diferentes (transformador) → no matchear
+            if pd.notna(voltaje_ent):
+                voltaje_a_op = info_op['voltaje_a']
+                voltaje_b_op = info_op['voltaje_b']
+
+                # Verificar que ambas barras de CNE estén al mismo voltaje que ENT
+                if pd.notna(voltaje_a_op):
+                    if abs(voltaje_ent - voltaje_a_op) > 5:  # Barra A no coincide
+                        continue
+
+                if pd.notna(voltaje_b_op):
+                    if abs(voltaje_ent - voltaje_b_op) > 5:  # Barra B no coincide
+                        continue
 
             # Calcular similitud normal (A-A, B-B)
             sim_a = calcular_similitud_barras(barra_a_ent, info_op['barra_a'])
@@ -895,35 +915,40 @@ def resumen_homologacion(df_homologado: pd.DataFrame) -> dict:
     }
 
 
-def extraer_barras_infotecnica(nombre: str) -> Tuple[str, str, Optional[float]]:
+def extraer_barras_infotecnica(nombre: str) -> Tuple[str, str, Optional[float], Optional[float]]:
     """
-    Extrae las barras A, B y voltaje del nombre de línea Infotécnica.
+    Extrae las barras A, B y sus voltajes del nombre de línea Infotécnica.
 
     Formato: "BARRA A - BARRA B VVVkV C#"
-    Ejemplo: "PAPOSO - TAP TAL TAL 220KV C1"
+    Ejemplo: "PAPOSO - TAP TAL TAL 220KV C1" → ("PAPOSO", "TAP TAL TAL", 220, 220)
+
+    IMPORTANTE: En Infotécnica, cuando aparece un solo voltaje, significa que AMBAS
+    barras están al mismo nivel de tensión.
 
     Args:
         nombre: Nombre de la línea Infotécnica
 
     Returns:
-        Tupla con (barra_a, barra_b, voltaje)
+        Tupla con (barra_a, barra_b, voltaje_a, voltaje_b)
     """
     if pd.isna(nombre):
-        return ('', '', None)
+        return ('', '', None, None)
 
     nombre = str(nombre)
 
     # Patrón: BARRA_A - BARRA_B VVVkV C#
     match = re.match(r'(.+?)\s*-\s*(.+?)\s+(\d{2,3})KV\s+C\d+$', nombre, re.IGNORECASE)
     if match:
-        return (match.group(1).strip(), match.group(2).strip(), float(match.group(3)))
+        voltaje = float(match.group(3))
+        return (match.group(1).strip(), match.group(2).strip(), voltaje, voltaje)
 
     # Fallback: intentar sin el circuito
     match = re.match(r'(.+?)\s*-\s*(.+?)\s+(\d{2,3})KV', nombre, re.IGNORECASE)
     if match:
-        return (match.group(1).strip(), match.group(2).strip(), float(match.group(3)))
+        voltaje = float(match.group(3))
+        return (match.group(1).strip(), match.group(2).strip(), voltaje, voltaje)
 
-    return (nombre, '', None)
+    return (nombre, '', None, None)
 
 
 def normalizar_nombre_infotec(nombre: str) -> str:
@@ -973,13 +998,14 @@ def homologar_con_infotecnica(df_homologado: pd.DataFrame,
     infotec_info = []
     for _, row in df_infotec.iterrows():
         nombre = row['nombre']
-        barra_a, barra_b, voltaje = extraer_barras_infotecnica(nombre)
+        barra_a, barra_b, voltaje_a, voltaje_b = extraer_barras_infotecnica(nombre)
         circuito = extraer_circuito_infotec(nombre)
         infotec_info.append({
             'nombre_original': nombre,
             'barra_a': normalizar_nombre_infotec(barra_a),
             'barra_b': normalizar_nombre_infotec(barra_b),
-            'voltaje': voltaje,
+            'voltaje_a': voltaje_a,
+            'voltaje_b': voltaje_b,
             'circuito': circuito,
             'R_total': row['R_total'],
             'X_total': row['X_total']
@@ -1002,10 +1028,21 @@ def homologar_con_infotecnica(df_homologado: pd.DataFrame,
         match_invertido = False
 
         for info in infotec_info:
-            # Filtrar por voltaje
-            if pd.notna(voltaje_ent) and pd.notna(info['voltaje']):
-                if abs(voltaje_ent - info['voltaje']) > 5:
-                    continue
+            # CRÍTICO: Verificar que AMBAS barras tengan el mismo nivel de tensión
+            # ENT tiene un solo voltaje → ambas barras están a ese voltaje
+            # Infotécnica también tiene ambas barras al mismo voltaje (voltaje_a == voltaje_b)
+            if pd.notna(voltaje_ent):
+                voltaje_a_info = info['voltaje_a']
+                voltaje_b_info = info['voltaje_b']
+
+                # Verificar que ambas barras de Infotécnica estén al mismo voltaje que ENT
+                if pd.notna(voltaje_a_info):
+                    if abs(voltaje_ent - voltaje_a_info) > 5:  # Barra A no coincide
+                        continue
+
+                if pd.notna(voltaje_b_info):
+                    if abs(voltaje_ent - voltaje_b_info) > 5:  # Barra B no coincide
+                        continue
 
             # Calcular similitud normal (A-A, B-B)
             sim_a = calcular_similitud_barras(barra_a_ent, info['barra_a'])
