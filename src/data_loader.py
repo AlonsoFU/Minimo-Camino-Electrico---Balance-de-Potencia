@@ -1029,7 +1029,7 @@ def homologar_con_infotecnica(df_homologado: pd.DataFrame,
         # Obtener valores para cálculos
         X_ent_val = row['X_ent']
         X_cne_val = row['X_op']
-        X_infotec_val = mejor_match['X_total'] if mejor_match and mejor_confianza >= umbral_confianza else None
+        X_infotec_val = mejor_match['X_total'] if mejor_match else None
 
         # Calcular diferencias porcentuales respecto a X_ENT
         def calc_diff_pct(valor, referencia):
@@ -1056,7 +1056,7 @@ def homologar_con_infotecnica(df_homologado: pd.DataFrame,
             # Nombres de las 3 fuentes (para comparación)
             'nombre_ENT': row['nombre'],
             'nombre_CNE': row['match_linnom'],
-            'nombre_Infotec': mejor_match['nombre_original'] if mejor_match and mejor_confianza >= umbral_confianza else None,
+            'nombre_Infotec': mejor_match['nombre_original'] if mejor_match else None,
 
             # Confianza general (no por barra)
             'conf_CNE': row['confianza'],
@@ -1065,7 +1065,7 @@ def homologar_con_infotecnica(df_homologado: pd.DataFrame,
             # Valores R de las 3 fuentes (para comparación rápida)
             'R_ENT': row['R_ent'],
             'R_CNE': row['R_op'],
-            'R_Infotec': mejor_match['R_total'] if mejor_match and mejor_confianza >= umbral_confianza else None,
+            'R_Infotec': mejor_match['R_total'] if mejor_match else None,
 
             # Valores X de las 3 fuentes (para comparación rápida)
             'X_ENT': X_ent_val,
