@@ -816,16 +816,16 @@ def homologar_lineas(df_ent: Optional[pd.DataFrame] = None,
         resultado = {
             # Identificación ENT
             'nombre': row_ent['nombre'],
-            'match_linnom': mejor_match['linnom'] if mejor_match and mejor_confianza >= umbral_confianza else None,
+            'match_linnom': mejor_match['linnom'] if mejor_match else None,
             # Confianza
             'confianza': round(mejor_confianza, 1),
             'sim_barra_a': round(mejor_sim_a, 1),
             'sim_barra_b': round(mejor_sim_b, 1),
-            'match_invertido': match_invertido if mejor_match and mejor_confianza >= umbral_confianza else None,
+            'match_invertido': match_invertido if mejor_match else None,
             'requiere_revision': requiere_revision,
             # Circuitos
             'circuito_ent': circuito_ent,
-            'circuito_op': mejor_match['circuito'] if mejor_match and mejor_confianza >= umbral_confianza else None,
+            'circuito_op': mejor_match['circuito'] if mejor_match else None,
             # Barras ENT
             'barra_a': row_ent['barra_a'],
             'barra_b': row_ent['barra_b'],
@@ -834,11 +834,11 @@ def homologar_lineas(df_ent: Optional[pd.DataFrame] = None,
             'R_ent': row_ent['resistencia_ohm'],
             'X_ent': row_ent['reactancia_ohm'],
             # Valores R/X de Operación (match)
-            'R_op': mejor_match['linr'] if mejor_match and mejor_confianza >= umbral_confianza else None,
-            'X_op': mejor_match['linx'] if mejor_match and mejor_confianza >= umbral_confianza else None,
+            'R_op': mejor_match['linr'] if mejor_match else None,
+            'X_op': mejor_match['linx'] if mejor_match else None,
             # Info de reemplazo
-            'hay_reemplazo': mejor_match.get('hay_reemplazo') if mejor_match and mejor_confianza >= umbral_confianza else None,
-            'fuente': mejor_match.get('fuente') if mejor_match and mejor_confianza >= umbral_confianza else None
+            'hay_reemplazo': mejor_match.get('hay_reemplazo') if mejor_match else None,
+            'fuente': mejor_match.get('fuente') if mejor_match else None
         }
         resultados.append(resultado)
 
