@@ -794,12 +794,6 @@ def homologar_lineas(df_ent: Optional[pd.DataFrame] = None,
                 if abs(voltaje_ent - info_op['voltaje']) > 5:  # Más estricto: 5kV
                     continue
 
-            # Verificar circuito: si ambos tienen, deben coincidir
-            circuito_op = info_op['circuito']
-            if circuito_ent is not None and circuito_op is not None:
-                if circuito_ent != circuito_op:
-                    continue  # No matchear si circuitos son diferentes
-
             # Calcular similitud normal (A-A, B-B)
             sim_a = calcular_similitud_barras(barra_a_ent, info_op['barra_a'])
             sim_b = calcular_similitud_barras(barra_b_ent, info_op['barra_b'])
