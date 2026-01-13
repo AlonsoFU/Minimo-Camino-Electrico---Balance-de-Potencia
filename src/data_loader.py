@@ -644,6 +644,25 @@ def extraer_circuito_op(linnom: str) -> Optional[int]:
     return None
 
 
+def extraer_circuito_infotec(nombre: str) -> Optional[int]:
+    """
+    Extrae el número de circuito del nombre de línea Infotécnica.
+
+    Patrones:
+    - 'C1' -> 1, 'C2' -> 2, 'C3' -> 3
+
+    Args:
+        nombre: Nombre de la línea Infotécnica (ej: "PAPOSO - TAP TAL TAL 220KV C1")
+
+    Returns:
+        Número de circuito (1, 2, 3...) o None
+    """
+    match = re.search(r'\s+C(\d+)\s*$', str(nombre), re.IGNORECASE)
+    if match:
+        return int(match.group(1))
+    return None
+
+
 def calcular_similitud_barras(barra_ent: str, barra_op: str) -> float:
     """
     Calcula la similitud entre dos nombres de barras.
@@ -920,7 +939,8 @@ def homologar_con_infotecnica(df_homologado: pd.DataFrame,
 
     Busca el mejor match de cada línea ENT en Infotécnica comparando:
     1. Voltaje debe coincidir (o ser cercano)
-    2. Similitud de nombres de barras (A y B) - usa MÍNIMO de ambas
+    2. Circuito debe coincidir si ambos lo tienen (_1de2 ↔ C1)
+    3. Similitud de nombres de barras (A y B) - usa MÍNIMO de ambas
 
     Args:
         df_homologado: DataFrame resultado de homologar_lineas()
@@ -941,11 +961,13 @@ def homologar_con_infotecnica(df_homologado: pd.DataFrame,
     for _, row in df_infotec.iterrows():
         nombre = row['nombre']
         barra_a, barra_b, voltaje = extraer_barras_infotecnica(nombre)
+        circuito = extraer_circuito_infotec(nombre)
         infotec_info.append({
             'nombre_original': nombre,
             'barra_a': normalizar_nombre_infotec(barra_a),
             'barra_b': normalizar_nombre_infotec(barra_b),
             'voltaje': voltaje,
+            'circuito': circuito,
             'R_total': row['R_total'],
             'X_total': row['X_total']
         })
@@ -958,6 +980,7 @@ def homologar_con_infotecnica(df_homologado: pd.DataFrame,
         barra_a_ent = normalizar_barra_ent(row['barra_a']) if pd.notna(row['barra_a']) else ''
         barra_b_ent = normalizar_barra_ent(row['barra_b']) if pd.notna(row['barra_b']) else ''
         voltaje_ent = row['voltaje_kv']
+        circuito_ent = row.get('circuito_ent')  # Viene de homologar_lineas()
 
         mejor_match = None
         mejor_confianza = 0
@@ -970,6 +993,12 @@ def homologar_con_infotecnica(df_homologado: pd.DataFrame,
             if pd.notna(voltaje_ent) and pd.notna(info['voltaje']):
                 if abs(voltaje_ent - info['voltaje']) > 5:
                     continue
+
+            # Filtrar por circuito: si ambos tienen circuito, deben coincidir
+            circuito_infotec = info['circuito']
+            if circuito_ent is not None and circuito_infotec is not None:
+                if circuito_ent != circuito_infotec:
+                    continue  # No matchear si circuitos son diferentes
 
             # Calcular similitud normal (A-A, B-B)
             sim_a = calcular_similitud_barras(barra_a_ent, info['barra_a'])
