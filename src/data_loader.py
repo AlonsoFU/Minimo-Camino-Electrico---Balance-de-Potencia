@@ -1014,12 +1014,6 @@ def homologar_con_infotecnica(df_homologado: pd.DataFrame,
                 sims = (sim_a_inv, sim_b_inv)
                 invertido = True
 
-            # BONUS LEVE: Si los circuitos coinciden, dar +5 puntos de confianza
-            circuito_infotec = info['circuito']
-            if circuito_ent is not None and circuito_infotec is not None:
-                if circuito_ent == circuito_infotec:
-                    confianza = min(100, confianza + 5)  # Bonus leve, máximo 100
-
             if confianza > mejor_confianza:
                 mejor_confianza = confianza
                 mejor_sim_a, mejor_sim_b = sims
