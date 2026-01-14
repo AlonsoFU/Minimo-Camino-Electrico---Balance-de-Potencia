@@ -636,6 +636,60 @@ def extraer_circuito_ent(nombre: str) -> Optional[int]:
     return None
 
 
+def es_transformador(nombre: str) -> bool:
+    """
+    Detecta si una línea ENT es un transformador.
+
+    Un transformador se identifica cuando:
+    1. Las dos barras tienen el mismo nombre base (sin voltaje)
+    2. Los voltajes son diferentes
+
+    Ejemplo:
+        "A.JAHUEL______220->A.JAHUEL______154" → True (transformador 220->154)
+        "A.JAHUEL______220->CARDONES______220" → False (línea diferente)
+
+    Args:
+        nombre: Nombre de la línea ENT
+
+    Returns:
+        True si es transformador, False si no
+    """
+    if pd.isna(nombre) or '->' not in str(nombre):
+        return False
+
+    nombre = str(nombre)
+
+    # Separar por ->
+    partes = nombre.split('->')
+    if len(partes) != 2:
+        return False
+
+    parte_a = partes[0].strip()
+    parte_b = partes[1].strip()
+
+    # Extraer barra sin voltaje (remover números al final)
+    # Ejemplo: "A.JAHUEL______220" -> "A.JAHUEL"
+    barra_a_sin_voltaje = re.sub(r'_*\d{2,3}(?:_.*)?$', '', parte_a).strip('_').strip()
+    barra_b_sin_voltaje = re.sub(r'_*\d{2,3}(?:_.*)?$', '', parte_b).strip('_').strip()
+
+    # Si las barras base no son iguales, no es transformador
+    if barra_a_sin_voltaje.upper() != barra_b_sin_voltaje.upper():
+        return False
+
+    # Extraer voltajes
+    match_a = re.search(r'(\d{2,3})(?:_|$)', parte_a)
+    match_b = re.search(r'(\d{2,3})(?:_|$)', parte_b)
+
+    if not match_a or not match_b:
+        return False
+
+    voltaje_a = float(match_a.group(1))
+    voltaje_b = float(match_b.group(1))
+
+    # Es transformador si los voltajes son diferentes (diferencia > 5kV)
+    return abs(voltaje_a - voltaje_b) > 5
+
+
 def extraer_voltajes_de_nombre_ent(nombre: str) -> Tuple[Optional[float], Optional[float]]:
     """
     Extrae los voltajes de ambas barras desde el nombre de línea ENT.
@@ -901,6 +955,7 @@ def homologar_lineas(df_ent: Optional[pd.DataFrame] = None,
         resultado = {
             # Identificación ENT
             'nombre': row_ent['nombre'],
+            'es_transformador': es_transformador(row_ent['nombre']),
             'match_linnom': mejor_match['linnom'] if mejor_match else None,
             # Confianza
             'confianza': round(mejor_confianza, 1),
