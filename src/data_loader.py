@@ -480,6 +480,10 @@ def aplicar_reemplazo_por_mes(mes_trabajo: str,
     columnas_presentes = [col for col in columnas_finales if col in df_cruce.columns]
     df_resultado = df_cruce[columnas_presentes].copy()
 
+    # Agregar columnas para guardar valores originales de operación
+    df_resultado['LinR_operacion_original'] = None
+    df_resultado['LinX_operacion_original'] = None
+
     # REEMPLAZAR valores R y X con los de mantenimiento cuando:
     # 1. hay_reemplazo = True
     # 2. man_LinR / man_LinX NO son vacíos (NaN)
@@ -491,12 +495,16 @@ def aplicar_reemplazo_por_mes(mes_trabajo: str,
                 if f'man_LinR' in df_cruce.columns:
                     man_r = df_cruce.loc[idx, 'man_LinR']
                     if pd.notna(man_r):
+                        # Guardar valor original de operación antes de reemplazar
+                        df_resultado.loc[idx, 'LinR_operacion_original'] = df_resultado.loc[idx, 'LinR']
                         df_resultado.loc[idx, 'LinR'] = man_r
 
                 # Reemplazar LinX si man_LinX existe y NO es vacío
                 if f'man_LinX' in df_cruce.columns:
                     man_x = df_cruce.loc[idx, 'man_LinX']
                     if pd.notna(man_x):
+                        # Guardar valor original de operación antes de reemplazar
+                        df_resultado.loc[idx, 'LinX_operacion_original'] = df_resultado.loc[idx, 'LinX']
                         df_resultado.loc[idx, 'LinX'] = man_x
 
     return df_resultado
@@ -869,6 +877,8 @@ def homologar_lineas(df_ent: Optional[pd.DataFrame] = None,
             'circuito': circuito_op,
             'linr': row.get('LinR'),
             'linx': row.get('LinX'),
+            'linr_operacion_original': row.get('LinR_operacion_original'),
+            'linx_operacion_original': row.get('LinX_operacion_original'),
             'hay_reemplazo': row.get('hay_reemplazo'),
             'fuente': row.get('fuente')
         })
@@ -976,6 +986,9 @@ def homologar_lineas(df_ent: Optional[pd.DataFrame] = None,
             # Valores R/X de Operación (match)
             'R_op': mejor_match['linr'] if mejor_match else None,
             'X_op': mejor_match['linx'] if mejor_match else None,
+            # Valores R/X originales de operación (solo cuando hay reemplazo)
+            'R_op_original': mejor_match.get('linr_operacion_original') if mejor_match else None,
+            'X_op_original': mejor_match.get('linx_operacion_original') if mejor_match else None,
             # Info de reemplazo
             'hay_reemplazo': mejor_match.get('hay_reemplazo') if mejor_match else None,
             'fuente': mejor_match.get('fuente') if mejor_match else None
