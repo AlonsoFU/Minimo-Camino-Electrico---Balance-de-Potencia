@@ -565,22 +565,22 @@ def normalizar_barra_op(barra: str) -> str:
     return ' '.join(barra.split()).lower().strip()
 
 
-def extraer_barras_de_linnom(linnom: str) -> Tuple[str, str, Optional[float]]:
+def extraer_barras_de_linnom(linnom: str) -> Tuple[str, str, Optional[float], Optional[float]]:
     """
-    Extrae las barras A y B y el voltaje desde el nombre de línea LinNom.
+    Extrae las barras A y B y sus voltajes desde el nombre de línea LinNom.
 
-    El formato de LinNom es: "BARRA_A VOLTAJE->BARRA_B VOLTAJE CIRCUITO"
-    Ejemplo: "SUEZ_Los Changos 220->Kapatur 220 I"
-             "Los Changos 500->Kimal 500 II"
+    El formato de LinNom es: "BARRA_A VOLTAJE_A->BARRA_B VOLTAJE_B CIRCUITO"
+    Ejemplo: "SUEZ_Los Changos 220->Kapatur 220 I" → (barras y 220, 220)
+             "El Salado 110->El Salado 023" → (barras y 110, 23)
 
     Args:
         linnom: Nombre de la línea en formato operación
 
     Returns:
-        Tupla con (barra_a, barra_b, voltaje)
+        Tupla con (barra_a, barra_b, voltaje_a, voltaje_b)
     """
     if pd.isna(linnom):
-        return ('', '', None)
+        return ('', '', None, None)
 
     linnom = str(linnom)
 
@@ -590,17 +590,21 @@ def extraer_barras_de_linnom(linnom: str) -> Tuple[str, str, Optional[float]]:
         # Intentar con " - " como fallback
         partes = linnom.split(' - ')
         if len(partes) < 2:
-            return (linnom, '', None)
+            return (linnom, '', None, None)
 
     barra_a_raw = partes[0].strip()
     resto = '->'.join(partes[1:]).strip()
 
     # Extraer voltaje de barra_a (último número de 2-3 dígitos)
-    match_volt = re.search(r'\s+(\d{2,3})\s*$', barra_a_raw)
-    voltaje = float(match_volt.group(1)) if match_volt else None
+    match_volt_a = re.search(r'\s+(\d{2,3})\s*$', barra_a_raw)
+    voltaje_a = float(match_volt_a.group(1)) if match_volt_a else None
 
     # Limpiar barra_a quitando el voltaje
     barra_a = re.sub(r'\s+\d{2,3}\s*$', '', barra_a_raw)
+
+    # Extraer voltaje de barra_b (antes de limpiar circuitos)
+    match_volt_b = re.search(r'\s+(\d{2,3})(?:\s+[IVXCivxc\d]|\s*$)', resto)
+    voltaje_b = float(match_volt_b.group(1)) if match_volt_b else None
 
     # Limpiar barra_b quitando voltaje y circuito (ej: "I", "II", "C1", "C2")
     # Formato: "Kapatur 220 I" -> "Kapatur"
@@ -608,7 +612,7 @@ def extraer_barras_de_linnom(linnom: str) -> Tuple[str, str, Optional[float]]:
     barra_b = re.sub(r'\s+\d{2,3}\s*C?\d*\s*$', '', barra_b)  # C1, C2
     barra_b = re.sub(r'\s+[IVX]+\s*$', '', barra_b)  # Romanos solos al final
 
-    return (barra_a.strip(), barra_b.strip(), voltaje)
+    return (barra_a.strip(), barra_b.strip(), voltaje_a, voltaje_b)
 
 
 def extraer_circuito_ent(nombre: str) -> Optional[int]:
@@ -630,6 +634,47 @@ def extraer_circuito_ent(nombre: str) -> Optional[int]:
     if match:
         return int(match.group(1))
     return None
+
+
+def extraer_voltajes_de_nombre_ent(nombre: str) -> Tuple[Optional[float], Optional[float]]:
+    """
+    Extrae los voltajes de ambas barras desde el nombre de línea ENT.
+
+    Formato ENT: "BARRA_A______VVV->BARRA_B______VVV_circuito"
+    Ejemplo: "A.JAHUEL______220->A.JAHUEL______154" → (220, 154)
+             "ELSALADO______110->ELSALADO______023" → (110, 23)
+
+    IMPORTANTE: Los voltajes están en el NOMBRE de la línea, no solo en columna V[kV].
+    Esto permite detectar transformadores correctamente.
+
+    Args:
+        nombre: Nombre de la línea ENT
+
+    Returns:
+        Tupla con (voltaje_a, voltaje_b)
+    """
+    if pd.isna(nombre) or '->' not in str(nombre):
+        return (None, None)
+
+    nombre = str(nombre)
+
+    # Separar por ->
+    partes = nombre.split('->')
+    if len(partes) != 2:
+        return (None, None)
+
+    parte_a = partes[0].strip()
+    parte_b = partes[1].strip()
+
+    # Buscar voltaje en parte A (últimos 2-3 dígitos antes de _)
+    match_a = re.search(r'(\d{2,3})(?:_|$)', parte_a)
+    voltaje_a = float(match_a.group(1)) if match_a else None
+
+    # Buscar voltaje en parte B (primeros 2-3 dígitos)
+    match_b = re.search(r'(\d{2,3})(?:_|$)', parte_b)
+    voltaje_b = float(match_b.group(1)) if match_b else None
+
+    return (voltaje_a, voltaje_b)
 
 
 def extraer_circuito_op(linnom: str) -> Optional[int]:
@@ -758,13 +803,15 @@ def homologar_lineas(df_ent: Optional[pd.DataFrame] = None,
         linnom = row.get('LinNom')
         if pd.isna(linnom):
             continue
-        barra_a, barra_b, voltaje = extraer_barras_de_linnom(linnom)
+        barra_a, barra_b, voltaje_a, voltaje_b = extraer_barras_de_linnom(linnom)
         circuito_op = extraer_circuito_op(linnom)
         lineas_op_info.append({
             'linnom': linnom,
             'barra_a': normalizar_barra_op(barra_a),
             'barra_b': normalizar_barra_op(barra_b),
-            'voltaje': voltaje,
+            'voltaje': voltaje_a,  # Mantener para compatibilidad
+            'voltaje_a': voltaje_a,
+            'voltaje_b': voltaje_b,
             'circuito': circuito_op,
             'linr': row.get('LinR'),
             'linx': row.get('LinX'),
@@ -780,6 +827,9 @@ def homologar_lineas(df_ent: Optional[pd.DataFrame] = None,
         barra_b_ent = normalizar_barra_ent(row_ent['barra_b'])
         voltaje_ent = row_ent['voltaje_kv']
         circuito_ent = extraer_circuito_ent(row_ent['nombre'])
+
+        # Extraer voltajes del NOMBRE ENT (detecta transformadores)
+        voltaje_a_nombre, voltaje_b_nombre = extraer_voltajes_de_nombre_ent(row_ent['nombre'])
 
         mejor_match = None
         mejor_confianza = 0
@@ -814,6 +864,28 @@ def homologar_lineas(df_ent: Optional[pd.DataFrame] = None,
                 confianza = confianza_invertida
                 sims = (sim_a_inv, sim_b_inv)
                 invertido = True
+
+            # AJUSTE MUY SUAVE por voltajes del nombre ENT
+            # Solo si hay voltajes válidos en el nombre
+            if pd.notna(voltaje_a_nombre) and pd.notna(voltaje_b_nombre):
+                voltaje_a_op = info_op.get('voltaje_a')
+                voltaje_b_op = info_op.get('voltaje_b')
+
+                if pd.notna(voltaje_a_op) and pd.notna(voltaje_b_op):
+                    # Comparar voltajes (considerar inversión)
+                    if invertido:
+                        coincide_a = abs(voltaje_a_nombre - voltaje_b_op) <= 5
+                        coincide_b = abs(voltaje_b_nombre - voltaje_a_op) <= 5
+                    else:
+                        coincide_a = abs(voltaje_a_nombre - voltaje_a_op) <= 5
+                        coincide_b = abs(voltaje_b_nombre - voltaje_b_op) <= 5
+
+                    if coincide_a and coincide_b:
+                        # Pequeño BONUS si voltajes coinciden (+2)
+                        confianza += 2
+                    elif not coincide_a or not coincide_b:
+                        # Pequeña PENALIZACIÓN si no coinciden (-3)
+                        confianza -= 3
 
             if confianza > mejor_confianza:
                 mejor_confianza = confianza
