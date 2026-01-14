@@ -595,12 +595,12 @@ def extraer_barras_de_linnom(linnom: str) -> Tuple[str, str, Optional[float], Op
     barra_a_raw = partes[0].strip()
     resto = '->'.join(partes[1:]).strip()
 
-    # Extraer voltaje de barra_a (último número de 2-3 dígitos)
-    match_volt_a = re.search(r'\s+(\d{2,3})\s*$', barra_a_raw)
+    # Extraer voltaje de barra_a (último número de 2-3 dígitos, puede tener sufijos como "Aux")
+    match_volt_a = re.search(r'\s+(\d{2,3})(?:\s+\w+)*\s*$', barra_a_raw)
     voltaje_a = float(match_volt_a.group(1)) if match_volt_a else None
 
-    # Limpiar barra_a quitando el voltaje
-    barra_a = re.sub(r'\s+\d{2,3}\s*$', '', barra_a_raw)
+    # Limpiar barra_a quitando el voltaje y sufijos
+    barra_a = re.sub(r'\s+\d{2,3}(?:\s+\w+)*\s*$', '', barra_a_raw)
 
     # Extraer voltaje de barra_b (antes de limpiar circuitos)
     match_volt_b = re.search(r'\s+(\d{2,3})(?:\s+[IVXCivxc\d]|\s*$)', resto)
