@@ -180,11 +180,15 @@ def main():
     print(f"Archivo exportado: {archivo_csv}")
     print(f"Total filas: {len(df_final)}")
 
-    # Exportar archivo consolidado de Infotécnica
+    # Exportar archivo consolidado de Infotécnica (también se generan CSVs separados)
     archivo_infotec = OUTPUT_PATH / "infotecnica_consolidada.csv"
     df_infotec.to_csv(archivo_infotec, index=False, sep=',', encoding='utf-8')
-    print(f"\nArchivo Infotécnica consolidada: {archivo_infotec}")
-    print(f"Total instalaciones: {len(df_infotec)}")
+    print(f"\nArchivos Infotécnica generados:")
+    print(f"  ✓ infotecnica_lineas.csv")
+    print(f"  ✓ infotecnica_transformadores_2d.csv")
+    print(f"  ✓ infotecnica_transformadores_3d.csv")
+    print(f"  ✓ infotecnica_consolidada.csv (todas combinadas)")
+    print(f"\nTotal instalaciones: {len(df_infotec)}")
     print(f"  - Con R/X calculados: {df_infotec['R_total'].notna().sum()}/{len(df_infotec)}")
 
     return df_final
