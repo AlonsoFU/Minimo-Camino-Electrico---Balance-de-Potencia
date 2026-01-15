@@ -15,7 +15,7 @@ def calcular_rx_transformador(
     V_kV: float,
     Z_percent: float,
     Pcu_kW: float
-) -> Tuple[Optional[float], Optional[float]]:
+) -> Tuple[Optional[float], Optional[float], str]:
     """
     Calcula R y X de un transformador en ohmios.
 
@@ -33,14 +33,23 @@ def calcular_rx_transformador(
         Pcu_kW: Pérdidas en el cobre (kW)
 
     Returns:
-        Tupla (R_ohm, X_ohm)
+        Tupla (R_ohm, X_ohm, motivo_error)
+        motivo_error es None si el cálculo fue exitoso
     """
     # Validar que tengamos valores válidos
-    if pd.isna(S_MVA) or pd.isna(V_kV) or pd.isna(Z_percent) or pd.isna(Pcu_kW):
-        return (None, None)
+    if pd.isna(S_MVA):
+        return (None, None, "Falta S_MVA (Capacidad nominal)")
+    if pd.isna(V_kV):
+        return (None, None, "Falta V_kV (Tensión nominal)")
+    if pd.isna(Z_percent):
+        return (None, None, "Falta Z% (Impedancia)")
+    if pd.isna(Pcu_kW):
+        return (None, None, "Falta Pcu_kW (Pérdidas en cobre)")
 
-    if S_MVA <= 0 or V_kV <= 0:
-        return (None, None)
+    if S_MVA <= 0:
+        return (None, None, "S_MVA <= 0 (inválido)")
+    if V_kV <= 0:
+        return (None, None, "V_kV <= 0 (inválido)")
 
     # Paso 1: Calcular R%
     R_percent = (Pcu_kW * 100) / (S_MVA * 1000)
@@ -49,7 +58,7 @@ def calcular_rx_transformador(
     # X% = √(Z%² - R%²)
     if Z_percent**2 < R_percent**2:
         # Físicamente imposible, probablemente error en datos
-        return (None, None)
+        return (None, None, f"Z%² < R%² (Z={Z_percent:.2f}%, R={R_percent:.2f}%)")
 
     X_percent = np.sqrt(Z_percent**2 - R_percent**2)
 
@@ -60,7 +69,7 @@ def calcular_rx_transformador(
     R_ohm = (R_percent / 100) * Z_base
     X_ohm = (X_percent / 100) * Z_base
 
-    return (R_ohm, X_ohm)
+    return (R_ohm, X_ohm, None)
 
 
 def cargar_transformadores_2d(filepath: Optional[str] = None) -> pd.DataFrame:
@@ -116,7 +125,7 @@ def cargar_transformadores_2d(filepath: Optional[str] = None) -> pd.DataFrame:
         Z_percent = row.get('z_percent')
         Pcu_kW = row.get('pcu_kw')
 
-        R_ohm, X_ohm = calcular_rx_transformador(S_MVA, V_kV, Z_percent, Pcu_kW)
+        R_ohm, X_ohm, motivo_error = calcular_rx_transformador(S_MVA, V_kV, Z_percent, Pcu_kW)
 
         resultados.append({
             'nombre': row.get('nombre'),
@@ -125,8 +134,15 @@ def cargar_transformadores_2d(filepath: Optional[str] = None) -> pd.DataFrame:
             'tension_nominal_at': V_kV,
             'tension_nominal_bt': row.get('tension_nominal_bt'),
             'capacidad_nominal': S_MVA,
+            # Parámetros de cálculo
+            'S_MVA': S_MVA,
+            'V_kV': V_kV,
+            'Z_percent': Z_percent,
+            'Pcu_kW': Pcu_kW,
+            # Resultados
             'R_total': R_ohm,
             'X_total': X_ohm,
+            'motivo_sin_rx': motivo_error,
             'tipo_instalacion': 'trafo_2d'
         })
 
@@ -188,7 +204,7 @@ def cargar_transformadores_3d(filepath: Optional[str] = None) -> pd.DataFrame:
         Z_percent = row.get('z_percent_at_mt')
         Pcu_kW = row.get('pcu_kw_at_mt')
 
-        R_ohm, X_ohm = calcular_rx_transformador(S_MVA, V_kV, Z_percent, Pcu_kW)
+        R_ohm, X_ohm, motivo_error = calcular_rx_transformador(S_MVA, V_kV, Z_percent, Pcu_kW)
 
         resultados.append({
             'nombre': row.get('nombre'),
@@ -198,8 +214,15 @@ def cargar_transformadores_3d(filepath: Optional[str] = None) -> pd.DataFrame:
             'tension_nominal_mt': row.get('tension_nominal_mt'),
             'tension_nominal_bt': row.get('tension_nominal_bt'),
             'capacidad_nominal': S_MVA,
+            # Parámetros de cálculo (AT-MT)
+            'S_MVA': S_MVA,
+            'V_kV': V_kV,
+            'Z_percent': Z_percent,
+            'Pcu_kW': Pcu_kW,
+            # Resultados
             'R_total': R_ohm,
             'X_total': X_ohm,
+            'motivo_sin_rx': motivo_error,
             'tipo_instalacion': 'trafo_3d'
         })
 
@@ -252,6 +275,20 @@ def consolidar_infotecnica_completa(
     # Calcular R y X totales
     df_lineas_procesado['R_total'] = df_lineas_procesado['R_unitaria'] * df_lineas_procesado['longitud']
     df_lineas_procesado['X_total'] = df_lineas_procesado['X_unitaria'] * df_lineas_procesado['longitud']
+
+    # Agregar motivo si falta R/X
+    def obtener_motivo_linea(row):
+        if pd.notna(row['R_total']):
+            return None
+        if pd.isna(row['R_unitaria']):
+            return "Falta R_unitaria"
+        if pd.isna(row['X_unitaria']):
+            return "Falta X_unitaria"
+        if pd.isna(row['longitud']):
+            return "Falta longitud"
+        return "Datos incompletos"
+
+    df_lineas_procesado['motivo_sin_rx'] = df_lineas_procesado.apply(obtener_motivo_linea, axis=1)
     df_lineas_procesado['tipo_instalacion'] = 'linea'
 
     # Cargar transformadores
@@ -263,14 +300,36 @@ def consolidar_infotecnica_completa(
     df_trafo_3d = cargar_transformadores_3d(filepath_trafo_3d)
     print(f"  Transformadores 3D cargados: {len(df_trafo_3d)}")
 
-    # Combinar todos los DataFrames
+    # Guardar archivos CSV separados por tipo
+    OUTPUT_PATH = BASE_PATH / "outputs"
+    OUTPUT_PATH.mkdir(exist_ok=True)
+
+    # Eliminar filas sin nombre antes de guardar
+    df_lineas_limpio = df_lineas_procesado[df_lineas_procesado['nombre'].notna()].copy()
+    df_trafo_2d_limpio = df_trafo_2d[df_trafo_2d['nombre'].notna()].copy()
+    df_trafo_3d_limpio = df_trafo_3d[df_trafo_3d['nombre'].notna()].copy()
+
+    # Guardar CSVs separados
+    archivo_lineas = OUTPUT_PATH / "infotecnica_lineas.csv"
+    df_lineas_limpio.to_csv(archivo_lineas, index=False, encoding='utf-8')
+    print(f"\n  ✓ Guardado: {archivo_lineas}")
+
+    archivo_trafo_2d = OUTPUT_PATH / "infotecnica_transformadores_2d.csv"
+    df_trafo_2d_limpio.to_csv(archivo_trafo_2d, index=False, encoding='utf-8')
+    print(f"  ✓ Guardado: {archivo_trafo_2d}")
+
+    archivo_trafo_3d = OUTPUT_PATH / "infotecnica_transformadores_3d.csv"
+    df_trafo_3d_limpio.to_csv(archivo_trafo_3d, index=False, encoding='utf-8')
+    print(f"  ✓ Guardado: {archivo_trafo_3d}")
+
+    # Combinar todos los DataFrames para retornar (mantener compatibilidad)
     # Asegurar que tengan las mismas columnas básicas
     columnas_comunes = ['nombre', 'nombre_centro_control', 'tension_nominal',
-                        'R_total', 'X_total', 'tipo_instalacion']
+                        'R_total', 'X_total', 'motivo_sin_rx', 'tipo_instalacion']
 
-    df_lineas_final = df_lineas_procesado[columnas_comunes].copy()
-    df_trafo_2d_final = df_trafo_2d[columnas_comunes].copy()
-    df_trafo_3d_final = df_trafo_3d[columnas_comunes].copy()
+    df_lineas_final = df_lineas_limpio[columnas_comunes].copy()
+    df_trafo_2d_final = df_trafo_2d_limpio[columnas_comunes].copy()
+    df_trafo_3d_final = df_trafo_3d_limpio[columnas_comunes].copy()
 
     # Concatenar
     df_consolidado = pd.concat([
@@ -278,9 +337,6 @@ def consolidar_infotecnica_completa(
         df_trafo_2d_final,
         df_trafo_3d_final
     ], ignore_index=True)
-
-    # Eliminar filas sin nombre
-    df_consolidado = df_consolidado[df_consolidado['nombre'].notna()]
 
     return df_consolidado
 
