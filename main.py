@@ -15,6 +15,7 @@ from src import (
     homologar_con_infotecnica,
     resumen_homologacion
 )
+from src.cargar_transformadores_infotec import consolidar_infotecnica_completa
 
 # Ruta de outputs
 OUTPUT_PATH = Path(__file__).parent / "outputs"
@@ -61,9 +62,12 @@ def main():
     df_ent = cargar_lineas_ent()
     print(f"OK - {len(df_ent)} filas totales")
 
-    print("Cargando datos Infotécnica (R/X por tramo)...")
-    df_infotec = cargar_lineas_infotecnica()
-    print(f"OK - {len(df_infotec)} filas totales\n")
+    print("Cargando datos Infotécnica (líneas, trafos 2D y 3D)...")
+    df_infotec = consolidar_infotecnica_completa()
+    print(f"OK - {len(df_infotec)} instalaciones totales")
+    print(f"  - Líneas: {(df_infotec['tipo_instalacion'] == 'linea').sum()}")
+    print(f"  - Transformadores 2D: {(df_infotec['tipo_instalacion'] == 'trafo_2d').sum()}")
+    print(f"  - Transformadores 3D: {(df_infotec['tipo_instalacion'] == 'trafo_3d').sum()}\n")
 
     # 3. Aplicar filtros por mes de trabajo
     print("-"*50)
@@ -175,6 +179,13 @@ def main():
     df_final.to_csv(archivo_csv, index=False, sep=',', encoding='utf-8')
     print(f"Archivo exportado: {archivo_csv}")
     print(f"Total filas: {len(df_final)}")
+
+    # Exportar archivo consolidado de Infotécnica
+    archivo_infotec = OUTPUT_PATH / "infotecnica_consolidada.csv"
+    df_infotec.to_csv(archivo_infotec, index=False, sep=',', encoding='utf-8')
+    print(f"\nArchivo Infotécnica consolidada: {archivo_infotec}")
+    print(f"Total instalaciones: {len(df_infotec)}")
+    print(f"  - Con R/X calculados: {df_infotec['R_total'].notna().sum()}/{len(df_infotec)}")
 
     return df_final
 
