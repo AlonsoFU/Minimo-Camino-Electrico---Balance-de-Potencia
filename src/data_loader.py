@@ -1267,7 +1267,7 @@ def homologar_con_infotecnica(df_homologado: pd.DataFrame,
             'diff_X_Infotec_%': diff_X_Infotec_pct,
 
             # Info adicional
-            'voltaje_kv': voltaje_ent,
+            'voltaje_kv': voltaje_a_ent,
             'barra_a': row['barra_a'],
             'barra_b': row['barra_b'],
 
