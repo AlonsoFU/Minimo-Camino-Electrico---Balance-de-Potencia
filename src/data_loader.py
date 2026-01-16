@@ -1113,16 +1113,35 @@ def homologar_con_infotecnica(df_homologado: pd.DataFrame,
     infotec_info = []
     for _, row in df_infotec.iterrows():
         nombre = row['nombre']
-        barra_a, barra_b, voltaje = extraer_barras_infotecnica(nombre)
-        circuito = extraer_circuito_infotec(nombre)
+
+        # Si ya tiene columnas barra_a/barra_b (transformadores), usarlas directamente
+        if 'barra_a' in row and pd.notna(row.get('barra_a')):
+            # Transformador: usar barras ya generadas
+            barra_a_raw = str(row['barra_a'])
+            barra_b_raw = str(row['barra_b'])
+            voltaje_a = row.get('voltaje_a')
+            voltaje_b = row.get('voltaje_b')
+            # Para transformadores, guardar ambos voltajes para filtrado especial
+            voltaje = voltaje_a  # Voltaje principal (AT)
+            voltaje_secundario = voltaje_b  # Voltaje secundario (BT o MT)
+            # Los transformadores no tienen circuito
+            circuito = None
+        else:
+            # Línea: extraer barras del nombre como antes
+            barra_a_raw, barra_b_raw, voltaje = extraer_barras_infotecnica(nombre)
+            circuito = extraer_circuito_infotec(nombre)
+            voltaje_secundario = None
+
         infotec_info.append({
             'nombre_original': nombre,
-            'barra_a': normalizar_nombre_infotec(barra_a),
-            'barra_b': normalizar_nombre_infotec(barra_b),
+            'barra_a': normalizar_nombre_infotec(barra_a_raw) if barra_a_raw else '',
+            'barra_b': normalizar_nombre_infotec(barra_b_raw) if barra_b_raw else '',
             'voltaje': voltaje,
+            'voltaje_secundario': voltaje_secundario,  # Para transformadores
             'circuito': circuito,
             'R_total': row['R_total'],
-            'X_total': row['X_total']
+            'X_total': row['X_total'],
+            'tipo_instalacion': row.get('tipo_instalacion', 'linea')  # Agregar tipo
         })
 
     # Procesar cada línea del homologado
@@ -1143,9 +1162,19 @@ def homologar_con_infotecnica(df_homologado: pd.DataFrame,
 
         for info in infotec_info:
             # Filtrar por voltaje
+            # Para transformadores, verificar si coincide con voltaje primario O secundario
             if pd.notna(voltaje_ent) and pd.notna(info['voltaje']):
-                if abs(voltaje_ent - info['voltaje']) > 5:
-                    continue
+                diff_primario = abs(voltaje_ent - info['voltaje'])
+                # Si es transformador (tiene voltaje_secundario), verificar ambos
+                if info.get('voltaje_secundario') is not None:
+                    diff_secundario = abs(voltaje_ent - info['voltaje_secundario'])
+                    # Pasar si coincide con alguno de los dos voltajes
+                    if diff_primario > 5 and diff_secundario > 5:
+                        continue
+                else:
+                    # Línea: solo verificar voltaje único
+                    if diff_primario > 5:
+                        continue
 
             # Calcular similitud normal (A-A, B-B)
             sim_a = calcular_similitud_barras(barra_a_ent, info['barra_a'])
