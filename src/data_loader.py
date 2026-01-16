@@ -219,6 +219,8 @@ def cargar_lineas_ent(filepath: Optional[str] = None, sheet_name: str = 'lineas'
         'Nombre A->B': 'nombre',
         'Barra A': 'barra_a',
         'Barra B': 'barra_b',
+        'Tension A': 'voltaje_a_ent',
+        'Tension B': 'voltaje_b_ent',
         'V [kV]': 'voltaje_kv',
         'R [ohm]': 'resistencia_ohm',
         'X [ohm]': 'reactancia_ohm'
@@ -230,7 +232,7 @@ def cargar_lineas_ent(filepath: Optional[str] = None, sheet_name: str = 'lineas'
     df_limpio.rename(columns=columnas_presentes, inplace=True)
 
     # Convertir tipos de datos numéricos
-    cols_numericas = ['voltaje_kv', 'resistencia_ohm', 'reactancia_ohm']
+    cols_numericas = ['voltaje_a_ent', 'voltaje_b_ent', 'voltaje_kv', 'resistencia_ohm', 'reactancia_ohm']
 
     for col in cols_numericas:
         if col in df_limpio.columns:
@@ -1151,7 +1153,9 @@ def homologar_con_infotecnica(df_homologado: pd.DataFrame,
         # Extraer barras normalizadas del ENT
         barra_a_ent = normalizar_barra_ent(row['barra_a']) if pd.notna(row['barra_a']) else ''
         barra_b_ent = normalizar_barra_ent(row['barra_b']) if pd.notna(row['barra_b']) else ''
-        voltaje_ent = row['voltaje_kv']
+        # Obtener voltajes de ambas barras
+        voltaje_a_ent = row.get('voltaje_a_ent', row.get('voltaje_kv'))  # Fallback a voltaje_kv
+        voltaje_b_ent = row.get('voltaje_b_ent', row.get('voltaje_kv'))
         circuito_ent = row.get('circuito_ent')  # Viene de homologar_lineas()
 
         mejor_match = None
@@ -1161,19 +1165,25 @@ def homologar_con_infotecnica(df_homologado: pd.DataFrame,
         match_invertido = False
 
         for info in infotec_info:
-            # Filtrar por voltaje
-            # Para transformadores, verificar si coincide con voltaje primario O secundario
-            if pd.notna(voltaje_ent) and pd.notna(info['voltaje']):
-                diff_primario = abs(voltaje_ent - info['voltaje'])
-                # Si es transformador (tiene voltaje_secundario), verificar ambos
-                if info.get('voltaje_secundario') is not None:
-                    diff_secundario = abs(voltaje_ent - info['voltaje_secundario'])
-                    # Pasar si coincide con alguno de los dos voltajes
-                    if diff_primario > 5 and diff_secundario > 5:
-                        continue
-                else:
-                    # Línea: solo verificar voltaje único
-                    if diff_primario > 5:
+            # Filtrar por voltaje - AMBOS voltajes deben coincidir
+            if info.get('voltaje_secundario') is not None:
+                # Transformador: verificar que ambos voltajes coincidan
+                # barra_a_ent debe coincidir con voltaje primario (AT) de Infotécnica
+                # barra_b_ent debe coincidir con voltaje secundario (BT/MT) de Infotécnica
+                if pd.notna(voltaje_a_ent) and pd.notna(info['voltaje']):
+                    diff_a = abs(voltaje_a_ent - info['voltaje'])
+                    if diff_a > 5:
+                        continue  # Voltaje barra A no coincide
+
+                if pd.notna(voltaje_b_ent) and pd.notna(info['voltaje_secundario']):
+                    diff_b = abs(voltaje_b_ent - info['voltaje_secundario'])
+                    if diff_b > 5:
+                        continue  # Voltaje barra B no coincide
+            else:
+                # Línea: verificar voltaje único (ambas barras tienen el mismo voltaje)
+                if pd.notna(voltaje_a_ent) and pd.notna(info['voltaje']):
+                    diff = abs(voltaje_a_ent - info['voltaje'])
+                    if diff > 5:
                         continue
 
             # Calcular similitud normal (A-A, B-B)
