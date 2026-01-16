@@ -231,8 +231,8 @@ def cargar_transformadores_2d(filepath: Optional[str] = None) -> pd.DataFrame:
             'nombre_centro_control': row.get('nombre_centro_control'),
             'barra_a': barra_a,
             'barra_b': barra_b,
-            'voltaje_a': V_kV,
-            'voltaje_b': tension_bt,
+            'voltaje_a': voltaje_at_redondeado,  # Usar voltaje redondeado para homologación
+            'voltaje_b': voltaje_bt_redondeado,  # Usar voltaje redondeado para homologación
             'tension_nominal': V_kV,  # Usar AT como tensión nominal
             'tension_nominal_at': V_kV,
             'tension_nominal_bt': tension_bt,
@@ -329,8 +329,8 @@ def cargar_transformadores_3d(filepath: Optional[str] = None) -> pd.DataFrame:
             'nombre_centro_control': row.get('nombre_centro_control'),
             'barra_a': barra_a,
             'barra_b': barra_b,
-            'voltaje_a': V_kV,
-            'voltaje_b': tension_mt,
+            'voltaje_a': voltaje_at_redondeado,  # Usar voltaje redondeado para homologación
+            'voltaje_b': voltaje_mt_redondeado,  # Usar voltaje redondeado para homologación
             'tension_nominal': V_kV,  # Usar AT como tensión nominal
             'tension_nominal_at': V_kV,
             'tension_nominal_mt': tension_mt,

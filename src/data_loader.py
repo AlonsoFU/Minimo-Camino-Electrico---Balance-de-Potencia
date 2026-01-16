@@ -246,23 +246,27 @@ def cargar_lineas_ent(filepath: Optional[str] = None, sheet_name: str = 'lineas'
 
 def cargar_lineas_infotecnica(filepath: Optional[str] = None) -> pd.DataFrame:
     """
-    Carga el archivo Excel de Infotécnica (reporte secciones-tramos).
+    Carga y consolida todos los datos de Infotécnica: líneas y transformadores (2D y 3D).
 
     Args:
-        filepath: Ruta al archivo Excel. Si es None, usa la ruta por defecto.
+        filepath: Ruta al archivo Excel de líneas. Si es None, usa la ruta por defecto.
 
     Returns:
-        DataFrame con columnas:
+        DataFrame consolidado con columnas:
         - nombre, nombre_centro_control
         - tension_nominal, longitud
         - R_unitaria, X_unitaria (ohm/km)
         - R_total, X_total (ohm) = R/X_unitaria * longitud
+        - tipo_instalacion: 'linea', 'transformador_2d', o 'transformador_3d'
+        - barra_a, barra_b (solo para transformadores)
+        - voltaje_a, voltaje_b (solo para transformadores)
     """
+    # 1. Cargar líneas
     if filepath is None:
         filepath = BASE_PATH / "inputs" / "Actualizacion Infotecnica" / "reporte_secciones-tramos.xlsx"
 
     # Leer con header en fila 6 (0-indexed)
-    df = pd.read_excel(filepath, sheet_name=0, header=6)
+    df_lineas = pd.read_excel(filepath, sheet_name=0, header=6)
 
     # Seleccionar columnas requeridas
     columnas_origen = [
@@ -274,10 +278,10 @@ def cargar_lineas_infotecnica(filepath: Optional[str] = None) -> pd.DataFrame:
         '1.4 Reactancia de Secuencia positiva  X (50Hz)'
     ]
 
-    df_filtrado = df[columnas_origen].copy()
+    df_lineas = df_lineas[columnas_origen].copy()
 
     # Renombrar columnas
-    df_filtrado.columns = [
+    df_lineas.columns = [
         'nombre',
         'nombre_centro_control',
         'tension_nominal',
@@ -289,16 +293,54 @@ def cargar_lineas_infotecnica(filepath: Optional[str] = None) -> pd.DataFrame:
     # Convertir a numérico
     cols_numericas = ['tension_nominal', 'longitud', 'R_unitaria', 'X_unitaria']
     for col in cols_numericas:
-        df_filtrado[col] = pd.to_numeric(df_filtrado[col], errors='coerce')
+        df_lineas[col] = pd.to_numeric(df_lineas[col], errors='coerce')
 
     # Calcular R_total y X_total (R/X unitaria * longitud)
-    df_filtrado['R_total'] = df_filtrado['R_unitaria'] * df_filtrado['longitud']
-    df_filtrado['X_total'] = df_filtrado['X_unitaria'] * df_filtrado['longitud']
+    df_lineas['R_total'] = df_lineas['R_unitaria'] * df_lineas['longitud']
+    df_lineas['X_total'] = df_lineas['X_unitaria'] * df_lineas['longitud']
+
+    # Agregar tipo y columnas de transformador (vacías para líneas)
+    df_lineas['tipo_instalacion'] = 'linea'
+    df_lineas['barra_a'] = None
+    df_lineas['barra_b'] = None
+    df_lineas['voltaje_a'] = None
+    df_lineas['voltaje_b'] = None
 
     # Eliminar filas vacías
-    df_filtrado = df_filtrado.dropna(how='all')
+    df_lineas = df_lineas.dropna(how='all')
 
-    return df_filtrado
+    # 2. Cargar transformadores (2D y 3D)
+    from src.cargar_transformadores_infotec import cargar_transformadores_2d, cargar_transformadores_3d
+
+    df_trafos_2d = cargar_transformadores_2d()
+    df_trafos_3d = cargar_transformadores_3d()
+
+    # Combinar transformadores 2D y 3D
+    df_trafos = pd.concat([df_trafos_2d, df_trafos_3d], ignore_index=True)
+
+    # Los transformadores ya tienen: nombre, R_total, X_total, tipo_instalacion, barra_a, barra_b, voltaje_a, voltaje_b
+    # Agregar columnas faltantes para que coincidan con líneas
+    df_trafos['nombre_centro_control'] = None
+    df_trafos['tension_nominal'] = df_trafos.get('voltaje_a', None)  # Usar voltaje AT como tensión nominal
+    df_trafos['longitud'] = None
+    df_trafos['R_unitaria'] = None
+    df_trafos['X_unitaria'] = None
+
+    # 3. Consolidar
+    # Asegurar que ambos DataFrames tengan las mismas columnas en el mismo orden
+    columnas_comunes = [
+        'nombre', 'nombre_centro_control', 'tension_nominal', 'longitud',
+        'R_unitaria', 'X_unitaria', 'R_total', 'X_total',
+        'tipo_instalacion', 'barra_a', 'barra_b', 'voltaje_a', 'voltaje_b'
+    ]
+
+    df_lineas = df_lineas[columnas_comunes]
+    df_trafos = df_trafos[columnas_comunes]
+
+    # Concatenar
+    df_consolidado = pd.concat([df_lineas, df_trafos], ignore_index=True)
+
+    return df_consolidado
 
 
 def cruzar_operacion_mantenimiento(df_operacion: Optional[pd.DataFrame] = None,
@@ -982,6 +1024,8 @@ def homologar_lineas(df_ent: Optional[pd.DataFrame] = None,
             'barra_a': row_ent['barra_a'],
             'barra_b': row_ent['barra_b'],
             'voltaje_kv': voltaje_ent,
+            'voltaje_a_ent': row_ent.get('voltaje_a_ent', voltaje_ent),  # Voltaje individual barra A
+            'voltaje_b_ent': row_ent.get('voltaje_b_ent', voltaje_ent),  # Voltaje individual barra B
             # Valores R/X de ENT
             'R_ent': row_ent['resistencia_ohm'],
             'X_ent': row_ent['reactancia_ohm'],
@@ -1180,10 +1224,13 @@ def homologar_con_infotecnica(df_homologado: pd.DataFrame,
                     if diff_b > 5:
                         continue  # Voltaje barra B no coincide
             else:
-                # Línea: verificar voltaje único (ambas barras tienen el mismo voltaje)
+                # Línea: verificar voltaje único (AMBAS barras deben tener el mismo voltaje)
+                # Para que sea una línea en ENT, voltaje_a_ent debe ser igual a voltaje_b_ent
                 if pd.notna(voltaje_a_ent) and pd.notna(info['voltaje']):
-                    diff = abs(voltaje_a_ent - info['voltaje'])
-                    if diff > 5:
+                    diff_a = abs(voltaje_a_ent - info['voltaje'])
+                    diff_b = abs(voltaje_b_ent - info['voltaje']) if pd.notna(voltaje_b_ent) else diff_a
+                    # AMBAS barras deben coincidir con el voltaje de la línea
+                    if diff_a > 5 or diff_b > 5:
                         continue
 
             # Calcular similitud normal (A-A, B-B)
