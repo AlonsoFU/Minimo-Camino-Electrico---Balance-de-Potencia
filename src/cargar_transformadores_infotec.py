@@ -9,6 +9,38 @@ from typing import Tuple, Optional
 
 BASE_PATH = Path(__file__).parent.parent
 
+# Niveles de voltaje estándar basados en ENT (en kV)
+NIVELES_VOLTAJE_ESTANDAR = [13, 23, 33, 44, 62, 66, 100, 110, 154, 220, 345, 500]
+
+
+def redondear_voltaje_a_nivel_estandar(voltaje: float) -> int:
+    """
+    Redondea un voltaje al nivel estándar más cercano de ENT.
+
+    Los niveles estándar son: 13, 23, 33, 44, 62, 66, 100, 110, 154, 220, 345, 500 kV
+
+    Ejemplos:
+    - 115 kV -> 110 kV
+    - 220.21 kV -> 220 kV
+    - 13.8 kV -> 13 kV
+    - 69 kV -> 66 kV
+    - 15 kV -> 13 kV
+
+    Args:
+        voltaje: Voltaje en kV
+
+    Returns:
+        Voltaje redondeado al nivel estándar más cercano
+    """
+    if pd.isna(voltaje):
+        return None
+
+    # Encontrar el nivel estándar más cercano
+    voltaje_float = float(voltaje)
+    nivel_cercano = min(NIVELES_VOLTAJE_ESTANDAR, key=lambda x: abs(x - voltaje_float))
+
+    return nivel_cercano
+
 
 def extraer_nombre_base_subestacion(nombre: str) -> str:
     """
@@ -176,10 +208,14 @@ def cargar_transformadores_2d(filepath: Optional[str] = None) -> pd.DataFrame:
         nombre_base = extraer_nombre_base_subestacion(nombre_completo)
         tension_bt = row.get('tension_nominal_bt')
 
+        # Redondear voltajes a niveles estándar de ENT
+        voltaje_at_redondeado = redondear_voltaje_a_nivel_estandar(V_kV)
+        voltaje_bt_redondeado = redondear_voltaje_a_nivel_estandar(tension_bt)
+
         # Formato: "SUBESTACION AT -> SUBESTACION BT"
         # Similar a ENT: "D.ALMAGRO1____220->D.ALMAGRO_____110"
-        barra_a = f"{nombre_base} {int(V_kV) if pd.notna(V_kV) else ''}" if nombre_base else None
-        barra_b = f"{nombre_base} {int(tension_bt) if pd.notna(tension_bt) else ''}" if nombre_base else None
+        barra_a = f"{nombre_base} {voltaje_at_redondeado}" if nombre_base and voltaje_at_redondeado else None
+        barra_b = f"{nombre_base} {voltaje_bt_redondeado}" if nombre_base and voltaje_bt_redondeado else None
 
         resultados.append({
             'nombre': nombre_completo,
@@ -270,10 +306,14 @@ def cargar_transformadores_3d(filepath: Optional[str] = None) -> pd.DataFrame:
         nombre_base = extraer_nombre_base_subestacion(nombre_completo)
         tension_mt = row.get('tension_nominal_mt')
 
+        # Redondear voltajes a niveles estándar de ENT
+        voltaje_at_redondeado = redondear_voltaje_a_nivel_estandar(V_kV)
+        voltaje_mt_redondeado = redondear_voltaje_a_nivel_estandar(tension_mt)
+
         # Formato: "SUBESTACION AT -> SUBESTACION MT"
         # Similar a ENT: "D.ALMAGRO1____220->D.ALMAGRO_____110"
-        barra_a = f"{nombre_base} {int(V_kV) if pd.notna(V_kV) else ''}" if nombre_base else None
-        barra_b = f"{nombre_base} {int(tension_mt) if pd.notna(tension_mt) else ''}" if nombre_base else None
+        barra_a = f"{nombre_base} {voltaje_at_redondeado}" if nombre_base and voltaje_at_redondeado else None
+        barra_b = f"{nombre_base} {voltaje_mt_redondeado}" if nombre_base and voltaje_mt_redondeado else None
 
         resultados.append({
             'nombre': nombre_completo,
