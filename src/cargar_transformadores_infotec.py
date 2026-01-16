@@ -10,17 +10,26 @@ from typing import Tuple, Optional
 BASE_PATH = Path(__file__).parent.parent
 
 # Niveles de voltaje estándar basados en ENT (en kV)
-NIVELES_VOLTAJE_ESTANDAR = [13, 23, 33, 44, 62, 66, 100, 110, 154, 220, 345, 500]
+# Nota: 63/62 kV se consideran equivalentes a 66 kV
+#       100 kV se considera equivalente a 110 kV
+NIVELES_VOLTAJE_ESTANDAR = [13, 23, 33, 44, 66, 110, 154, 220, 345, 500]
 
 
 def redondear_voltaje_a_nivel_estandar(voltaje: float) -> int:
     """
     Redondea un voltaje al nivel estándar más cercano de ENT.
 
-    Los niveles estándar son: 13, 23, 33, 44, 62, 66, 100, 110, 154, 220, 345, 500 kV
+    Los niveles estándar son: 13, 23, 33, 44, 66, 110, 154, 220, 345, 500 kV
+
+    Notas de equivalencia:
+    - 62/63 kV se consideran equivalentes a 66 kV
+    - 100 kV se considera equivalente a 110 kV
 
     Ejemplos:
     - 115 kV -> 110 kV
+    - 100 kV -> 110 kV
+    - 63 kV -> 66 kV
+    - 62 kV -> 66 kV
     - 220.21 kV -> 220 kV
     - 13.8 kV -> 13 kV
     - 69 kV -> 66 kV
