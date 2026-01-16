@@ -10,6 +10,50 @@ from typing import Tuple, Optional
 BASE_PATH = Path(__file__).parent.parent
 
 
+def extraer_nombre_base_subestacion(nombre: str) -> str:
+    """
+    Extrae el nombre base de una subestación removiendo patrones comunes.
+
+    Ejemplos:
+    - "PLANTA ARAUCO 69/13.8KV 40MVA 1" -> "PLANTA ARAUCO"
+    - "T2D S/E VENTANAS HT1A" -> "VENTANAS"
+    - "CONCEPCION 154/66KV 56MVA 2" -> "CONCEPCION"
+    - "NUEVA VENTANAS 220/6.9/6.9KV 44MVA" -> "NUEVA VENTANAS"
+
+    Args:
+        nombre: Nombre completo del transformador
+
+    Returns:
+        Nombre base de la subestación
+    """
+    import re
+
+    if pd.isna(nombre):
+        return ""
+
+    # Limpiar espacios
+    nombre_limpio = str(nombre).strip()
+
+    # Remover prefijos comunes
+    nombre_limpio = re.sub(r'^T2D\s+S/E\s+', '', nombre_limpio, flags=re.IGNORECASE)
+    nombre_limpio = re.sub(r'^T3D\s+S/E\s+', '', nombre_limpio, flags=re.IGNORECASE)
+    nombre_limpio = re.sub(r'^S/E\s+', '', nombre_limpio, flags=re.IGNORECASE)
+    nombre_limpio = re.sub(r'^CENTRAL\s+', '', nombre_limpio, flags=re.IGNORECASE)
+
+    # Remover patrones de voltaje/capacidad más complejos
+    # Ejemplos: "69/13.8KV 40MVA 1", "154/66KV 56MVA 2", "220/6.9/6.9KV 44MVA", "154/66/14.8 75MVA N°1"
+    nombre_limpio = re.sub(r'\s+\d+(\.\d+)?(/\d+(\.\d+)?)+\s*KV.*$', '', nombre_limpio, flags=re.IGNORECASE)
+    nombre_limpio = re.sub(r'\s+\d+(\.\d+)?/\d+(\.\d+)?\s*KV.*$', '', nombre_limpio, flags=re.IGNORECASE)
+    # Patrón sin KV pero con MVA: "154/66/14.8 75MVA"
+    nombre_limpio = re.sub(r'\s+\d+(\.\d+)?(/\d+(\.\d+)?)+\s+\d+MVA.*$', '', nombre_limpio, flags=re.IGNORECASE)
+    nombre_limpio = re.sub(r'\s+\d+(\.\d+)?/\d+(\.\d+)?\s+\d+MVA.*$', '', nombre_limpio, flags=re.IGNORECASE)
+    nombre_limpio = re.sub(r'\s+[A-Z]{1,3}\d+[A-Z]?$', '', nombre_limpio)  # Códigos como HT1A, JT1, CG2
+    nombre_limpio = re.sub(r'\s+N[°º]\d+$', '', nombre_limpio, flags=re.IGNORECASE)  # N°1, N°2
+    nombre_limpio = re.sub(r'\s+\d+$', '', nombre_limpio)  # Números finales
+
+    return nombre_limpio.strip()
+
+
 def calcular_rx_transformador(
     S_MVA: float,
     V_kV: float,
@@ -127,12 +171,26 @@ def cargar_transformadores_2d(filepath: Optional[str] = None) -> pd.DataFrame:
 
         R_ohm, X_ohm, motivo_error = calcular_rx_transformador(S_MVA, V_kV, Z_percent, Pcu_kW)
 
+        # Extraer nombre base y crear barras para homologación
+        nombre_completo = row.get('nombre')
+        nombre_base = extraer_nombre_base_subestacion(nombre_completo)
+        tension_bt = row.get('tension_nominal_bt')
+
+        # Formato: "SUBESTACION AT -> SUBESTACION BT"
+        # Similar a ENT: "D.ALMAGRO1____220->D.ALMAGRO_____110"
+        barra_a = f"{nombre_base} {int(V_kV) if pd.notna(V_kV) else ''}" if nombre_base else None
+        barra_b = f"{nombre_base} {int(tension_bt) if pd.notna(tension_bt) else ''}" if nombre_base else None
+
         resultados.append({
-            'nombre': row.get('nombre'),
+            'nombre': nombre_completo,
             'nombre_centro_control': row.get('nombre_centro_control'),
+            'barra_a': barra_a,
+            'barra_b': barra_b,
+            'voltaje_a': V_kV,
+            'voltaje_b': tension_bt,
             'tension_nominal': V_kV,  # Usar AT como tensión nominal
             'tension_nominal_at': V_kV,
-            'tension_nominal_bt': row.get('tension_nominal_bt'),
+            'tension_nominal_bt': tension_bt,
             'capacidad_nominal': S_MVA,
             # Parámetros de cálculo
             'S_MVA': S_MVA,
@@ -206,12 +264,27 @@ def cargar_transformadores_3d(filepath: Optional[str] = None) -> pd.DataFrame:
 
         R_ohm, X_ohm, motivo_error = calcular_rx_transformador(S_MVA, V_kV, Z_percent, Pcu_kW)
 
+        # Extraer nombre base y crear barras para homologación
+        # Para transformadores 3D, usar AT y MT (los dos niveles más altos)
+        nombre_completo = row.get('nombre')
+        nombre_base = extraer_nombre_base_subestacion(nombre_completo)
+        tension_mt = row.get('tension_nominal_mt')
+
+        # Formato: "SUBESTACION AT -> SUBESTACION MT"
+        # Similar a ENT: "D.ALMAGRO1____220->D.ALMAGRO_____110"
+        barra_a = f"{nombre_base} {int(V_kV) if pd.notna(V_kV) else ''}" if nombre_base else None
+        barra_b = f"{nombre_base} {int(tension_mt) if pd.notna(tension_mt) else ''}" if nombre_base else None
+
         resultados.append({
-            'nombre': row.get('nombre'),
+            'nombre': nombre_completo,
             'nombre_centro_control': row.get('nombre_centro_control'),
+            'barra_a': barra_a,
+            'barra_b': barra_b,
+            'voltaje_a': V_kV,
+            'voltaje_b': tension_mt,
             'tension_nominal': V_kV,  # Usar AT como tensión nominal
             'tension_nominal_at': V_kV,
-            'tension_nominal_mt': row.get('tension_nominal_mt'),
+            'tension_nominal_mt': tension_mt,
             'tension_nominal_bt': row.get('tension_nominal_bt'),
             'capacidad_nominal': S_MVA,
             # Parámetros de cálculo (AT-MT)
@@ -303,6 +376,12 @@ def consolidar_infotecnica_completa(
     df_lineas_agrupado['motivo_sin_rx'] = df_lineas_agrupado.apply(obtener_motivo_linea, axis=1)
     df_lineas_agrupado['tipo_instalacion'] = 'linea'
 
+    # Agregar columnas de barras (vacías para líneas, solo para transformadores)
+    df_lineas_agrupado['barra_a'] = None
+    df_lineas_agrupado['barra_b'] = None
+    df_lineas_agrupado['voltaje_a'] = None
+    df_lineas_agrupado['voltaje_b'] = None
+
     # Cargar transformadores
     print("Cargando transformadores 2D...")
     df_trafo_2d = cargar_transformadores_2d(filepath_trafo_2d)
@@ -336,7 +415,8 @@ def consolidar_infotecnica_completa(
 
     # Combinar todos los DataFrames para retornar (mantener compatibilidad)
     # Asegurar que tengan las mismas columnas básicas
-    columnas_comunes = ['nombre', 'nombre_centro_control', 'tension_nominal',
+    columnas_comunes = ['nombre', 'nombre_centro_control', 'barra_a', 'barra_b',
+                        'voltaje_a', 'voltaje_b', 'tension_nominal',
                         'R_total', 'X_total', 'motivo_sin_rx', 'tipo_instalacion']
 
     df_lineas_final = df_lineas_limpio[columnas_comunes].copy()
