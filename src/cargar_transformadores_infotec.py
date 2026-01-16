@@ -251,7 +251,7 @@ def consolidar_infotecnica_completa(
 
     # Procesar líneas
     df_lineas_procesado = df_lineas[[
-        'Nombre',
+        'Nombre Tramo',  # Usar Nombre Tramo en lugar de Nombre
         'Nombre Centro Control',
         '1.1 Tensión nominal',
         '1.2 Longitud conductor',
@@ -260,7 +260,7 @@ def consolidar_infotecnica_completa(
     ]].copy()
 
     df_lineas_procesado.columns = [
-        'nombre',
+        'nombre',  # Ahora es Nombre Tramo
         'nombre_centro_control',
         'tension_nominal',
         'longitud',
@@ -272,9 +272,21 @@ def consolidar_infotecnica_completa(
     for col in ['tension_nominal', 'longitud', 'R_unitaria', 'X_unitaria']:
         df_lineas_procesado[col] = pd.to_numeric(df_lineas_procesado[col], errors='coerce')
 
-    # Calcular R y X totales
+    # Calcular R y X totales ANTES de agrupar
     df_lineas_procesado['R_total'] = df_lineas_procesado['R_unitaria'] * df_lineas_procesado['longitud']
     df_lineas_procesado['X_total'] = df_lineas_procesado['X_unitaria'] * df_lineas_procesado['longitud']
+
+    # AGRUPAR por Nombre Tramo y SUMAR los valores R y X
+    # Cuando hay tramos repetidos (ej: CARDONES - REFUGIO 110KV C1), se suman
+    df_lineas_agrupado = df_lineas_procesado.groupby('nombre', dropna=False).agg({
+        'nombre_centro_control': 'first',  # Tomar el primero
+        'tension_nominal': 'first',  # Debería ser la misma para todos
+        'longitud': 'sum',  # Sumar longitudes
+        'R_unitaria': 'mean',  # Promedio (para referencia)
+        'X_unitaria': 'mean',  # Promedio (para referencia)
+        'R_total': 'sum',  # SUMAR R totales
+        'X_total': 'sum'   # SUMAR X totales
+    }).reset_index()
 
     # Agregar motivo si falta R/X
     def obtener_motivo_linea(row):
@@ -288,8 +300,8 @@ def consolidar_infotecnica_completa(
             return "Falta longitud"
         return "Datos incompletos"
 
-    df_lineas_procesado['motivo_sin_rx'] = df_lineas_procesado.apply(obtener_motivo_linea, axis=1)
-    df_lineas_procesado['tipo_instalacion'] = 'linea'
+    df_lineas_agrupado['motivo_sin_rx'] = df_lineas_agrupado.apply(obtener_motivo_linea, axis=1)
+    df_lineas_agrupado['tipo_instalacion'] = 'linea'
 
     # Cargar transformadores
     print("Cargando transformadores 2D...")
@@ -305,7 +317,7 @@ def consolidar_infotecnica_completa(
     OUTPUT_PATH.mkdir(exist_ok=True)
 
     # Eliminar filas sin nombre antes de guardar
-    df_lineas_limpio = df_lineas_procesado[df_lineas_procesado['nombre'].notna()].copy()
+    df_lineas_limpio = df_lineas_agrupado[df_lineas_agrupado['nombre'].notna()].copy()
     df_trafo_2d_limpio = df_trafo_2d[df_trafo_2d['nombre'].notna()].copy()
     df_trafo_3d_limpio = df_trafo_3d[df_trafo_3d['nombre'].notna()].copy()
 
