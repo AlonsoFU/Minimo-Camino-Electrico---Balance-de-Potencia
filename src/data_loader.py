@@ -1137,6 +1137,8 @@ def extraer_barras_infotecnica(nombre: str) -> Tuple[str, str, Optional[float]]:
     Formato: "BARRA A - BARRA B VVVkV C#"
     Ejemplo: "PAPOSO - TAP TAL TAL 220KV C1"
 
+    IMPORTANTE: Normaliza guiones largos (– y —) a guión normal (-) antes de procesar.
+
     Args:
         nombre: Nombre de la línea Infotécnica
 
@@ -1147,6 +1149,10 @@ def extraer_barras_infotecnica(nombre: str) -> Tuple[str, str, Optional[float]]:
         return ('', '', None)
 
     nombre = str(nombre)
+
+    # IMPORTANTE: Normalizar guiones largos (en-dash – y em-dash —) a guión normal (-)
+    # Esto es crítico porque Infotécnica usa guión largo en algunos nombres
+    nombre = nombre.replace('–', '-').replace('—', '-')
 
     # Patrón: BARRA_A - BARRA_B VVVkV C#
     match = re.match(r'(.+?)\s*-\s*(.+?)\s+(\d{2,3})KV\s+C\d+$', nombre, re.IGNORECASE)
@@ -1283,6 +1289,11 @@ def homologar_con_infotecnica(df_homologado: pd.DataFrame,
         match_invertido = False
 
         for info in infotec_info:
+            # IMPORTANTE: Si el voltaje de Infotécnica es None, saltar esta línea
+            # Esto evita matches incorrectos cuando no se pudo extraer el voltaje del nombre
+            if pd.isna(info['voltaje']):
+                continue
+
             # Filtrar por voltaje - AMBOS voltajes deben coincidir
             if info.get('voltaje_secundario') is not None:
                 # Transformador: verificar que ambos voltajes coincidan
@@ -1300,7 +1311,7 @@ def homologar_con_infotecnica(df_homologado: pd.DataFrame,
             else:
                 # Línea: verificar voltaje único (AMBAS barras deben tener el mismo voltaje)
                 # Para que sea una línea en ENT, voltaje_a_ent debe ser igual a voltaje_b_ent
-                if pd.notna(voltaje_a_ent) and pd.notna(info['voltaje']):
+                if pd.notna(voltaje_a_ent):
                     diff_a = abs(voltaje_a_ent - info['voltaje'])
                     diff_b = abs(voltaje_b_ent - info['voltaje']) if pd.notna(voltaje_b_ent) else diff_a
                     # AMBAS barras deben coincidir con el voltaje de la línea
