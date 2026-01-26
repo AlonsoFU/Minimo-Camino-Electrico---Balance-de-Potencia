@@ -19,11 +19,12 @@ MESES = {
     'Sep': 9, 'Oct': 10, 'Nov': 11, 'Dic': 12
 }
 
-# Diccionario de abreviaciones confirmadas (OPCIONAL - no se usa automáticamente)
-# Basado en análisis de 5,261 barras reales (ver analizar_abreviaciones_confirmadas.py)
-# Para usarlo, llamar a expandir_abreviaciones() manualmente
+# Diccionario de abreviaciones confirmadas
+# Basado en análisis de barras reales y casos problemáticos de homologación
 ABREVIACIONES = {
+    # Nombres con D.
     'D.ALMAGRO': 'DIEGO DE ALMAGRO',
+    # Nombres con S.
     'S.VICENTE': 'SAN VICENTE',
     'S.ANTONIO': 'SAN ANTONIO',
     'S.FELIPE': 'SAN FELIPE',
@@ -31,11 +32,22 @@ ABREVIACIONES = {
     'S.CARLOS': 'SAN CARLOS',
     'S.PEDRO': 'SAN PEDRO',
     'S.RAFAEL': 'SAN RAFAEL',
+    'S.ANDRES': 'SAN ANDRES',
+    'S.LUIS': 'SAN LUIS',
+    'S.JOSE': 'SAN JOSE',
+    # Nombres con STA.
     'STA.ROSA': 'SANTA ROSA',
     'STA.ELISA': 'SANTA ELISA',
+    # Nombres con L.
     'L.CHANGOS': 'LOS CHANGOS',
     'L.VILOS': 'LOS VILOS',
     'L.ANGELES': 'LOS ANGELES',
+    'L.MAQUIS': 'LOS MAQUIS',
+    'L.QUILOS': 'LOS QUILOS',
+    # Nombres con C.
+    'C.PINTO': 'CARRERA PINTO',
+    # Nombres con A.
+    'A.JAHUEL': 'ALTO JAHUEL',
 }
 
 
@@ -591,7 +603,8 @@ def normalizar_barra_ent(barra: str) -> str:
 
     El formato ENT es: NOMBRE_PADDED_VOLTAJE (ej: PAPOSO________220)
     - Elimina el sufijo de voltaje (últimos 2-3 dígitos)
-    - Reemplaza guiones bajos y puntos por espacios
+    - Expande abreviaciones (D.ALMAGRO -> DIEGO DE ALMAGRO, C.PINTO -> CARRERA PINTO)
+    - Reemplaza guiones bajos por espacios
     - Convierte a minúsculas
 
     Args:
@@ -603,8 +616,12 @@ def normalizar_barra_ent(barra: str) -> str:
     barra = str(barra)
     # Eliminar sufijo de voltaje (últimos 2-3 dígitos precedidos de _)
     barra = re.sub(r'_*(\d{2,3})$', '', barra)
-    # Reemplazar caracteres especiales
-    barra = barra.replace('_', ' ').replace('.', ' ')
+    # Reemplazar guiones bajos por espacios (ANTES de expandir abreviaciones)
+    barra = barra.replace('_', ' ')
+    # Expandir abreviaciones (D.ALMAGRO -> DIEGO DE ALMAGRO, etc.)
+    barra = expandir_abreviaciones(barra)
+    # Reemplazar puntos restantes por espacios
+    barra = barra.replace('.', ' ')
     # Limpiar espacios múltiples y convertir a minúsculas
     return ' '.join(barra.split()).lower().strip()
 
