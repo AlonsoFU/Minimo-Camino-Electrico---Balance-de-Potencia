@@ -10,30 +10,34 @@ from typing import Tuple, Optional
 BASE_PATH = Path(__file__).parent.parent
 
 # Niveles de voltaje estándar basados en ENT (en kV)
-# Nota: 63/62 kV se consideran equivalentes a 66 kV
+# Nota: Todos los voltajes < 25 kV se consideran equivalentes (nivel 13 kV)
+#       62/63 kV se consideran equivalentes a 66 kV
 #       100 kV se considera equivalente a 110 kV
-NIVELES_VOLTAJE_ESTANDAR = [13, 23, 33, 44, 66, 110, 154, 220, 345, 500]
+NIVELES_VOLTAJE_ESTANDAR = [13, 33, 44, 66, 110, 154, 220, 345, 500]
 
 
 def redondear_voltaje_a_nivel_estandar(voltaje: float) -> int:
     """
     Redondea un voltaje al nivel estándar más cercano de ENT.
 
-    Los niveles estándar son: 13, 23, 33, 44, 66, 110, 154, 220, 345, 500 kV
+    Los niveles estándar son: 13, 33, 44, 66, 110, 154, 220, 345, 500 kV
 
     Notas de equivalencia:
+    - TODOS los voltajes < 25 kV se consideran equivalentes a 13 kV
+      (incluye 13, 13.2, 13.8, 15, 23, 24 kV)
     - 62/63 kV se consideran equivalentes a 66 kV
     - 100 kV se considera equivalente a 110 kV
 
     Ejemplos:
-    - 115 kV -> 110 kV
-    - 100 kV -> 110 kV
-    - 63 kV -> 66 kV
-    - 62 kV -> 66 kV
-    - 220.21 kV -> 220 kV
+    - 13 kV -> 13 kV
     - 13.8 kV -> 13 kV
-    - 69 kV -> 66 kV
-    - 15 kV -> 13 kV
+    - 23 kV -> 13 kV
+    - 24 kV -> 13 kV
+    - 33 kV -> 33 kV
+    - 63 kV -> 66 kV
+    - 100 kV -> 110 kV
+    - 115 kV -> 110 kV
+    - 220.21 kV -> 220 kV
 
     Args:
         voltaje: Voltaje en kV
@@ -44,8 +48,13 @@ def redondear_voltaje_a_nivel_estandar(voltaje: float) -> int:
     if pd.isna(voltaje):
         return None
 
-    # Encontrar el nivel estándar más cercano
     voltaje_float = float(voltaje)
+
+    # Todos los voltajes menores a 25 kV se consideran equivalentes (nivel 13)
+    if voltaje_float < 25:
+        return 13
+
+    # Para voltajes >= 25, encontrar el nivel estándar más cercano
     nivel_cercano = min(NIVELES_VOLTAJE_ESTANDAR, key=lambda x: abs(x - voltaje_float))
 
     return nivel_cercano
