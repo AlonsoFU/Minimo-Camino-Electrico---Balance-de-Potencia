@@ -38,12 +38,31 @@ ABREVIACIONES = {
     # Nombres con STA.
     'STA.ROSA': 'SANTA ROSA',
     'STA.ELISA': 'SANTA ELISA',
-    # Nombres con L.
+    # Nombres con L. (LOS/LAS/LA/LO)
     'L.CHANGOS': 'LOS CHANGOS',
     'L.VILOS': 'LOS VILOS',
     'L.ANGELES': 'LOS ANGELES',
     'L.MAQUIS': 'LOS MAQUIS',
     'L.QUILOS': 'LOS QUILOS',
+    'L.LOROS': 'LOS LOROS',
+    'L.NEGROS': 'LOS NEGROS',
+    'L.LAGOS': 'LOS LAGOS',
+    'L.LIRIOS': 'LOS LIRIOS',
+    'L.ALMENDROS': 'LOS ALMENDROS',
+    'L.COLORADAS': 'LAS COLORADAS',
+    'L.PALMAS': 'LAS PALMAS',
+    'L.VEGAS': 'LAS VEGAS',
+    'L.CABRAS': 'LAS CABRAS',
+    'L.BAYAS': 'LAS BAYAS',
+    'L.VIZCACHAS': 'LAS VIZCACHAS',
+    'L.LUCES': 'LAS LUCES',
+    'L.LAJUELAS': 'LAS LAJUELAS',
+    'L.UNION': 'LA UNION',
+    'L.LAJA': 'LA LAJA',
+    'L.HIGUERA': 'LA HIGUERA',
+    'L.ERMITA': 'LA ERMITA',
+    'L.CONFLUENCIA': 'LA CONFLUENCIA',
+    'L.VERDE': 'LO VERDE',
     # Nombres con C.
     'C.PINTO': 'CARRERA PINTO',
     # Nombres con A.
@@ -1145,15 +1164,24 @@ def extraer_barras_infotecnica(nombre: str) -> Tuple[str, str, Optional[float]]:
     # Esto es crítico porque Infotécnica usa guión largo en algunos nombres
     nombre = nombre.replace('–', '-').replace('—', '-')
 
-    # Patrón: BARRA_A - BARRA_B VVV kV C# (espacio opcional entre número y KV)
-    match = re.match(r'(.+?)\s*-\s*(.+?)\s+(\d{2,3})\s*KV\s+C\d+$', nombre, re.IGNORECASE)
+    # Patrón: BARRA_A - BARRA_B VVV kV C#
+    # Acepta voltajes enteros o decimales (13.2, 13,8), espacio opcional entre número y KV
+    match = re.match(r'(.+?)\s*-\s*(.+?)\s+(\d+[.,]?\d*)\s*[Kk][Vv]\s+C\d+$', nombre)
     if match:
-        return (match.group(1).strip(), match.group(2).strip(), float(match.group(3)))
+        voltaje_str = match.group(3).replace(',', '.')
+        return (match.group(1).strip(), match.group(2).strip(), float(voltaje_str))
+
+    # Fallback: sin espacio antes del voltaje (ej: "(CGE)66KV")
+    match = re.match(r'(.+?)\s*-\s*(.+?)(\d+[.,]?\d*)\s*[Kk][Vv]\s*C\d*$', nombre)
+    if match:
+        voltaje_str = match.group(3).replace(',', '.')
+        return (match.group(1).strip(), match.group(2).strip(), float(voltaje_str))
 
     # Fallback: intentar sin el circuito
-    match = re.match(r'(.+?)\s*-\s*(.+?)\s+(\d{2,3})\s*KV', nombre, re.IGNORECASE)
+    match = re.match(r'(.+?)\s*-\s*(.+?)\s+(\d+[.,]?\d*)\s*[Kk][Vv]', nombre)
     if match:
-        return (match.group(1).strip(), match.group(2).strip(), float(match.group(3)))
+        voltaje_str = match.group(3).replace(',', '.')
+        return (match.group(1).strip(), match.group(2).strip(), float(voltaje_str))
 
     return (nombre, '', None)
 
