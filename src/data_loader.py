@@ -269,9 +269,9 @@ def cargar_lineas_infotecnica(filepath: Optional[str] = None) -> pd.DataFrame:
     df_lineas = pd.read_excel(filepath, sheet_name=0, header=6)
 
     # Seleccionar columnas requeridas
-    # Usar 'Nombre' (segunda columna) que tiene el formato: "BARRA_A - BARRA_B VOLTAJE C#"
+    # Usar 'Nombre Tramo' que tiene el formato: "BARRA_A - BARRA_B VOLTAJE C#"
     columnas_origen = [
-        'Nombre',
+        'Nombre Tramo',
         'Nombre Centro Control',
         '1.1 Tensión nominal',
         '1.2 Longitud conductor',
