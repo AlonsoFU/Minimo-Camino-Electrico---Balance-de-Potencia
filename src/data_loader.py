@@ -1193,10 +1193,15 @@ def homologar_con_infotecnica(df_homologado: pd.DataFrame,
             # Los transformadores no tienen circuito
             circuito = None
         else:
-            # Línea: extraer barras del nombre como antes
-            barra_a_raw, barra_b_raw, voltaje = extraer_barras_infotecnica(nombre)
+            # Línea: extraer barras del nombre
+            barra_a_raw, barra_b_raw, voltaje_nombre = extraer_barras_infotecnica(nombre)
             circuito = extraer_circuito_infotec(nombre)
             voltaje_secundario = None
+            # Usar tension_nominal del DataFrame (más confiable que extraer del nombre)
+            # Si tension_nominal no está disponible, usar el voltaje extraído del nombre como fallback
+            voltaje = row.get('tension_nominal')
+            if pd.isna(voltaje) and voltaje_nombre is not None:
+                voltaje = voltaje_nombre
 
         infotec_info.append({
             'nombre_original': nombre,
@@ -1229,12 +1234,8 @@ def homologar_con_infotecnica(df_homologado: pd.DataFrame,
         match_invertido = False
 
         for info in infotec_info:
-            # IMPORTANTE: Si el voltaje de Infotécnica es None, saltar esta línea
-            # Esto evita matches incorrectos cuando no se pudo extraer el voltaje del nombre
-            if pd.isna(info['voltaje']):
-                continue
-
             # Filtrar por voltaje - AMBOS voltajes deben coincidir
+            # Solo aplicar filtro si ambos voltajes están disponibles
             if info.get('voltaje_secundario') is not None:
                 # Transformador: verificar que ambos voltajes coincidan
                 # barra_a_ent debe coincidir con voltaje primario (AT) de Infotécnica
