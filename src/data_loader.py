@@ -1145,13 +1145,13 @@ def extraer_barras_infotecnica(nombre: str) -> Tuple[str, str, Optional[float]]:
     # Esto es crítico porque Infotécnica usa guión largo en algunos nombres
     nombre = nombre.replace('–', '-').replace('—', '-')
 
-    # Patrón: BARRA_A - BARRA_B VVVkV C#
-    match = re.match(r'(.+?)\s*-\s*(.+?)\s+(\d{2,3})KV\s+C\d+$', nombre, re.IGNORECASE)
+    # Patrón: BARRA_A - BARRA_B VVV kV C# (espacio opcional entre número y KV)
+    match = re.match(r'(.+?)\s*-\s*(.+?)\s+(\d{2,3})\s*KV\s+C\d+$', nombre, re.IGNORECASE)
     if match:
         return (match.group(1).strip(), match.group(2).strip(), float(match.group(3)))
 
     # Fallback: intentar sin el circuito
-    match = re.match(r'(.+?)\s*-\s*(.+?)\s+(\d{2,3})KV', nombre, re.IGNORECASE)
+    match = re.match(r'(.+?)\s*-\s*(.+?)\s+(\d{2,3})\s*KV', nombre, re.IGNORECASE)
     if match:
         return (match.group(1).strip(), match.group(2).strip(), float(match.group(3)))
 
