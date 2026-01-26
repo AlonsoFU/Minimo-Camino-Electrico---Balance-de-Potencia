@@ -12,6 +12,35 @@ from rapidfuzz import fuzz
 # Ruta base del proyecto
 BASE_PATH = Path(__file__).parent.parent
 
+
+def voltajes_equivalentes(v1: float, v2: float, tolerancia: float = 5.0) -> bool:
+    """
+    Compara dos voltajes considerando que todos los < 25kV son equivalentes.
+
+    Reglas:
+    - Si ambos voltajes son < 25kV, se consideran equivalentes (13, 13.8, 23, 24 kV)
+    - Para voltajes >= 25kV, se usa tolerancia estándar (default 5kV)
+
+    Args:
+        v1: Primer voltaje en kV
+        v2: Segundo voltaje en kV
+        tolerancia: Tolerancia en kV para voltajes >= 25kV (default 5)
+
+    Returns:
+        True si los voltajes son equivalentes
+    """
+    if pd.isna(v1) or pd.isna(v2):
+        return True  # Si falta algún voltaje, no filtrar
+
+    v1, v2 = float(v1), float(v2)
+
+    # Si ambos son < 25kV, son equivalentes
+    if v1 < 25 and v2 < 25:
+        return True
+
+    # Para voltajes >= 25kV, usar tolerancia
+    return abs(v1 - v2) <= tolerancia
+
 # Mapeo de meses en español a número
 MESES = {
     'Ene': 1, 'Feb': 2, 'Mar': 3, 'Abr': 4,
@@ -1372,29 +1401,23 @@ def homologar_con_infotecnica(df_homologado: pd.DataFrame,
 
         for info in infotec_info:
             # Filtrar por voltaje - AMBOS voltajes deben coincidir
-            # Solo aplicar filtro si ambos voltajes están disponibles
+            # Usa voltajes_equivalentes() que considera <25kV como equivalentes
             if info.get('voltaje_secundario') is not None:
                 # Transformador: verificar que ambos voltajes coincidan
                 # barra_a_ent debe coincidir con voltaje primario (AT) de Infotécnica
                 # barra_b_ent debe coincidir con voltaje secundario (BT/MT) de Infotécnica
-                if pd.notna(voltaje_a_ent) and pd.notna(info['voltaje']):
-                    diff_a = abs(voltaje_a_ent - info['voltaje'])
-                    if diff_a > 5:
-                        continue  # Voltaje barra A no coincide
+                if not voltajes_equivalentes(voltaje_a_ent, info['voltaje']):
+                    continue  # Voltaje barra A no coincide
 
-                if pd.notna(voltaje_b_ent) and pd.notna(info['voltaje_secundario']):
-                    diff_b = abs(voltaje_b_ent - info['voltaje_secundario'])
-                    if diff_b > 5:
-                        continue  # Voltaje barra B no coincide
+                if not voltajes_equivalentes(voltaje_b_ent, info['voltaje_secundario']):
+                    continue  # Voltaje barra B no coincide
             else:
                 # Línea: verificar voltaje único (AMBAS barras deben tener el mismo voltaje)
                 # Para que sea una línea en ENT, voltaje_a_ent debe ser igual a voltaje_b_ent
-                if pd.notna(voltaje_a_ent):
-                    diff_a = abs(voltaje_a_ent - info['voltaje'])
-                    diff_b = abs(voltaje_b_ent - info['voltaje']) if pd.notna(voltaje_b_ent) else diff_a
-                    # AMBAS barras deben coincidir con el voltaje de la línea
-                    if diff_a > 5 or diff_b > 5:
-                        continue
+                if not voltajes_equivalentes(voltaje_a_ent, info['voltaje']):
+                    continue
+                if pd.notna(voltaje_b_ent) and not voltajes_equivalentes(voltaje_b_ent, info['voltaje']):
+                    continue
 
             # Calcular similitud normal (A-A, B-B)
             sim_a = calcular_similitud_barras(barra_a_ent, info['barra_a'])
