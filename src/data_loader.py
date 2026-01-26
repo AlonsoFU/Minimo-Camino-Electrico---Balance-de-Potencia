@@ -983,6 +983,27 @@ def homologar_lineas(df_ent: Optional[pd.DataFrame] = None,
                 if abs(voltaje_ent - info_op['voltaje']) > 5:  # Más estricto: 5kV
                     continue
 
+            # FILTRO ESTRICTO: Si ENT tiene voltajes específicos para ambas barras,
+            # verificar que coincidan con CNE (considerando posible inversión)
+            if pd.notna(voltaje_a_nombre) and pd.notna(voltaje_b_nombre):
+                voltaje_a_op = info_op.get('voltaje_a')
+                voltaje_b_op = info_op.get('voltaje_b')
+
+                if pd.notna(voltaje_a_op) and pd.notna(voltaje_b_op):
+                    # Probar coincidencia normal (A-A, B-B)
+                    coincide_normal_a = abs(voltaje_a_nombre - voltaje_a_op) <= 5
+                    coincide_normal_b = abs(voltaje_b_nombre - voltaje_b_op) <= 5
+                    coincide_normal = coincide_normal_a and coincide_normal_b
+
+                    # Probar coincidencia invertida (A-B, B-A)
+                    coincide_inv_a = abs(voltaje_a_nombre - voltaje_b_op) <= 5
+                    coincide_inv_b = abs(voltaje_b_nombre - voltaje_a_op) <= 5
+                    coincide_invertido = coincide_inv_a and coincide_inv_b
+
+                    # Si no coincide ni normal ni invertido, descartar
+                    if not coincide_normal and not coincide_invertido:
+                        continue
+
             # Calcular similitud normal (A-A, B-B)
             sim_a = calcular_similitud_barras(barra_a_ent, info_op['barra_a'])
             sim_b = calcular_similitud_barras(barra_b_ent, info_op['barra_b'])
@@ -1004,27 +1025,15 @@ def homologar_lineas(df_ent: Optional[pd.DataFrame] = None,
                 sims = (sim_a_inv, sim_b_inv)
                 invertido = True
 
-            # AJUSTE MUY SUAVE por voltajes del nombre ENT
-            # Solo si hay voltajes válidos en el nombre
+            # BONUS por coincidencia exacta de voltajes de ambas barras
+            # (Si llegamos aquí, ya pasó el filtro estricto de voltajes)
             if pd.notna(voltaje_a_nombre) and pd.notna(voltaje_b_nombre):
                 voltaje_a_op = info_op.get('voltaje_a')
                 voltaje_b_op = info_op.get('voltaje_b')
 
                 if pd.notna(voltaje_a_op) and pd.notna(voltaje_b_op):
-                    # Comparar voltajes (considerar inversión)
-                    if invertido:
-                        coincide_a = abs(voltaje_a_nombre - voltaje_b_op) <= 5
-                        coincide_b = abs(voltaje_b_nombre - voltaje_a_op) <= 5
-                    else:
-                        coincide_a = abs(voltaje_a_nombre - voltaje_a_op) <= 5
-                        coincide_b = abs(voltaje_b_nombre - voltaje_b_op) <= 5
-
-                    if coincide_a and coincide_b:
-                        # Pequeño BONUS si voltajes coinciden (+2)
-                        confianza += 2
-                    elif not coincide_a or not coincide_b:
-                        # Pequeña PENALIZACIÓN si no coinciden (-3)
-                        confianza -= 3
+                    # Pequeño BONUS si voltajes coinciden (+2)
+                    confianza += 2
 
             if confianza > mejor_confianza:
                 mejor_confianza = confianza
