@@ -269,8 +269,10 @@ def cargar_lineas_infotecnica(filepath: Optional[str] = None) -> pd.DataFrame:
     df_lineas = pd.read_excel(filepath, sheet_name=0, header=6)
 
     # Seleccionar columnas requeridas
+    # IMPORTANTE: Usar 'Nombre Línea' (nombre completo de la línea) en lugar de 'Nombre' (nombre del tramo)
+    # 'Nombre Línea' tiene el formato: "BARRA_A - BARRA_B VOLTAJE C#" que es más apropiado para homologación
     columnas_origen = [
-        'Nombre',
+        'Nombre Línea',
         'Nombre Centro Control',
         '1.1 Tensión nominal',
         '1.2 Longitud conductor',
@@ -299,15 +301,28 @@ def cargar_lineas_infotecnica(filepath: Optional[str] = None) -> pd.DataFrame:
     df_lineas['R_total'] = df_lineas['R_unitaria'] * df_lineas['longitud']
     df_lineas['X_total'] = df_lineas['X_unitaria'] * df_lineas['longitud']
 
+    # Eliminar filas vacías antes de agrupar
+    df_lineas = df_lineas.dropna(subset=['nombre'])
+
+    # IMPORTANTE: Agrupar tramos con el mismo "Nombre Línea" y sumar R/X
+    # Una línea puede tener múltiples tramos/secciones, cada uno con sus valores R/X
+    # Para homologación necesitamos el R/X TOTAL de la línea (suma de todos los tramos)
+    df_lineas = df_lineas.groupby('nombre', as_index=False).agg({
+        'nombre_centro_control': 'first',  # Tomar el primer valor
+        'tension_nominal': 'first',
+        'longitud': 'sum',      # Sumar longitudes
+        'R_unitaria': 'mean',   # Promedio de R unitaria (referencial)
+        'X_unitaria': 'mean',   # Promedio de X unitaria (referencial)
+        'R_total': 'sum',       # SUMAR R_total de todos los tramos
+        'X_total': 'sum'        # SUMAR X_total de todos los tramos
+    })
+
     # Agregar tipo y columnas de transformador (vacías para líneas)
     df_lineas['tipo_instalacion'] = 'linea'
     df_lineas['barra_a'] = None
     df_lineas['barra_b'] = None
     df_lineas['voltaje_a'] = None
     df_lineas['voltaje_b'] = None
-
-    # Eliminar filas vacías
-    df_lineas = df_lineas.dropna(how='all')
 
     # 2. Cargar transformadores (2D y 3D)
     from src.cargar_transformadores_infotec import cargar_transformadores_2d, cargar_transformadores_3d
@@ -577,6 +592,8 @@ def normalizar_barra_ent(barra: str) -> str:
 
     El formato ENT es: NOMBRE_PADDED_VOLTAJE (ej: PAPOSO________220)
     - Elimina el sufijo de voltaje (últimos 2-3 dígitos)
+    - Elimina contenido entre paréntesis
+    - Elimina prefijos comunes (CENTRAL, S/E, TAP)
     - Reemplaza guiones bajos y puntos por espacios
     - Convierte a minúsculas
 
@@ -590,9 +607,25 @@ def normalizar_barra_ent(barra: str) -> str:
     # Eliminar sufijo de voltaje (últimos 2-3 dígitos precedidos de _)
     barra = re.sub(r'_*(\d{2,3})$', '', barra)
     # Reemplazar caracteres especiales
-    barra = barra.replace('_', ' ').replace('.', ' ')
-    # Limpiar espacios múltiples y convertir a minúsculas
-    return ' '.join(barra.split()).lower().strip()
+    barra = barra.replace('_', ' ').replace('.', ' ').replace('/', ' ')
+
+    # Eliminar contenido entre paréntesis
+    barra = re.sub(r'\s*\([^)]*\)', '', barra)
+
+    # Eliminar prefijos comunes que confunden el matching
+    prefijos_ignorar = [
+        r'^central\s+',
+        r'^s\s*e\s+',
+        r'^tap\s+',
+        r'^parque\s+eolico\s+',
+        r'^portal\s+',
+    ]
+    barra_lower = barra.lower()
+    for prefijo in prefijos_ignorar:
+        barra_lower = re.sub(prefijo, '', barra_lower, flags=re.IGNORECASE)
+
+    # Limpiar espacios múltiples
+    return ' '.join(barra_lower.split()).strip()
 
 
 def normalizar_barra_op(barra: str) -> str:
@@ -601,6 +634,7 @@ def normalizar_barra_op(barra: str) -> str:
 
     Extrae el nombre de la barra desde el formato "NOMBRE VOLTAJE CIRCUITO"
     eliminando el sufijo de voltaje al final.
+    También elimina paréntesis y prefijos comunes para mejor matching.
 
     Args:
         barra: Nombre de la barra del archivo de operación (extraído de LinNom)
@@ -612,9 +646,25 @@ def normalizar_barra_op(barra: str) -> str:
     # Eliminar sufijo de voltaje
     barra = re.sub(r'\s+\d{2,3}$', '', barra)
     # Reemplazar guiones bajos y puntos por espacios
-    barra = barra.replace('_', ' ').replace('.', ' ')
-    # Limpiar espacios múltiples y convertir a minúsculas
-    return ' '.join(barra.split()).lower().strip()
+    barra = barra.replace('_', ' ').replace('.', ' ').replace('/', ' ')
+
+    # Eliminar contenido entre paréntesis
+    barra = re.sub(r'\s*\([^)]*\)', '', barra)
+
+    # Eliminar prefijos comunes que confunden el matching
+    prefijos_ignorar = [
+        r'^central\s+',
+        r'^s\s*e\s+',
+        r'^tap\s+',
+        r'^parque\s+eolico\s+',
+        r'^portal\s+',
+    ]
+    barra_lower = barra.lower()
+    for prefijo in prefijos_ignorar:
+        barra_lower = re.sub(prefijo, '', barra_lower, flags=re.IGNORECASE)
+
+    # Limpiar espacios múltiples
+    return ' '.join(barra_lower.split()).strip()
 
 
 def extraer_barras_de_linnom(linnom: str) -> Tuple[str, str, Optional[float], Optional[float]]:
@@ -1116,6 +1166,11 @@ def normalizar_nombre_infotec(nombre: str) -> str:
     """
     Normaliza un nombre de barra de Infotécnica para comparación.
 
+    Mejoras:
+    - Elimina contenido entre paréntesis (ej: "TALTAL (ELECDA)" -> "TALTAL")
+    - Elimina prefijos comunes que no aportan al matching (CENTRAL, S/E, TAP)
+    - Normaliza caracteres especiales
+
     Args:
         nombre: Nombre de la barra
 
@@ -1123,10 +1178,30 @@ def normalizar_nombre_infotec(nombre: str) -> str:
         Nombre normalizado (minúsculas, sin caracteres especiales)
     """
     nombre = str(nombre).lower()
+
+    # IMPORTANTE: Eliminar contenido entre paréntesis ANTES de normalizar
+    # Ejemplos: "TALTAL (ELECDA)" -> "TALTAL", "POLPAICO (TRANSELEC)" -> "POLPAICO"
+    nombre = re.sub(r'\s*\([^)]*\)', '', nombre)
+
     # Reemplazar caracteres especiales
-    nombre = nombre.replace('.', ' ').replace('_', ' ')
+    nombre = nombre.replace('.', ' ').replace('_', ' ').replace('/', ' ')
+
+    # Eliminar prefijos comunes que confunden el matching
+    # Estos prefijos no ayudan a identificar la barra real
+    prefijos_ignorar = [
+        r'^central\s+',      # "CENTRAL LOS QUILOS" -> "LOS QUILOS"
+        r'^s\s*e\s+',        # "S/E TALTAL" o "S E TALTAL" -> "TALTAL"
+        r'^tap\s+',          # "TAP LAMPA" -> "LAMPA"
+        r'^parque\s+eolico\s+',  # "PARQUE EOLICO TALTAL" -> "TALTAL"
+        r'^portal\s+',       # "PORTAL GCM" -> "GCM"
+    ]
+
+    for prefijo in prefijos_ignorar:
+        nombre = re.sub(prefijo, '', nombre, flags=re.IGNORECASE)
+
     # Eliminar números de tap/seccionadora al final
     nombre = re.sub(r'\s+\d+$', '', nombre)
+
     return ' '.join(nombre.split()).strip()
 
 
