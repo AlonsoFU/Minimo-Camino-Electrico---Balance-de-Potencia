@@ -978,20 +978,38 @@ def extraer_circuito_op(linnom: str) -> Optional[int]:
 
 def extraer_circuito_infotec(nombre: str) -> Optional[int]:
     """
-    Extrae el número de circuito del nombre de línea Infotécnica.
+    Extrae el número de circuito del nombre de línea o transformador Infotécnica.
 
-    Patrones:
+    Patrones para líneas:
     - 'C1' -> 1, 'C2' -> 2, 'C3' -> 3
 
+    Patrones para transformadores:
+    - '75MVA 1' -> 1 (número al final)
+    - 'TR2' -> 2, 'TR3' -> 3 (TR + número)
+
     Args:
-        nombre: Nombre de la línea Infotécnica (ej: "PAPOSO - TAP TAL TAL 220KV C1")
+        nombre: Nombre de la línea/transformador Infotécnica
 
     Returns:
         Número de circuito (1, 2, 3...) o None
     """
-    match = re.search(r'\s+C(\d+)\s*$', str(nombre), re.IGNORECASE)
+    nombre_str = str(nombre)
+
+    # Patrón para líneas: C1, C2, C3 al final
+    match = re.search(r'\s+C(\d+)\s*$', nombre_str, re.IGNORECASE)
     if match:
         return int(match.group(1))
+
+    # Patrón para transformadores: TR2, TR3 al final
+    match = re.search(r'\bTR(\d+)\s*$', nombre_str, re.IGNORECASE)
+    if match:
+        return int(match.group(1))
+
+    # Patrón para transformadores: número al final después de MVA (ej: "75MVA 1")
+    match = re.search(r'MVA\s+(\d+)\s*$', nombre_str, re.IGNORECASE)
+    if match:
+        return int(match.group(1))
+
     return None
 
 
@@ -1367,8 +1385,8 @@ def homologar_con_infotecnica(df_homologado: pd.DataFrame,
             # Para transformadores, guardar ambos voltajes para filtrado especial
             voltaje = voltaje_a  # Voltaje principal (AT)
             voltaje_secundario = voltaje_b  # Voltaje secundario (BT o MT)
-            # Los transformadores no tienen circuito
-            circuito = None
+            # Extraer circuito del nombre (TR2, TR3, 75MVA 1, etc.)
+            circuito = extraer_circuito_infotec(nombre)
         else:
             # Línea: extraer barras del nombre
             barra_a_raw, barra_b_raw, voltaje_nombre = extraer_barras_infotecnica(nombre)
@@ -1450,7 +1468,20 @@ def homologar_con_infotecnica(df_homologado: pd.DataFrame,
                 sims = (sim_a_inv, sim_b_inv)
                 invertido = True
 
+            # Verificar coincidencia de circuitos para desempate
+            circuito_infotec = info.get('circuito')
+            circuito_nuevo_coincide = (circuito_ent == circuito_infotec) if (circuito_ent and circuito_infotec) else False
+            circuito_actual_coincide = (circuito_ent == mejor_match.get('circuito')) if (mejor_match and circuito_ent and mejor_match.get('circuito')) else False
+
+            # Determinar si este candidato es mejor
+            es_mejor = False
             if confianza > mejor_confianza:
+                es_mejor = True
+            elif abs(confianza - mejor_confianza) < 1 and circuito_nuevo_coincide and not circuito_actual_coincide:
+                # Desempate por circuito cuando la confianza es muy similar
+                es_mejor = True
+
+            if es_mejor:
                 mejor_confianza = confianza
                 mejor_sim_a, mejor_sim_b = sims
                 mejor_match = info
