@@ -1165,10 +1165,22 @@ def homologar_lineas(df_ent: Optional[pd.DataFrame] = None,
                     # Pequeño BONUS si voltajes coinciden (+2)
                     confianza += 2
 
+            # Verificar si este candidato es mejor que el actual
+            # Usar circuito como DESEMPATE cuando confianza es igual o muy cercana
+            circuito_op = info_op.get('circuito')
+            circuito_nuevo_coincide = (circuito_ent == circuito_op) if (circuito_ent and circuito_op) else False
+            circuito_actual_coincide = (circuito_ent == mejor_match.get('circuito')) if (mejor_match and circuito_ent and mejor_match.get('circuito')) else False
+
+            es_mejor = False
             if confianza > mejor_confianza:
+                es_mejor = True
+            elif abs(confianza - mejor_confianza) < 1 and circuito_nuevo_coincide and not circuito_actual_coincide:
+                # Desempate: mismo nivel de confianza pero circuito coincide
+                es_mejor = True
+
+            if es_mejor:
                 mejor_confianza = confianza
                 mejor_sim_a, mejor_sim_b = sims
-                circuito_coincide = (circuito_ent == circuito_op) if (circuito_ent and circuito_op) else None
                 mejor_match = info_op
                 match_invertido = invertido
 
