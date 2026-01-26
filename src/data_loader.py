@@ -1109,10 +1109,9 @@ def homologar_lineas(df_ent: Optional[pd.DataFrame] = None,
         circuito_coincide = None
 
         for info_op in lineas_op_info:
-            # Filtrar por voltaje (debe coincidir exactamente o muy cercano)
-            if pd.notna(voltaje_ent) and pd.notna(info_op['voltaje']):
-                if abs(voltaje_ent - info_op['voltaje']) > 5:  # Más estricto: 5kV
-                    continue
+            # Filtrar por voltaje - usa voltajes_equivalentes() que considera <25kV como equivalentes
+            if not voltajes_equivalentes(voltaje_ent, info_op['voltaje']):
+                continue
 
             # FILTRO ESTRICTO: Si ENT tiene voltajes específicos para ambas barras,
             # verificar que coincidan con CNE (considerando posible inversión)
@@ -1122,13 +1121,13 @@ def homologar_lineas(df_ent: Optional[pd.DataFrame] = None,
 
                 if pd.notna(voltaje_a_op) and pd.notna(voltaje_b_op):
                     # Probar coincidencia normal (A-A, B-B)
-                    coincide_normal_a = abs(voltaje_a_nombre - voltaje_a_op) <= 5
-                    coincide_normal_b = abs(voltaje_b_nombre - voltaje_b_op) <= 5
+                    coincide_normal_a = voltajes_equivalentes(voltaje_a_nombre, voltaje_a_op)
+                    coincide_normal_b = voltajes_equivalentes(voltaje_b_nombre, voltaje_b_op)
                     coincide_normal = coincide_normal_a and coincide_normal_b
 
                     # Probar coincidencia invertida (A-B, B-A)
-                    coincide_inv_a = abs(voltaje_a_nombre - voltaje_b_op) <= 5
-                    coincide_inv_b = abs(voltaje_b_nombre - voltaje_a_op) <= 5
+                    coincide_inv_a = voltajes_equivalentes(voltaje_a_nombre, voltaje_b_op)
+                    coincide_inv_b = voltajes_equivalentes(voltaje_b_nombre, voltaje_a_op)
                     coincide_invertido = coincide_inv_a and coincide_inv_b
 
                     # Si no coincide ni normal ni invertido, descartar
