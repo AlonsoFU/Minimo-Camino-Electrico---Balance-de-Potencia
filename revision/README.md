@@ -6,6 +6,17 @@ Este documento describe la estrategia de validación de los valores de reactanci
 
 Identificar si los valores de X_ENT son correctos o presentan discrepancias respecto a las fuentes de referencia (CNE e Infotécnica).
 
+## Umbrales Elegidos
+
+| Sección | Umbral | Valor | Descripción |
+|---------|--------|-------|-------------|
+| **Capítulo 1** | Diferencia porcentual | **15%** | Si diff < 15% → CORRECTO, si diff ≥ 15% → DISCREPA |
+| **Capítulos 2 y 3** | CAMBIO_BAJO | **ΔX < 5 Ω** | Magnitud baja, cambio aceptable |
+| **Capítulos 2 y 3** | CAMBIO_MEDIO | **5 ≤ ΔX < 50 Ω** | Magnitud moderada, revisar |
+| **Capítulos 2 y 3** | CAMBIO_ALTO | **ΔX ≥ 50 Ω** | Magnitud alta, análisis caso por caso |
+
+**Nota:** Estos umbrales fueron elegidos basándose en el análisis de sensibilidad (ver Capítulo 1) y la distribución de magnitudes observada en los datos.
+
 ## Columna `revision` (entrada)
 
 La columna `revision` del archivo de homologación indica qué fuentes son confiables:
