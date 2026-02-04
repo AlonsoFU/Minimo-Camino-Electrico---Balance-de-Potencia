@@ -59,9 +59,9 @@ La columna `revision` del archivo de homologación indica qué fuentes son confi
 | **Total** | **2004** | **100%** |
 
 **Resumen:**
-- **Correctos:** 1030 (51.4%)
-- **Discrepan:** 809 (40.4%)
-- **Sin referencia:** 165 (8.2%)
+- **Correctos:** 1030 (51.4%) → `CORRECTO` + `CORRECTO_PARCIAL_CNE` + `CORRECTO_PARCIAL_INFOTEC`
+- **Discrepan:** 809 (40.4%) → `DISCREPA_ENT_FUENTES_COINCIDEN` + `DISCREPA_FUENTES` + `DISCREPA_PARCIAL_CNE` + `DISCREPA_PARCIAL_INFOTEC`
+- **Sin referencia:** 165 (8.2%) → `SIN_REFERENCIA`
 
 ## Análisis de Sensibilidad
 
