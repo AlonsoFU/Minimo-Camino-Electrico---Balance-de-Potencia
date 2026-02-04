@@ -17,6 +17,10 @@ Identificar si los valores de X_ENT son correctos o presentan discrepancias resp
 
 **Nota:** Estos umbrales fueron elegidos basándose en el análisis de sensibilidad (ver Capítulo 1) y la distribución de magnitudes observada en los datos.
 
+---
+
+# Capítulo 1: Categorización por Diferencia Porcentual
+
 ## Columna `revision` (entrada)
 
 La columna `revision` del archivo de homologación indica qué fuentes son confiables:
