@@ -81,39 +81,41 @@ Variación de resultados según el umbral de tolerancia:
 ## Diagrama de Decisión
 
 ```
-                              ┌─────────────────────────┐
-                              │  revision + X disponible │
-                              └────────────┬────────────┘
-                                           │
-        ┌──────────────────────────────────┼──────────────────────────────────┐
-        ▼                                  ▼                                  ▼
-   SIN_REFERENCIA                    Solo una fuente                    Ambas fuentes
-   (rev=0, o fuente                  disponible                         disponibles
-    sin valor X)                          │                             (rev=1 + ambos X)
-      (165)                               │                                  │
-                           ┌──────────────┴──────────────┐                   │
-                           ▼                              ▼                   ▼
-                     Solo CNE                       Solo Infotec      ┌──────────────┐
-                           │                              │           │CNE ≈ Infotec?│
-                    ┌──────┴──────┐                ┌──────┴──────┐    │  (diff<15%)  │
-                  <15%          ≥15%             <15%          ≥15%   └──────┬───────┘
-                    │             │                │             │      ┌────┴────┐
-                    ▼             ▼                ▼             ▼     SÍ        NO
-               CORRECTO      DISCREPA        CORRECTO      DISCREPA    │          │
-               PARCIAL       PARCIAL         PARCIAL       PARCIAL     ▼          ▼
-                _CNE          _CNE          _INFOTEC      _INFOTEC  ┌──────┐  ¿Alguna
-                (341)         (139)          (177)         (92)     │Ambas │  ≈ ENT?
-                                                                    │≈ENT? │    │
-                                                                    └──┬───┘ ┌──┴──┐
-                                                                   ┌───┴───┐ SÍ   NO
-                                                                  SÍ      NO  │    │
-                                                                   │       │  ▼    ▼
-                                                                   ▼       ▼ CORRECTO DISCREPA
-                                                              CORRECTO DISCREPA PARCIAL FUENTES
-                                                               (512)   _ENT_     CNE/   (255)
-                                                                      FUENTES  INFOTEC
-                                                                      COINCIDEN
-                                                                       (323)
+                                    ┌─────────────────────────┐
+                                    │  revision + X disponible │
+                                    └────────────┬────────────┘
+                                                 │
+          ┌──────────────────────────────────────┼──────────────────────────────────────┐
+          ▼                                      ▼                                      ▼
+     SIN_REFERENCIA                        Solo una fuente                        Ambas fuentes
+     (rev=0, o fuente                      disponible                             disponibles
+      sin valor X)                              │                                (rev=1 + ambos X)
+        (165)                                   │                                      │
+                             ┌──────────────────┴──────────────────┐                   │
+                             ▼                                      ▼                   ▼
+                       Solo CNE                               Solo Infotec      ┌──────────────┐
+                             │                                      │           │CNE ≈ Infotec?│
+                      ┌──────┴──────┐                        ┌──────┴──────┐    │  (diff<15%)  │
+                    <15%          ≥15%                     <15%          ≥15%   └──────┬───────┘
+                      │             │                        │             │           │
+                      ▼             ▼                        ▼             ▼      ┌────┴────┐
+                 CORRECTO      DISCREPA                CORRECTO      DISCREPA    SÍ        NO
+                 PARCIAL       PARCIAL                 PARCIAL       PARCIAL      │          │
+                  _CNE          _CNE                  _INFOTEC      _INFOTEC      │          │
+                  (341)         (139)                  (177)         (92)         ▼          ▼
+                                                                           ┌──────────┐    ┌──────────┐
+                                                                           │ ¿Ambas   │    │ ¿Alguna  │
+                                                                           │  ≈ ENT?  │    │  ≈ ENT?  │
+                                                                           └────┬─────┘    └────┬─────┘
+                                                                           ┌────┴────┐     ┌────┴────┐
+                                                                          SÍ        NO    SÍ        NO
+                                                                           │         │     │          │
+                                                                           ▼         ▼     ▼          ▼
+                                                                       CORRECTO  DISCREPA CORRECTO  DISCREPA
+                                                                        (512)    _ENT_    PARCIAL   FUENTES
+                                                                                 FUENTES   CNE/      (255)
+                                                                                COINCIDEN INFOTEC
+                                                                                  (323)
 ```
 
 ## Lógica de Ajuste de Revisión
