@@ -10,12 +10,12 @@ Identificar si los valores de X_ENT son correctos o presentan discrepancias resp
 
 La columna `revision` del archivo de homologación indica qué fuentes son confiables:
 
-| Valor | Significado |
-|-------|-------------|
-| `1` | Ambas fuentes (CNE e Infotec) son confiables |
-| `CNE` | Solo CNE es confiable |
-| `Infotec` | Solo Infotec es confiable |
-| `0` | Ninguna fuente es confiable |
+| Valor | Significado | Cantidad |
+|-------|-------------|----------|
+| `1` | Ambas fuentes (CNE e Infotec) son confiables | 1410 |
+| `CNE` | Solo CNE es confiable | 246 |
+| `Infotec` | Solo Infotec es confiable | 195 |
+| `0` | Ninguna fuente es confiable | 153 |
 
 **Nota:** Si `revision=1` pero falta `X_Infotec`, se trata como `revision=CNE`. Lo mismo aplica inversamente.
 
