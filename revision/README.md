@@ -139,3 +139,104 @@ if revision == CNE and X_CNE es NaN → SIN_REFERENCIA
 4. **DISCREPA_PARCIAL_***: Solo hay una fuente y difiere de ENT. Revisar si la fuente es correcta.
 
 5. **SIN_REFERENCIA**: No hay datos para validar. Buscar otras fuentes o mantener X_ENT.
+
+---
+
+# Capítulo 2: Análisis de Magnitud de Cambios
+
+## Objetivo
+
+Para los casos que DISCREPAN, no solo importa el porcentaje de diferencia sino también **la magnitud absoluta del cambio** (ΔX). Un cambio pequeño en magnitud puede ser aceptable aunque el porcentaje sea alto.
+
+## Sub-categorías por Magnitud
+
+Se define la magnitud del cambio como: `ΔX = |X_ENT - X_sugerido|`
+
+| Magnitud | Rango ΔX | Descripción |
+|----------|----------|-------------|
+| `CAMBIO_BAJO` | < 5 | Cambio menor, fácil de aceptar |
+| `CAMBIO_MEDIO` | 5 - 50 | Cambio moderado, revisar |
+| `CAMBIO_ALTO` | ≥ 50 | Cambio significativo, requiere análisis |
+
+## Distribución por Categoría y Magnitud
+
+| Categoría | CAMBIO_BAJO | CAMBIO_MEDIO | CAMBIO_ALTO | Total |
+|-----------|-------------|--------------|-------------|-------|
+| `DISCREPA_ENT_FUENTES_COINCIDEN` | 112 | 103 | 108 | 323 |
+| `DISCREPA_PARCIAL_CNE` | 40 | 57 | 42 | 139 |
+| `DISCREPA_PARCIAL_INFOTEC` | 39 | 34 | 19 | 92 |
+| `DISCREPA_FUENTES` | 64 | 146 | 45 | 255 |
+| **Total** | **255** | **340** | **214** | **809** |
+
+## Análisis por Categoría
+
+### DISCREPA_ENT_FUENTES_COINCIDEN (323 casos)
+
+Las fuentes CNE e Infotec coinciden entre sí → **alta confianza para cambiar**.
+
+- **Valor sugerido:** Promedio de X_CNE y X_Infotec
+- **Prioridad de cambio:**
+  - `CAMBIO_BAJO` (112): ✅ Cambiar sin problema
+  - `CAMBIO_MEDIO` (103): ⚠️ Revisar antes de cambiar
+  - `CAMBIO_ALTO` (108): 🔍 Analizar caso por caso
+
+### DISCREPA_PARCIAL_CNE (139 casos)
+
+Solo CNE disponible/confiable, difiere de ENT.
+
+- **Valor sugerido:** X_CNE
+- **Prioridad de cambio:**
+  - `CAMBIO_BAJO` (40): ✅ Cambiar
+  - `CAMBIO_MEDIO` (57): ⚠️ Revisar
+  - `CAMBIO_ALTO` (42): 🔍 Analizar
+
+### DISCREPA_PARCIAL_INFOTEC (92 casos)
+
+Solo Infotec disponible/confiable, difiere de ENT.
+
+- **Valor sugerido:** X_Infotec
+- **Prioridad de cambio:**
+  - `CAMBIO_BAJO` (39): ✅ Cambiar
+  - `CAMBIO_MEDIO` (34): ⚠️ Revisar
+  - `CAMBIO_ALTO` (19): 🔍 Analizar
+
+### DISCREPA_FUENTES (255 casos)
+
+CNE e Infotec no coinciden entre sí, ninguna coincide con ENT → **requiere decisión manual**.
+
+**¿Cuál fuente está más cerca de ENT?**
+
+| Fuente más cercana | Cantidad |
+|--------------------|----------|
+| CNE | 142 (56%) |
+| Infotec | 113 (44%) |
+
+- **Valor sugerido:** La fuente más cercana a ENT
+- **Columna adicional:** `fuente_cercana` indica cuál usar
+- **Prioridad de cambio:**
+  - `CAMBIO_BAJO` (64): ⚠️ Revisar cuál fuente es correcta
+  - `CAMBIO_MEDIO` (146): ⚠️ Revisar con cuidado
+  - `CAMBIO_ALTO` (45): 🔍 Análisis detallado requerido
+
+## Resumen de Prioridades
+
+| Prioridad | Criterio | Casos | Acción |
+|-----------|----------|-------|--------|
+| 🟢 Alta | FUENTES_COINCIDEN + CAMBIO_BAJO | 112 | Cambiar directamente |
+| 🟢 Alta | PARCIAL_* + CAMBIO_BAJO | 79 | Cambiar directamente |
+| 🟡 Media | FUENTES_COINCIDEN + CAMBIO_MEDIO | 103 | Revisar y cambiar |
+| 🟡 Media | PARCIAL_* + CAMBIO_MEDIO | 91 | Revisar y cambiar |
+| 🟠 Baja | DISCREPA_FUENTES + CAMBIO_BAJO/MEDIO | 210 | Decidir cuál fuente usar |
+| 🔴 Manual | Cualquier CAMBIO_ALTO | 214 | Análisis caso por caso |
+
+**Total cambios recomendados con alta confianza:** 191 casos (CAMBIO_BAJO en categorías con fuente clara)
+
+## Columnas de Salida Adicionales (Capítulo 2)
+
+| Columna | Descripción |
+|---------|-------------|
+| `valor_sugerido` | Valor de X recomendado según la fuente confiable |
+| `delta_X` | Magnitud del cambio: \|X_ENT - valor_sugerido\| |
+| `magnitud` | Clasificación: CAMBIO_BAJO / CAMBIO_MEDIO / CAMBIO_ALTO |
+| `fuente_cercana` | Para DISCREPA_FUENTES: cuál fuente (CNE/Infotec) está más cerca |
+
