@@ -263,13 +263,31 @@ CNE e Infotec no coinciden entre sí, ninguna coincide con ENT.
 
 ### Comparación X_ENT vs Fuentes
 
+> **Qué muestra:** Cada punto es un registro. Eje X = X_ENT, Eje Y = X de la fuente (CNE o Infotec).
+> **Cómo leerlo:** Puntos sobre la línea diagonal = coincidencia perfecta. Puntos alejados = discrepancia.
+> **Uso:** Visualizar dispersión general de cada fuente respecto a ENT.
+
 ![Scatter Comparación Fuentes](output/graficos/2_scatter_comparacion_fuentes.png)
 
 ### Scatter por Acción Propuesta
 
+> **Qué muestra:** X_ENT vs valor_sugerido, coloreado por acción final.
+> **Cómo leerlo:**
+> - 🟢 Verde (MANTENER): sobre la diagonal, coinciden
+> - 🟠 Naranja (CAMBIAR): cerca de diagonal, diferencia < 50Ω
+> - 🔴 Rojo (REVISAR): lejos de diagonal, diferencia ≥ 50Ω
+> **Uso:** Ver visualmente qué tan grandes son los cambios propuestos.
+
 ![Scatter por Acción](output/graficos/8_scatter_por_accion.png)
 
 ### Comparación por Categoría
+
+> **Qué muestra:** 4 paneles separando por categoría de clasificación.
+> **Cómo leerlo:**
+> - CORRECTO: CNE (azul) e Infotec (naranja) ambos sobre diagonal
+> - DISCREPA_ENT_FUENTES_COINCIDEN: fuentes juntas pero lejos de diagonal
+> - DISCREPA_FUENTES: fuentes dispersas entre sí
+> **Uso:** Entender el comportamiento de cada categoría.
 
 ![Comparación por Categoría](output/graficos/9_comparacion_3_fuentes_por_categoria.png)
 
@@ -310,6 +328,19 @@ Verificar que los casos CORRECTO (diff < 15%) no tengan diferencias absolutas �
 | CORRECTO_PARCIAL_CNE | 341 | 10.59 Ω | No |
 | CORRECTO_PARCIAL_INFOTEC | 177 | 12.52 Ω | No |
 | **Total** | **1,030** | **15.47 Ω** | **No** |
+
+## Distribución de Magnitud en CORRECTOS
+
+> **Datos:** Solo casos CORRECTO (n=1022)
+> **Hallazgo:** Máx 15.47 Ω, media 0.55 Ω, ninguno ≥ 50 Ω
+
+![Distribución CORRECTOS](output/graficos/10_distribucion_correctos.png)
+
+## Comparación CORRECTOS vs DISCREPAN
+
+> Boxplot comparativo de magnitudes entre ambos grupos
+
+![Boxplot Comparativo](output/graficos/12_boxplot_correctos_vs_discrepa.png)
 
 ## Hallazgo Principal
 
