@@ -8,13 +8,10 @@ Identificar si los valores de X_ENT son correctos o presentan discrepancias resp
 
 ## Umbrales Elegidos
 
-| Sección | Umbral | Valor | Acción |
-|---------|--------|-------|--------|
-| **Clasificación de Validación** | Diferencia porcentual | **15%** | < 15% → CORRECTO (mantener), ≥ 15% → DISCREPA |
-| **Magnitud** | Umbral de cambio | **ΔX < 50 Ω** | CAMBIAR automáticamente |
-| **Magnitud** | Umbral de revisión | **ΔX ≥ 50 Ω** | REVISAR manualmente |
-
-**Nota:** La columna `magnitud_discrepancia` / `magnitud_correctos` muestra el detalle (CAMBIO_BAJO < 5 Ω, CAMBIO_MEDIO 5-50 Ω, CAMBIO_ALTO ≥ 50 Ω), pero para la acción propuesta solo importa si ΔX < 50 o ≥ 50.
+| Umbral | Valor | Acción |
+|--------|-------|--------|
+| **Diferencia porcentual** | **15%** | < 15% → CORRECTO, ≥ 15% → DISCREPA |
+| **Magnitud del cambio** | **50 Ω** | < 50 Ω → CAMBIAR, ≥ 50 Ω → REVISAR |
 
 ---
 
@@ -162,17 +159,14 @@ if revision == CNE and X_CNE es NaN → SIN_REFERENCIA
 
 Para los casos que DISCREPAN, no solo importa el porcentaje de diferencia sino también **la magnitud absoluta del cambio** (ΔX). Un cambio pequeño en magnitud puede ser aceptable aunque el porcentaje sea alto.
 
-## Sub-categorías por Magnitud
+## Umbral de Magnitud
 
 Se define la magnitud del cambio como: `ΔX = |X_ENT - X_sugerido|`
 
-| Magnitud | Rango ΔX | Acción Propuesta |
-|----------|----------|------------------|
-| `CAMBIO_BAJO` | < 5 Ω | **CAMBIAR** automáticamente |
-| `CAMBIO_MEDIO` | 5 - 50 Ω | **CAMBIAR** automáticamente |
-| `CAMBIO_ALTO` | ≥ 50 Ω | **REVISAR** manualmente |
-
-**Nota:** CAMBIO_BAJO y CAMBIO_MEDIO se agrupan como "CAMBIAR" (ΔX < 50 Ω).
+| Condición | Acción |
+|-----------|--------|
+| ΔX < 50 Ω | **CAMBIAR** automáticamente |
+| ΔX ≥ 50 Ω | **REVISAR** manualmente |
 
 ## Distribución por Categoría y Magnitud
 
@@ -241,13 +235,14 @@ CNE e Infotec no coinciden entre sí, ninguna coincide con ENT.
 
 **Total cambios recomendados con alta confianza:** 191 casos (CAMBIO_BAJO en categorías con fuente clara)
 
-## Columnas de Salida Adicionales (Capítulo 2)
+## Columnas de Salida
 
 | Columna | Descripción |
 |---------|-------------|
+| `accion_propuesta` | MANTENER / CAMBIAR / REVISAR / SIN_VALIDAR |
+| `clasificacion_validacion` | Categoría detallada (CORRECTO, DISCREPA_*, SIN_REFERENCIA) |
 | `valor_sugerido` | Valor de X recomendado según la fuente confiable |
 | `delta_X` | Magnitud del cambio: \|X_ENT - valor_sugerido\| |
-| `magnitud` | Clasificación: CAMBIO_BAJO / CAMBIO_MEDIO / CAMBIO_ALTO |
 | `fuente_valor_sugerido` | Origen del valor sugerido (ver tabla abajo) |
 
 ### Valores de `fuente_valor_sugerido`
@@ -263,60 +258,26 @@ CNE e Infotec no coinciden entre sí, ninguna coincide con ENT.
 
 ---
 
-# Magnitud de Correctos (columna `magnitud_correctos`)
+# Validación de Magnitud en CORRECTOS
 
 ## Objetivo
 
-Verificar que los casos clasificados como CORRECTO (diff < 15%) no tengan diferencias absolutas significativas. Un caso podría tener un porcentaje bajo pero una magnitud alta si los valores de X son grandes.
+Verificar que los casos CORRECTO (diff < 15%) no tengan diferencias absolutas ≥ 50 Ω que requieran revisión.
 
-## Motivación
+## Resultado
 
-Es importante validar que la regla del 15% no esté ocultando casos con cambios absolutos importantes. Por ejemplo:
-- X_ENT = 1000, X_ref = 1100 → diff = 10% pero ΔX = 100 (magnitud alta)
+| Categoría | Total | ΔX máximo | ¿Alguno ≥ 50 Ω? |
+|-----------|-------|-----------|-----------------|
+| CORRECTO | 512 | 15.47 Ω | No |
+| CORRECTO_PARCIAL_CNE | 341 | 10.59 Ω | No |
+| CORRECTO_PARCIAL_INFOTEC | 177 | 12.52 Ω | No |
+| **Total** | **1,030** | **15.47 Ω** | **No** |
 
-## Distribución por Categoría y Magnitud
+## Hallazgo Principal
 
-| Categoría | CAMBIO_BAJO | CAMBIO_MEDIO | CAMBIO_ALTO | Total | ΔX máximo |
-|-----------|-------------|--------------|-------------|-------|-----------|
-| `CORRECTO` | 508 | 4 | 0 | 512 | 15.47 |
-| `CORRECTO_PARCIAL_CNE` | 332 | 9 | 0 | 341 | 10.59 |
-| `CORRECTO_PARCIAL_INFOTEC` | 165 | 12 | 0 | 177 | 12.52 |
-| **Total** | **1005** | **25** | **0** | **1030** | **15.47** |
+**Ningún caso CORRECTO tiene ΔX ≥ 50 Ω** → Todos van a MANTENER, ninguno a REVISAR.
 
-## Análisis de Resultados
-
-### Hallazgos Principales
-
-1. **Ningún caso CORRECTO tiene CAMBIO_ALTO (ΔX ≥ 50)**
-   - El 100% de los casos CORRECTO tienen magnitudes menores a 50
-   - Esto valida que el umbral del 15% es apropiado
-
-2. **Mayoría tiene CAMBIO_BAJO (97.6%)**
-   - 1005 de 1030 casos tienen ΔX < 5
-   - Solo 25 casos (2.4%) tienen CAMBIO_MEDIO
-
-3. **Valores máximos de ΔX por categoría:**
-   - CORRECTO: 15.47 Ω
-   - CORRECTO_PARCIAL_CNE: 10.59 Ω
-   - CORRECTO_PARCIAL_INFOTEC: 12.52 Ω
-
-### Los 25 casos con CAMBIO_MEDIO (ΔX entre 5 y 50)
-
-Estos casos merecen atención aunque estén clasificados como CORRECTO:
-
-| Categoría | Cantidad | Observación |
-|-----------|----------|-------------|
-| `CORRECTO` | 4 | Fuentes coinciden, diferencia aceptable |
-| `CORRECTO_PARCIAL_CNE` | 9 | Solo CNE valida, revisar si es significativo |
-| `CORRECTO_PARCIAL_INFOTEC` | 12 | Solo Infotec valida, revisar si es significativo |
-
-**Recomendación:** Aunque cumplen el criterio del 15%, los 25 casos con CAMBIO_MEDIO pueden revisarse para confirmar que la diferencia absoluta es aceptable para el sistema.
-
-## Conclusión
-
-✅ **El umbral del 15% es válido:** No hay casos donde un porcentaje bajo oculte una magnitud alta. El máximo ΔX encontrado en categorías CORRECTO es 15.47 Ω, muy por debajo del umbral de CAMBIO_ALTO (50 Ω).
-
-✅ **No se requieren ajustes:** La clasificación por porcentaje es suficiente para las categorías CORRECTO.
+✅ El umbral del 15% es válido para identificar casos correctos.
 
 ---
 
@@ -380,10 +341,7 @@ Para aplicar los cambios:
 
 ```python
 # Filtrar registros a cambiar
-cambiar = df[
-    (df['clasificacion_validacion'].str.startswith('DISCREPA')) &
-    (df['magnitud_discrepancia'].isin(['CAMBIO_BAJO', 'CAMBIO_MEDIO']))
-]
+cambiar = df[df['accion_propuesta'] == 'CAMBIAR']
 
 # Aplicar cambio
 df.loc[cambiar.index, 'X_ENT'] = df.loc[cambiar.index, 'valor_sugerido']
