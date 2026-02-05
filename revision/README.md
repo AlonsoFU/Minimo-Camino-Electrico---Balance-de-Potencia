@@ -8,14 +8,22 @@ Identificar si los valores de X_ENT son correctos o presentan discrepancias resp
 
 ## Umbrales Elegidos
 
-| Umbral | Valor | Acción |
-|--------|-------|--------|
-| **Diferencia porcentual** | **15%** | < 15% → CORRECTO, ≥ 15% → DISCREPA |
-| **Magnitud del cambio** | **50 Ω** | < 50 Ω → CAMBIAR, ≥ 50 Ω → REVISAR |
+| Umbral | Valor | Uso | Acción |
+|--------|-------|-----|--------|
+| **Diferencia porcentual** | **15%** | Clasificar CORRECTO vs DISCREPA | `\|X_ENT - X_fuente\| / X_ENT × 100` |
+| **Magnitud del cambio** | **50 Ω** | Decidir CAMBIAR vs REVISAR | `\|X_ENT - valor_sugerido\|` |
+
+## Índice
+
+1. [Capítulo 1: Clasificación de Validación](#capítulo-1-clasificación-de-validación-umbral-15) - Umbral 15%
+2. [Capítulo 2: Análisis de Magnitud en DISCREPANCIAS](#capítulo-2-análisis-de-magnitud-en-discrepancias-umbral-50-ω) - Umbral 50 Ω
+3. [Capítulo 3: Validación de Magnitud en CORRECTOS](#capítulo-3-validación-de-magnitud-en-correctos)
+4. [Columnas de Salida](#columnas-de-salida)
+5. [Conclusión y Propuesta](#conclusión-y-propuesta)
 
 ---
 
-# Clasificación de Validación (columna `clasificacion_validacion`)
+# Capítulo 1: Clasificación de Validación (umbral 15%)
 
 ## Columna `revision` (entrada)
 
@@ -161,7 +169,7 @@ if revision == CNE and X_CNE es NaN → SIN_REFERENCIA
 
 ---
 
-# Análisis de Magnitud en DISCREPANCIAS
+# Capítulo 2: Análisis de Magnitud en DISCREPANCIAS (umbral 50 Ω)
 
 ## Objetivo
 
@@ -175,6 +183,24 @@ Se define la magnitud del cambio como: `ΔX = |X_ENT - X_sugerido|`
 |-----------|--------|
 | ΔX < 50 Ω | **CAMBIAR** automáticamente |
 | ΔX ≥ 50 Ω | **REVISAR** manualmente |
+
+## Análisis de Sensibilidad del Umbral de Magnitud
+
+Variación de resultados según el umbral de magnitud elegido:
+
+| Umbral | CAMBIAR | REVISAR | % CAMBIAR |
+|--------|---------|---------|-----------|
+| 20 Ω | 452 | 365 | 55.3% |
+| 30 Ω | 520 | 297 | 63.6% |
+| 40 Ω | 571 | 246 | 69.9% |
+| **50 Ω** | **604** | **213** | **73.9%** |
+| 60 Ω | 637 | 180 | 78.0% |
+| 70 Ω | 656 | 161 | 80.3% |
+| 100 Ω | 708 | 109 | 86.7% |
+
+### Curva de Sensibilidad del Umbral de Magnitud
+
+![Sensibilidad Umbral Magnitud](output/graficos/13_sensibilidad_umbral_magnitud.png)
 
 ## Distribución por Categoría y Magnitud
 
@@ -291,7 +317,7 @@ CNE e Infotec no coinciden entre sí, ninguna coincide con ENT.
 
 ![Comparación por Categoría](output/graficos/9_comparacion_3_fuentes_por_categoria.png)
 
-# Validación de Magnitud en CORRECTOS
+# Capítulo 3: Validación de Magnitud en CORRECTOS
 
 ## Objetivo
 
