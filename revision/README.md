@@ -188,9 +188,17 @@ Se define la magnitud del cambio como: `ΔX = |X_ENT - X_sugerido|`
 
 ### Distribución de Magnitud del Cambio (ΔX)
 
+> **Datos:** Solo casos DISCREPA (n=817)
+> **Fórmula:** `ΔX = |X_ENT - valor_sugerido|`
+> **Uso:** Determina acción CAMBIAR (<50Ω) o REVISAR (≥50Ω)
+
 ![Distribución Magnitud](output/graficos/3_distribucion_magnitud_cambio.png)
 
-### Diferencias Absolutas (Ω)
+### Diferencias Absolutas por Fuente (Ω)
+
+> **Datos:** Todos los registros con datos disponibles (~2000)
+> **Fórmula:** `|X_ENT - X_CNE|` y `|X_ENT - X_Infotec|` por separado
+> **Uso:** Comparación general de cada fuente vs ENT
 
 ![Diferencias Absolutas](output/graficos/7_histograma_diferencias_absolutas.png)
 
