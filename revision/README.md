@@ -153,7 +153,7 @@ if revision == CNE and X_CNE es NaN → SIN_REFERENCIA
 
 ---
 
-# Magnitud de Discrepancias (columna `magnitud_discrepancia`)
+# Análisis de Magnitud en DISCREPANCIAS
 
 ## Objetivo
 
@@ -230,10 +230,7 @@ CNE e Infotec no coinciden entre sí, ninguna coincide con ENT.
 |--------|----------|-------|
 | **CAMBIAR** | ΔX < 50 Ω | 595 |
 | **REVISAR** | ΔX ≥ 50 Ω | 214 |
-| **Total DISCREPA** | | **809** | |
-| 🔴 Manual | Cualquier CAMBIO_ALTO | 214 | Análisis caso por caso |
-
-**Total cambios recomendados con alta confianza:** 191 casos (CAMBIO_BAJO en categorías con fuente clara)
+| **Total DISCREPA** | | **809** |
 
 ## Columnas de Salida
 
