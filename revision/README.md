@@ -67,19 +67,19 @@ La columna `revision` del archivo de homologación indica qué fuentes son confi
 
 | Categoría | Cantidad | % |
 |-----------|----------|---|
-| `CORRECTO` | 512 | 25.5% |
+| `CORRECTO` | 504 | 25.1% |
 | `CORRECTO_PARCIAL_CNE` | 341 | 17.0% |
 | `CORRECTO_PARCIAL_INFOTEC` | 177 | 8.8% |
-| `DISCREPA_ENT_FUENTES_COINCIDEN` | 323 | 16.1% |
-| `DISCREPA_FUENTES` | 255 | 12.7% |
+| `DISCREPA_ENT_FUENTES_COINCIDEN` | 329 | 16.4% |
+| `DISCREPA_FUENTES` | 257 | 12.8% |
 | `DISCREPA_PARCIAL_CNE` | 139 | 6.9% |
 | `DISCREPA_PARCIAL_INFOTEC` | 92 | 4.6% |
 | `SIN_REFERENCIA` | 165 | 8.2% |
 | **Total** | **2004** | **100%** |
 
 **Resumen:**
-- **Correctos:** 1030 (51.4%) → `CORRECTO` + `CORRECTO_PARCIAL_CNE` + `CORRECTO_PARCIAL_INFOTEC`
-- **Discrepan:** 809 (40.4%) → `DISCREPA_ENT_FUENTES_COINCIDEN` + `DISCREPA_FUENTES` + `DISCREPA_PARCIAL_CNE` + `DISCREPA_PARCIAL_INFOTEC`
+- **Correctos:** 1022 (51.0%) → `CORRECTO` + `CORRECTO_PARCIAL_CNE` + `CORRECTO_PARCIAL_INFOTEC`
+- **Discrepan:** 817 (40.8%) → `DISCREPA_ENT_FUENTES_COINCIDEN` + `DISCREPA_FUENTES` + `DISCREPA_PARCIAL_CNE` + `DISCREPA_PARCIAL_INFOTEC`
 - **Sin referencia:** 165 (8.2%) → `SIN_REFERENCIA`
 
 ## Análisis de Sensibilidad
@@ -90,7 +90,7 @@ Variación de resultados según el umbral de tolerancia:
 |--------|----------|-------------|-----------------|-----------------|------|----------|
 | 5% | 251 | 410 | 156 | 817 | 40.8% | 1022 |
 | 10% | 404 | 379 | 166 | 949 | 47.4% | 890 |
-| **15%** | **512** | **341** | **177** | **1030** | **51.4%** | **809** |
+| **15%** | **504** | **341** | **177** | **1022** | **51.0%** | **817** |
 | 20% | 576 | 328 | 181 | 1085 | 54.1% | 754 |
 | 25% | 607 | 328 | 189 | 1124 | 56.1% | 715 |
 | 30% | 643 | 315 | 185 | 1143 | 57.0% | 696 |
@@ -206,11 +206,11 @@ Variación de resultados según el umbral de magnitud elegido:
 
 | Categoría | CAMBIAR (ΔX < 50) | REVISAR (ΔX ≥ 50) | Total |
 |-----------|-------------------|-------------------|-------|
-| `DISCREPA_ENT_FUENTES_COINCIDEN` | 215 | 108 | 323 |
+| `DISCREPA_ENT_FUENTES_COINCIDEN` | 249 | 80 | 329 |
 | `DISCREPA_PARCIAL_CNE` | 97 | 42 | 139 |
 | `DISCREPA_PARCIAL_INFOTEC` | 73 | 19 | 92 |
-| `DISCREPA_FUENTES` | 210 | 45 | 255 |
-| **Total** | **595** | **214** | **809** |
+| `DISCREPA_FUENTES` | 185 | 72 | 257 |
+| **Total** | **604** | **213** | **817** |
 
 ### Distribución de Magnitud del Cambio (ΔX)
 
@@ -283,9 +283,9 @@ CNE e Infotec no coinciden entre sí, ninguna coincide con ENT.
 
 | Acción | Criterio | Casos |
 |--------|----------|-------|
-| **CAMBIAR** | ΔX < 50 Ω | 595 |
-| **REVISAR** | ΔX ≥ 50 Ω | 214 |
-| **Total DISCREPA** | | **809** |
+| **CAMBIAR** | ΔX < 50 Ω | 604 |
+| **REVISAR** | ΔX ≥ 50 Ω | 213 |
+| **Total DISCREPA** | | **817** |
 
 ### Comparación X_ENT vs Fuentes
 
@@ -327,10 +327,10 @@ Verificar que los casos CORRECTO (diff < 15%) no tengan diferencias absolutas �
 
 | Categoría | Total | ΔX máximo | ¿Alguno ≥ 50 Ω? |
 |-----------|-------|-----------|-----------------|
-| CORRECTO | 512 | 15.47 Ω | No |
+| CORRECTO | 504 | 15.47 Ω | No |
 | CORRECTO_PARCIAL_CNE | 341 | 10.59 Ω | No |
 | CORRECTO_PARCIAL_INFOTEC | 177 | 12.52 Ω | No |
-| **Total** | **1,030** | **15.47 Ω** | **No** |
+| **Total** | **1,022** | **15.47 Ω** | **No** |
 
 ## Distribución de Magnitud en CORRECTOS
 
