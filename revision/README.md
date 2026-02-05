@@ -89,6 +89,14 @@ Variación de resultados según el umbral de tolerancia:
 | 40% | 703 | 314 | 192 | 1209 | 60.3% | 630 |
 | 50% | 754 | 291 | 189 | 1234 | 61.6% | 605 |
 
+### Curva de Sensibilidad del Umbral
+
+![Curva de Sensibilidad](output/graficos/5_curva_sensibilidad_umbral.png)
+
+### Distribución de Diferencias Porcentuales
+
+![Histograma Diferencias Porcentuales](output/graficos/1_histograma_diferencias_porcentuales.png)
+
 ## Diagrama de Decisión
 
 ```
@@ -178,6 +186,14 @@ Se define la magnitud del cambio como: `ΔX = |X_ENT - X_sugerido|`
 | `DISCREPA_FUENTES` | 210 | 45 | 255 |
 | **Total** | **595** | **214** | **809** |
 
+### Distribución de Magnitud del Cambio (ΔX)
+
+![Distribución Magnitud](output/graficos/3_distribucion_magnitud_cambio.png)
+
+### Diferencias Absolutas (Ω)
+
+![Diferencias Absolutas](output/graficos/7_histograma_diferencias_absolutas.png)
+
 ## Análisis por Categoría
 
 ### DISCREPA_ENT_FUENTES_COINCIDEN (323 casos)
@@ -236,6 +252,18 @@ CNE e Infotec no coinciden entre sí, ninguna coincide con ENT.
 | **CAMBIAR** | ΔX < 50 Ω | 595 |
 | **REVISAR** | ΔX ≥ 50 Ω | 214 |
 | **Total DISCREPA** | | **809** |
+
+### Comparación X_ENT vs Fuentes
+
+![Scatter Comparación Fuentes](output/graficos/2_scatter_comparacion_fuentes.png)
+
+### Scatter por Acción Propuesta
+
+![Scatter por Acción](output/graficos/8_scatter_por_accion.png)
+
+### Comparación por Categoría
+
+![Comparación por Categoría](output/graficos/9_comparacion_3_fuentes_por_categoria.png)
 
 ## Columnas de Salida
 
