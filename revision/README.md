@@ -8,14 +8,13 @@ Identificar si los valores de X_ENT son correctos o presentan discrepancias resp
 
 ## Umbrales Elegidos
 
-| Sección | Umbral | Valor | Descripción |
-|---------|--------|-------|-------------|
-| **Clasificación de Validación** | Diferencia porcentual | **15%** | Si diff < 15% → CORRECTO, si diff ≥ 15% → DISCREPA |
-| **Magnitud Discrepancias/Correctos** | CAMBIO_BAJO | **ΔX < 5 Ω** | Magnitud baja, cambio aceptable |
-| **Magnitud Discrepancias/Correctos** | CAMBIO_MEDIO | **5 ≤ ΔX < 50 Ω** | Magnitud moderada, revisar |
-| **Magnitud Discrepancias/Correctos** | CAMBIO_ALTO | **ΔX ≥ 50 Ω** | Magnitud alta, análisis caso por caso |
+| Sección | Umbral | Valor | Acción |
+|---------|--------|-------|--------|
+| **Clasificación de Validación** | Diferencia porcentual | **15%** | < 15% → CORRECTO (mantener), ≥ 15% → DISCREPA |
+| **Magnitud** | Umbral de cambio | **ΔX < 50 Ω** | CAMBIAR automáticamente |
+| **Magnitud** | Umbral de revisión | **ΔX ≥ 50 Ω** | REVISAR manualmente |
 
-**Nota:** Estos umbrales fueron elegidos basándose en el análisis de sensibilidad y la distribución de magnitudes observada en los datos.
+**Nota:** La columna `magnitud_discrepancia` / `magnitud_correctos` muestra el detalle (CAMBIO_BAJO < 5 Ω, CAMBIO_MEDIO 5-50 Ω, CAMBIO_ALTO ≥ 50 Ω), pero para la acción propuesta solo importa si ΔX < 50 o ≥ 50.
 
 ---
 
@@ -167,21 +166,23 @@ Para los casos que DISCREPAN, no solo importa el porcentaje de diferencia sino t
 
 Se define la magnitud del cambio como: `ΔX = |X_ENT - X_sugerido|`
 
-| Magnitud | Rango ΔX | Descripción |
-|----------|----------|-------------|
-| `CAMBIO_BAJO` | < 5 | Cambio menor, fácil de aceptar |
-| `CAMBIO_MEDIO` | 5 - 50 | Cambio moderado, revisar |
-| `CAMBIO_ALTO` | ≥ 50 | Cambio significativo, requiere análisis |
+| Magnitud | Rango ΔX | Acción Propuesta |
+|----------|----------|------------------|
+| `CAMBIO_BAJO` | < 5 Ω | **CAMBIAR** automáticamente |
+| `CAMBIO_MEDIO` | 5 - 50 Ω | **CAMBIAR** automáticamente |
+| `CAMBIO_ALTO` | ≥ 50 Ω | **REVISAR** manualmente |
+
+**Nota:** CAMBIO_BAJO y CAMBIO_MEDIO se agrupan como "CAMBIAR" (ΔX < 50 Ω).
 
 ## Distribución por Categoría y Magnitud
 
-| Categoría | CAMBIO_BAJO | CAMBIO_MEDIO | CAMBIO_ALTO | Total |
-|-----------|-------------|--------------|-------------|-------|
-| `DISCREPA_ENT_FUENTES_COINCIDEN` | 112 | 103 | 108 | 323 |
-| `DISCREPA_PARCIAL_CNE` | 40 | 57 | 42 | 139 |
-| `DISCREPA_PARCIAL_INFOTEC` | 39 | 34 | 19 | 92 |
-| `DISCREPA_FUENTES` | 64 | 146 | 45 | 255 |
-| **Total** | **255** | **340** | **214** | **809** |
+| Categoría | CAMBIAR (ΔX < 50) | REVISAR (ΔX ≥ 50) | Total |
+|-----------|-------------------|-------------------|-------|
+| `DISCREPA_ENT_FUENTES_COINCIDEN` | 215 | 108 | 323 |
+| `DISCREPA_PARCIAL_CNE` | 97 | 42 | 139 |
+| `DISCREPA_PARCIAL_INFOTEC` | 73 | 19 | 92 |
+| `DISCREPA_FUENTES` | 210 | 45 | 255 |
+| **Total** | **595** | **214** | **809** |
 
 ## Análisis por Categoría
 
@@ -190,34 +191,31 @@ Se define la magnitud del cambio como: `ΔX = |X_ENT - X_sugerido|`
 Las fuentes CNE e Infotec coinciden entre sí → **alta confianza para cambiar**.
 
 - **Valor sugerido:** Promedio de X_CNE y X_Infotec
-- **Prioridad de cambio:**
-  - `CAMBIO_BAJO` (112): ✅ Cambiar sin problema
-  - `CAMBIO_MEDIO` (103): ⚠️ Revisar antes de cambiar
-  - `CAMBIO_ALTO` (108): 🔍 Analizar caso por caso
+- **Acción:**
+  - CAMBIAR: 215 casos (ΔX < 50 Ω)
+  - REVISAR: 108 casos (ΔX ≥ 50 Ω)
 
 ### DISCREPA_PARCIAL_CNE (139 casos)
 
 Solo CNE disponible/confiable, difiere de ENT.
 
 - **Valor sugerido:** X_CNE
-- **Prioridad de cambio:**
-  - `CAMBIO_BAJO` (40): ✅ Cambiar
-  - `CAMBIO_MEDIO` (57): ⚠️ Revisar
-  - `CAMBIO_ALTO` (42): 🔍 Analizar
+- **Acción:**
+  - CAMBIAR: 97 casos (ΔX < 50 Ω)
+  - REVISAR: 42 casos (ΔX ≥ 50 Ω)
 
 ### DISCREPA_PARCIAL_INFOTEC (92 casos)
 
 Solo Infotec disponible/confiable, difiere de ENT.
 
 - **Valor sugerido:** X_Infotec
-- **Prioridad de cambio:**
-  - `CAMBIO_BAJO` (39): ✅ Cambiar
-  - `CAMBIO_MEDIO` (34): ⚠️ Revisar
-  - `CAMBIO_ALTO` (19): 🔍 Analizar
+- **Acción:**
+  - CAMBIAR: 73 casos (ΔX < 50 Ω)
+  - REVISAR: 19 casos (ΔX ≥ 50 Ω)
 
 ### DISCREPA_FUENTES (255 casos)
 
-CNE e Infotec no coinciden entre sí, ninguna coincide con ENT → **requiere decisión manual**.
+CNE e Infotec no coinciden entre sí, ninguna coincide con ENT.
 
 **¿Cuál fuente está más cerca de ENT?**
 
@@ -227,21 +225,18 @@ CNE e Infotec no coinciden entre sí, ninguna coincide con ENT → **requiere de
 | Infotec | 113 (44%) |
 
 - **Valor sugerido:** La fuente más cercana a ENT
-- **Columna adicional:** `fuente_valor_sugerido` indica cuál usar (CNE o Infotec, la más cercana a X_ENT)
-- **Prioridad de cambio:**
-  - `CAMBIO_BAJO` (64): ⚠️ Revisar cuál fuente es correcta
-  - `CAMBIO_MEDIO` (146): ⚠️ Revisar con cuidado
-  - `CAMBIO_ALTO` (45): 🔍 Análisis detallado requerido
+- **Columna adicional:** `fuente_valor_sugerido` indica cuál usar
+- **Acción:**
+  - CAMBIAR: 210 casos (ΔX < 50 Ω)
+  - REVISAR: 45 casos (ΔX ≥ 50 Ω)
 
-## Resumen de Prioridades
+## Resumen de Acciones
 
-| Prioridad | Criterio | Casos | Acción |
-|-----------|----------|-------|--------|
-| 🟢 Alta | FUENTES_COINCIDEN + CAMBIO_BAJO | 112 | Cambiar directamente |
-| 🟢 Alta | PARCIAL_* + CAMBIO_BAJO | 79 | Cambiar directamente |
-| 🟡 Media | FUENTES_COINCIDEN + CAMBIO_MEDIO | 103 | Revisar y cambiar |
-| 🟡 Media | PARCIAL_* + CAMBIO_MEDIO | 91 | Revisar y cambiar |
-| 🟠 Baja | DISCREPA_FUENTES + CAMBIO_BAJO/MEDIO | 210 | Decidir cuál fuente usar |
+| Acción | Criterio | Casos |
+|--------|----------|-------|
+| **CAMBIAR** | ΔX < 50 Ω | 595 |
+| **REVISAR** | ΔX ≥ 50 Ω | 214 |
+| **Total DISCREPA** | | **809** | |
 | 🔴 Manual | Cualquier CAMBIO_ALTO | 214 | Análisis caso por caso |
 
 **Total cambios recomendados con alta confianza:** 191 casos (CAMBIO_BAJO en categorías con fuente clara)
