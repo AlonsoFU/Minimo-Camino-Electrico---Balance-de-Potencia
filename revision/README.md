@@ -188,9 +188,17 @@ Se define la magnitud del cambio como: `ΔX = |X_ENT - X_sugerido|`
 
 ### Distribución de Magnitud del Cambio (ΔX)
 
+> **Datos:** Solo casos DISCREPA (n=817)
+> **Fórmula:** `ΔX = |X_ENT - valor_sugerido|`
+> **Uso:** Determina acción CAMBIAR (<50Ω) o REVISAR (≥50Ω)
+
 ![Distribución Magnitud](output/graficos/3_distribucion_magnitud_cambio.png)
 
-### Diferencias Absolutas (Ω)
+### Diferencias Absolutas por Fuente (Ω)
+
+> **Datos:** Todos los registros con datos disponibles (~2000)
+> **Fórmula:** `|X_ENT - X_CNE|` y `|X_ENT - X_Infotec|` por separado
+> **Uso:** Comparación general de cada fuente vs ENT
 
 ![Diferencias Absolutas](output/graficos/7_histograma_diferencias_absolutas.png)
 
@@ -255,38 +263,33 @@ CNE e Infotec no coinciden entre sí, ninguna coincide con ENT.
 
 ### Comparación X_ENT vs Fuentes
 
+> **Qué muestra:** Cada punto es un registro. Eje X = X_ENT, Eje Y = X de la fuente (CNE o Infotec).
+> **Cómo leerlo:** Puntos sobre la línea diagonal = coincidencia perfecta. Puntos alejados = discrepancia.
+> **Uso:** Visualizar dispersión general de cada fuente respecto a ENT.
+
 ![Scatter Comparación Fuentes](output/graficos/2_scatter_comparacion_fuentes.png)
 
 ### Scatter por Acción Propuesta
+
+> **Qué muestra:** X_ENT vs valor_sugerido, coloreado por acción final.
+> **Cómo leerlo:**
+> - 🟢 Verde (MANTENER): sobre la diagonal, coinciden
+> - 🟠 Naranja (CAMBIAR): cerca de diagonal, diferencia < 50Ω
+> - 🔴 Rojo (REVISAR): lejos de diagonal, diferencia ≥ 50Ω
+> **Uso:** Ver visualmente qué tan grandes son los cambios propuestos.
 
 ![Scatter por Acción](output/graficos/8_scatter_por_accion.png)
 
 ### Comparación por Categoría
 
+> **Qué muestra:** 4 paneles separando por categoría de clasificación.
+> **Cómo leerlo:**
+> - CORRECTO: CNE (azul) e Infotec (naranja) ambos sobre diagonal
+> - DISCREPA_ENT_FUENTES_COINCIDEN: fuentes juntas pero lejos de diagonal
+> - DISCREPA_FUENTES: fuentes dispersas entre sí
+> **Uso:** Entender el comportamiento de cada categoría.
+
 ![Comparación por Categoría](output/graficos/9_comparacion_3_fuentes_por_categoria.png)
-
-## Columnas de Salida
-
-| Columna | Descripción |
-|---------|-------------|
-| `accion_propuesta` | MANTENER / CAMBIAR / REVISAR / SIN_VALIDAR |
-| `clasificacion_validacion` | Categoría detallada (CORRECTO, DISCREPA_*, SIN_REFERENCIA) |
-| `valor_sugerido` | Valor de X recomendado según la fuente confiable |
-| `delta_X` | Magnitud del cambio: \|X_ENT - valor_sugerido\| |
-| `fuente_valor_sugerido` | Origen del valor sugerido (ver tabla abajo) |
-
-### Valores de `fuente_valor_sugerido`
-
-| Valor | Cuándo se usa | Lógica |
-|-------|---------------|--------|
-| `CNE` | PARCIAL_CNE | Solo CNE disponible/confiable |
-| `Infotec` | PARCIAL_INFOTEC | Solo Infotec disponible/confiable |
-| `Promedio CNE+Infotec` | CORRECTO, DISCREPA_ENT_FUENTES_COINCIDEN | Ambas fuentes coinciden entre sí |
-| `CNE (más cercana)` | DISCREPA_FUENTES | CNE está más cerca de X_ENT |
-| `Infotec (más cercana)` | DISCREPA_FUENTES | Infotec está más cerca de X_ENT |
-| `-` | SIN_REFERENCIA | No hay fuente confiable |
-
----
 
 # Validación de Magnitud en CORRECTOS
 
@@ -303,11 +306,47 @@ Verificar que los casos CORRECTO (diff < 15%) no tengan diferencias absolutas �
 | CORRECTO_PARCIAL_INFOTEC | 177 | 12.52 Ω | No |
 | **Total** | **1,030** | **15.47 Ω** | **No** |
 
+## Distribución de Magnitud en CORRECTOS
+
+> **Datos:** Solo casos CORRECTO (n=1022)
+> **Hallazgo:** Máx 15.47 Ω, media 0.55 Ω, ninguno ≥ 50 Ω
+
+![Distribución CORRECTOS](output/graficos/10_distribucion_correctos.png)
+
+## Comparación CORRECTOS vs DISCREPAN
+
+> Boxplot comparativo de magnitudes entre ambos grupos
+
+![Boxplot Comparativo](output/graficos/12_boxplot_correctos_vs_discrepa.png)
+
 ## Hallazgo Principal
 
 **Ningún caso CORRECTO tiene ΔX ≥ 50 Ω** → Todos van a MANTENER, ninguno a REVISAR.
 
 ✅ El umbral del 15% es válido para identificar casos correctos.
+
+---
+
+# Columnas de Salida
+
+| Columna | Descripción |
+|---------|-------------|
+| `accion_propuesta` | MANTENER / CAMBIAR / REVISAR / SIN_VALIDAR |
+| `clasificacion_validacion` | Categoría detallada (CORRECTO, DISCREPA_*, SIN_REFERENCIA) |
+| `valor_sugerido` | Valor de X recomendado según la fuente confiable |
+| `delta_X` | Magnitud del cambio: \|X_ENT - valor_sugerido\| |
+| `fuente_valor_sugerido` | Origen del valor sugerido (ver tabla abajo) |
+
+## Valores de `fuente_valor_sugerido`
+
+| Valor | Cuándo se usa | Lógica |
+|-------|---------------|--------|
+| `CNE` | PARCIAL_CNE | Solo CNE disponible/confiable |
+| `Infotec` | PARCIAL_INFOTEC | Solo Infotec disponible/confiable |
+| `Promedio CNE+Infotec` | CORRECTO, DISCREPA_ENT_FUENTES_COINCIDEN | Ambas fuentes coinciden entre sí |
+| `CNE (más cercana)` | DISCREPA_FUENTES | CNE está más cerca de X_ENT |
+| `Infotec (más cercana)` | DISCREPA_FUENTES | Infotec está más cerca de X_ENT |
+| `-` | SIN_REFERENCIA | No hay fuente confiable |
 
 ---
 
