@@ -378,3 +378,64 @@ Cuando no se puede calcular R/X, se indica el motivo en la columna `motivo_sin_r
 - "Falta Pcu_kW (Pérdidas en cobre)"
 - "Z%² < R%² (error en datos)"
 
+---
+
+# Conclusión y Propuesta
+
+## Criterios de Decisión
+
+Basándose en el análisis realizado, se propone la siguiente estrategia:
+
+1. **MANTENER** los valores X_ENT cuando la diferencia porcentual es < 15% (CORRECTO)
+2. **CAMBIAR** los valores X_ENT cuando discrepan Y la magnitud del cambio es < 50 Ω
+3. **REVISAR MANUALMENTE** cuando la magnitud del cambio es ≥ 50 Ω
+
+## Resumen Cuantitativo
+
+| Acción | Registros | Porcentaje | Descripción |
+|--------|-----------|------------|-------------|
+| **Mantener** | 1,022 | 51.0% | CORRECTO: X_ENT validado, no requiere cambio |
+| **Cambiar** | 604 | 30.1% | DISCREPA con ΔX < 50 Ω: aplicar `valor_sugerido` |
+| **Revisar** | 213 | 10.6% | DISCREPA con ΔX ≥ 50 Ω: análisis caso por caso |
+| **Sin validar** | 165 | 8.2% | SIN_REFERENCIA: no hay fuente confiable |
+| **Total** | **2,004** | **100%** | |
+
+## Desglose de Cambios Propuestos (604 registros)
+
+| Categoría | Cantidad | Confianza |
+|-----------|----------|-----------|
+| DISCREPA_ENT_FUENTES_COINCIDEN | 249 | Alta (CNE ≈ Infotec) |
+| DISCREPA_FUENTES | 185 | Media (usar fuente más cercana) |
+| DISCREPA_PARCIAL_CNE | 97 | Media (solo CNE disponible) |
+| DISCREPA_PARCIAL_INFOTEC | 73 | Media (solo Infotec disponible) |
+
+## Desglose de Revisión Manual (213 registros)
+
+| Categoría | Cantidad | Observación |
+|-----------|----------|-------------|
+| DISCREPA_ENT_FUENTES_COINCIDEN | 80 | Cambio grande pero fuentes coinciden |
+| DISCREPA_FUENTES | 72 | Cambio grande y fuentes no coinciden |
+| DISCREPA_PARCIAL_CNE | 42 | Cambio grande, solo CNE disponible |
+| DISCREPA_PARCIAL_INFOTEC | 19 | Cambio grande, solo Infotec disponible |
+
+## Implementación
+
+Para aplicar los cambios:
+
+```python
+# Filtrar registros a cambiar
+cambiar = df[
+    (df['clasificacion_validacion'].str.startswith('DISCREPA')) &
+    (df['magnitud_discrepancia'].isin(['CAMBIO_BAJO', 'CAMBIO_MEDIO']))
+]
+
+# Aplicar cambio
+df.loc[cambiar.index, 'X_ENT'] = df.loc[cambiar.index, 'valor_sugerido']
+```
+
+## Resultado Esperado
+
+Después de aplicar los cambios:
+- **81.1%** de los registros tendrán X validado (1,022 mantenidos + 604 corregidos)
+- **10.6%** quedarán pendientes de revisión manual (213)
+- **8.2%** sin posibilidad de validación (165)
