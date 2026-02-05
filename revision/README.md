@@ -410,7 +410,9 @@ Casos donde diff < 15%, no requieren cambio:
 | CORRECTO_PARCIAL_CNE | 341 | Solo CNE disponible/confiable, coincide con X_ENT |
 | CORRECTO_PARCIAL_INFOTEC | 177 | Solo Infotec disponible/confiable, coincide con X_ENT |
 
-## Desglose de Cambios Propuestos (604 registros)
+## Desglose de Cambiar - DISCREPA con ΔX < 50 (604 registros)
+
+Casos donde diff ≥ 15% pero magnitud del cambio es menor a 50 Ω:
 
 | Categoría | Cantidad | Confianza |
 |-----------|----------|-----------|
@@ -419,7 +421,9 @@ Casos donde diff < 15%, no requieren cambio:
 | DISCREPA_PARCIAL_CNE | 97 | Media (solo CNE disponible) |
 | DISCREPA_PARCIAL_INFOTEC | 73 | Media (solo Infotec disponible) |
 
-## Desglose de Revisión Manual (213 registros)
+## Desglose de Revisar - DISCREPA con ΔX ≥ 50 (213 registros)
+
+Casos donde diff ≥ 15% y magnitud del cambio es mayor o igual a 50 Ω:
 
 | Categoría | Cantidad | Observación |
 |-----------|----------|-------------|
