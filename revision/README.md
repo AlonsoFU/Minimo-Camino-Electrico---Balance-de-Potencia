@@ -84,18 +84,20 @@ La columna `revision` del archivo de homologación indica qué fuentes son confi
 
 ## Análisis de Sensibilidad
 
-Variación de resultados según el umbral de tolerancia:
+Variación de resultados según el umbral de tolerancia (SIN_REFERENCIA = 165 constante, 8.2%):
 
-| Umbral | CORRECTO | PARCIAL_CNE | PARCIAL_INFOTEC | Total Correctos | % | DISCREPA |
-|--------|----------|-------------|-----------------|-----------------|------|----------|
-| 5% | 251 | 410 | 156 | 817 | 40.8% | 1022 |
-| 10% | 404 | 379 | 166 | 949 | 47.4% | 890 |
-| **15%** | **504** | **341** | **177** | **1022** | **51.0%** | **817** |
-| 20% | 576 | 328 | 181 | 1085 | 54.1% | 754 |
-| 25% | 607 | 328 | 189 | 1124 | 56.1% | 715 |
-| 30% | 643 | 315 | 185 | 1143 | 57.0% | 696 |
-| 40% | 703 | 314 | 192 | 1209 | 60.3% | 630 |
-| 50% | 754 | 291 | 189 | 1234 | 61.6% | 605 |
+| Umbral | Total Correctos | % Correctos | DISCREPA | % Discrepa |
+|--------|-----------------|-------------|----------|------------|
+| 5% | 817 | 40.8% | 1022 | 51.0% |
+| 10% | 949 | 47.4% | 890 | 44.4% |
+| **15%** | **1022** | **51.0%** | **817** | **40.8%** |
+| 20% | 1085 | 54.1% | 754 | 37.6% |
+| 25% | 1124 | 56.1% | 715 | 35.7% |
+| 30% | 1143 | 57.0% | 696 | 34.7% |
+| 40% | 1209 | 60.3% | 630 | 31.4% |
+| 50% | 1234 | 61.6% | 605 | 30.2% |
+
+*Nota: % Correctos + % Discrepa + 8.2% (SIN_REFERENCIA) = 100%*
 
 ### Curva de Sensibilidad del Umbral
 
