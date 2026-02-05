@@ -227,7 +227,7 @@ CNE e Infotec no coinciden entre sí, ninguna coincide con ENT → **requiere de
 | Infotec | 113 (44%) |
 
 - **Valor sugerido:** La fuente más cercana a ENT
-- **Columna adicional:** `fuente_cercana` indica cuál usar
+- **Columna adicional:** `fuente_valor_sugerido` indica cuál usar (CNE o Infotec, la más cercana a X_ENT)
 - **Prioridad de cambio:**
   - `CAMBIO_BAJO` (64): ⚠️ Revisar cuál fuente es correcta
   - `CAMBIO_MEDIO` (146): ⚠️ Revisar con cuidado
@@ -253,7 +253,18 @@ CNE e Infotec no coinciden entre sí, ninguna coincide con ENT → **requiere de
 | `valor_sugerido` | Valor de X recomendado según la fuente confiable |
 | `delta_X` | Magnitud del cambio: \|X_ENT - valor_sugerido\| |
 | `magnitud` | Clasificación: CAMBIO_BAJO / CAMBIO_MEDIO / CAMBIO_ALTO |
-| `fuente_cercana` | Para DISCREPA_FUENTES: cuál fuente (CNE/Infotec) está más cerca |
+| `fuente_valor_sugerido` | Origen del valor sugerido (ver tabla abajo) |
+
+### Valores de `fuente_valor_sugerido`
+
+| Valor | Cuándo se usa | Lógica |
+|-------|---------------|--------|
+| `CNE` | PARCIAL_CNE | Solo CNE disponible/confiable |
+| `Infotec` | PARCIAL_INFOTEC | Solo Infotec disponible/confiable |
+| `Promedio CNE+Infotec` | CORRECTO, DISCREPA_ENT_FUENTES_COINCIDEN | Ambas fuentes coinciden entre sí |
+| `CNE (más cercana)` | DISCREPA_FUENTES | CNE está más cerca de X_ENT |
+| `Infotec (más cercana)` | DISCREPA_FUENTES | Infotec está más cerca de X_ENT |
+| `-` | SIN_REFERENCIA | No hay fuente confiable |
 
 ---
 
