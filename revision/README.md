@@ -10,16 +10,16 @@ Identificar si los valores de X_ENT son correctos o presentan discrepancias resp
 
 | Sección | Umbral | Valor | Descripción |
 |---------|--------|-------|-------------|
-| **Capítulo 1** | Diferencia porcentual | **15%** | Si diff < 15% → CORRECTO, si diff ≥ 15% → DISCREPA |
-| **Capítulos 2 y 3** | CAMBIO_BAJO | **ΔX < 5 Ω** | Magnitud baja, cambio aceptable |
-| **Capítulos 2 y 3** | CAMBIO_MEDIO | **5 ≤ ΔX < 50 Ω** | Magnitud moderada, revisar |
-| **Capítulos 2 y 3** | CAMBIO_ALTO | **ΔX ≥ 50 Ω** | Magnitud alta, análisis caso por caso |
+| **Clasificación de Validación** | Diferencia porcentual | **15%** | Si diff < 15% → CORRECTO, si diff ≥ 15% → DISCREPA |
+| **Magnitud Discrepancias/Correctos** | CAMBIO_BAJO | **ΔX < 5 Ω** | Magnitud baja, cambio aceptable |
+| **Magnitud Discrepancias/Correctos** | CAMBIO_MEDIO | **5 ≤ ΔX < 50 Ω** | Magnitud moderada, revisar |
+| **Magnitud Discrepancias/Correctos** | CAMBIO_ALTO | **ΔX ≥ 50 Ω** | Magnitud alta, análisis caso por caso |
 
-**Nota:** Estos umbrales fueron elegidos basándose en el análisis de sensibilidad (ver Capítulo 1) y la distribución de magnitudes observada en los datos.
+**Nota:** Estos umbrales fueron elegidos basándose en el análisis de sensibilidad y la distribución de magnitudes observada en los datos.
 
 ---
 
-# Capítulo 1: Categorización por Diferencia Porcentual
+# Clasificación de Validación (columna `clasificacion_validacion`)
 
 ## Columna `revision` (entrada)
 
@@ -157,7 +157,7 @@ if revision == CNE and X_CNE es NaN → SIN_REFERENCIA
 
 ---
 
-# Capítulo 2: Análisis de Magnitud de Cambios
+# Magnitud de Discrepancias (columna `magnitud_discrepancia`)
 
 ## Objetivo
 
@@ -257,7 +257,7 @@ CNE e Infotec no coinciden entre sí, ninguna coincide con ENT → **requiere de
 
 ---
 
-# Capítulo 3: Verificación de Magnitud en Categorías CORRECTO
+# Magnitud de Correctos (columna `magnitud_correctos`)
 
 ## Objetivo
 
