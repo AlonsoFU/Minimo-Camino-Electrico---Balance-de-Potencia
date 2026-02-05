@@ -185,44 +185,49 @@ Se define la magnitud del cambio como: `ΔX = |X_ENT - X_sugerido|`
 Las fuentes CNE e Infotec coinciden entre sí → **alta confianza para cambiar**.
 
 - **Valor sugerido:** Promedio de X_CNE y X_Infotec
-- **Acción:**
-  - CAMBIAR: 215 casos (ΔX < 50 Ω)
-  - REVISAR: 108 casos (ΔX ≥ 50 Ω)
+
+| Magnitud | Rango | Casos | Acción |
+|----------|-------|-------|--------|
+| CAMBIO_BAJO | ΔX < 5 Ω | 112 | ✅ Cambiar |
+| CAMBIO_MEDIO | 5 ≤ ΔX < 50 Ω | 103 | ✅ Cambiar |
+| CAMBIO_ALTO | ΔX ≥ 50 Ω | 108 | 🔍 Revisar |
 
 ### DISCREPA_PARCIAL_CNE (139 casos)
 
 Solo CNE disponible/confiable, difiere de ENT.
 
 - **Valor sugerido:** X_CNE
-- **Acción:**
-  - CAMBIAR: 97 casos (ΔX < 50 Ω)
-  - REVISAR: 42 casos (ΔX ≥ 50 Ω)
+
+| Magnitud | Rango | Casos | Acción |
+|----------|-------|-------|--------|
+| CAMBIO_BAJO | ΔX < 5 Ω | 40 | ✅ Cambiar |
+| CAMBIO_MEDIO | 5 ≤ ΔX < 50 Ω | 57 | ✅ Cambiar |
+| CAMBIO_ALTO | ΔX ≥ 50 Ω | 42 | 🔍 Revisar |
 
 ### DISCREPA_PARCIAL_INFOTEC (92 casos)
 
 Solo Infotec disponible/confiable, difiere de ENT.
 
 - **Valor sugerido:** X_Infotec
-- **Acción:**
-  - CAMBIAR: 73 casos (ΔX < 50 Ω)
-  - REVISAR: 19 casos (ΔX ≥ 50 Ω)
+
+| Magnitud | Rango | Casos | Acción |
+|----------|-------|-------|--------|
+| CAMBIO_BAJO | ΔX < 5 Ω | 39 | ✅ Cambiar |
+| CAMBIO_MEDIO | 5 ≤ ΔX < 50 Ω | 34 | ✅ Cambiar |
+| CAMBIO_ALTO | ΔX ≥ 50 Ω | 19 | 🔍 Revisar |
 
 ### DISCREPA_FUENTES (255 casos)
 
 CNE e Infotec no coinciden entre sí, ninguna coincide con ENT.
 
-**¿Cuál fuente está más cerca de ENT?**
-
-| Fuente más cercana | Cantidad |
-|--------------------|----------|
-| CNE | 142 (56%) |
-| Infotec | 113 (44%) |
-
 - **Valor sugerido:** La fuente más cercana a ENT
-- **Columna adicional:** `fuente_valor_sugerido` indica cuál usar
-- **Acción:**
-  - CAMBIAR: 210 casos (ΔX < 50 Ω)
-  - REVISAR: 45 casos (ΔX ≥ 50 Ω)
+- **Columna:** `fuente_valor_sugerido` indica cuál usar (CNE: 142, Infotec: 113)
+
+| Magnitud | Rango | Casos | Acción |
+|----------|-------|-------|--------|
+| CAMBIO_BAJO | ΔX < 5 Ω | 64 | ✅ Cambiar |
+| CAMBIO_MEDIO | 5 ≤ ΔX < 50 Ω | 146 | ✅ Cambiar |
+| CAMBIO_ALTO | ΔX ≥ 50 Ω | 45 | 🔍 Revisar |
 
 ## Resumen de Acciones
 
