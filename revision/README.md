@@ -291,29 +291,6 @@ CNE e Infotec no coinciden entre sí, ninguna coincide con ENT.
 
 ![Comparación por Categoría](output/graficos/9_comparacion_3_fuentes_por_categoria.png)
 
-## Columnas de Salida
-
-| Columna | Descripción |
-|---------|-------------|
-| `accion_propuesta` | MANTENER / CAMBIAR / REVISAR / SIN_VALIDAR |
-| `clasificacion_validacion` | Categoría detallada (CORRECTO, DISCREPA_*, SIN_REFERENCIA) |
-| `valor_sugerido` | Valor de X recomendado según la fuente confiable |
-| `delta_X` | Magnitud del cambio: \|X_ENT - valor_sugerido\| |
-| `fuente_valor_sugerido` | Origen del valor sugerido (ver tabla abajo) |
-
-### Valores de `fuente_valor_sugerido`
-
-| Valor | Cuándo se usa | Lógica |
-|-------|---------------|--------|
-| `CNE` | PARCIAL_CNE | Solo CNE disponible/confiable |
-| `Infotec` | PARCIAL_INFOTEC | Solo Infotec disponible/confiable |
-| `Promedio CNE+Infotec` | CORRECTO, DISCREPA_ENT_FUENTES_COINCIDEN | Ambas fuentes coinciden entre sí |
-| `CNE (más cercana)` | DISCREPA_FUENTES | CNE está más cerca de X_ENT |
-| `Infotec (más cercana)` | DISCREPA_FUENTES | Infotec está más cerca de X_ENT |
-| `-` | SIN_REFERENCIA | No hay fuente confiable |
-
----
-
 # Validación de Magnitud en CORRECTOS
 
 ## Objetivo
@@ -347,6 +324,29 @@ Verificar que los casos CORRECTO (diff < 15%) no tengan diferencias absolutas �
 **Ningún caso CORRECTO tiene ΔX ≥ 50 Ω** → Todos van a MANTENER, ninguno a REVISAR.
 
 ✅ El umbral del 15% es válido para identificar casos correctos.
+
+---
+
+# Columnas de Salida
+
+| Columna | Descripción |
+|---------|-------------|
+| `accion_propuesta` | MANTENER / CAMBIAR / REVISAR / SIN_VALIDAR |
+| `clasificacion_validacion` | Categoría detallada (CORRECTO, DISCREPA_*, SIN_REFERENCIA) |
+| `valor_sugerido` | Valor de X recomendado según la fuente confiable |
+| `delta_X` | Magnitud del cambio: \|X_ENT - valor_sugerido\| |
+| `fuente_valor_sugerido` | Origen del valor sugerido (ver tabla abajo) |
+
+## Valores de `fuente_valor_sugerido`
+
+| Valor | Cuándo se usa | Lógica |
+|-------|---------------|--------|
+| `CNE` | PARCIAL_CNE | Solo CNE disponible/confiable |
+| `Infotec` | PARCIAL_INFOTEC | Solo Infotec disponible/confiable |
+| `Promedio CNE+Infotec` | CORRECTO, DISCREPA_ENT_FUENTES_COINCIDEN | Ambas fuentes coinciden entre sí |
+| `CNE (más cercana)` | DISCREPA_FUENTES | CNE está más cerca de X_ENT |
+| `Infotec (más cercana)` | DISCREPA_FUENTES | Infotec está más cerca de X_ENT |
+| `-` | SIN_REFERENCIA | No hay fuente confiable |
 
 ---
 
