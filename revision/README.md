@@ -397,9 +397,11 @@ Cuando no se puede calcular R/X, se indica el motivo en la columna `motivo_sin_r
 
 Basándose en el análisis realizado, se propone la siguiente estrategia:
 
-1. **MANTENER** los valores X_ENT cuando la diferencia porcentual es < 15% (CORRECTO)
-2. **CAMBIAR** los valores X_ENT cuando discrepan Y la magnitud del cambio es < 50 Ω
-3. **REVISAR MANUALMENTE** cuando la magnitud del cambio es ≥ 50 Ω
+1. **MANTENER** los valores X_ENT cuando la diferencia porcentual es < 15% (CORRECTO) **Y** la magnitud es < 50 Ω
+2. **CAMBIAR** los valores X_ENT cuando discrepan (diff ≥ 15%) Y la magnitud del cambio es < 50 Ω
+3. **REVISAR MANUALMENTE** cuando la magnitud del cambio es ≥ 50 Ω (aplica tanto a CORRECTO como DISCREPA)
+
+**Nota:** Los casos CORRECTO con ΔX ≥ 50 Ω deberían revisarse manualmente aunque cumplan el umbral del 15%. En este dataset hay **0 casos** de este tipo.
 
 ## Resumen Cuantitativo
 
@@ -413,7 +415,7 @@ Basándose en el análisis realizado, se propone la siguiente estrategia:
 
 ## Desglose de Mantener - CORRECTOS (1,022 registros)
 
-Casos donde diff < 15%, no requieren cambio:
+Casos donde diff < 15% **y** ΔX < 50 Ω, no requieren cambio:
 
 | Categoría | Cantidad | Descripción |
 |-----------|----------|-------------|
