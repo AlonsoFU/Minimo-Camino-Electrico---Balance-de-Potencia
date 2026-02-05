@@ -400,6 +400,16 @@ Basándose en el análisis realizado, se propone la siguiente estrategia:
 | **Sin validar** | 165 | 8.2% | SIN_REFERENCIA: no hay fuente confiable |
 | **Total** | **2,004** | **100%** | |
 
+## Desglose de Mantener - CORRECTOS (1,022 registros)
+
+Casos donde diff < 15%, no requieren cambio:
+
+| Categoría | Cantidad | Descripción |
+|-----------|----------|-------------|
+| CORRECTO | 504 | Ambas fuentes (CNE e Infotec) coinciden con X_ENT |
+| CORRECTO_PARCIAL_CNE | 341 | Solo CNE disponible/confiable, coincide con X_ENT |
+| CORRECTO_PARCIAL_INFOTEC | 177 | Solo Infotec disponible/confiable, coincide con X_ENT |
+
 ## Desglose de Cambios Propuestos (604 registros)
 
 | Categoría | Cantidad | Confianza |
