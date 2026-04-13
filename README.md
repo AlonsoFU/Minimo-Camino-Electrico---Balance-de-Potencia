@@ -2,6 +2,31 @@
 
 Sistema para homologar y validar datos de líneas eléctricas y transformadores entre tres fuentes de datos: **ENT**, **CNE** e **Infotécnica**.
 
+## ¿Qué hace este proyecto?
+
+Este proyecto resuelve un problema común en el sector eléctrico chileno: los parámetros técnicos de las líneas y transformadores del sistema eléctrico (como resistencia R y reactancia X) están registrados en **múltiples bases de datos** que no siempre coinciden.
+
+Este sistema:
+1. **Carga** los datos de las tres fuentes
+2. **Homologa** (empareja) cada elemento entre las distintas bases usando similitud de nombres, tensiones y barras
+3. **Compara** los valores de R y X para detectar inconsistencias
+4. **Valida** cuáles valores de ENT son correctos y cuáles necesitan corrección
+
+## ¿Qué son las fuentes de datos?
+
+| Fuente | Descripción | Archivo de entrada |
+|--------|-------------|---------------------|
+| **ENT** | Base de referencia actual del operador (contiene R, X, barras, voltajes) | `Base_ENT.xlsx` |
+| **CNE** | Comisión Nacional de Energía - datos oficiales de operación y mantenimiento | `LinDatParOpe.csv`, `LinDatManOpe.csv` |
+| **Infotécnica** | Reportes técnicos detallados con parámetros de secciones y transformadores | `secciones.xlsx`, `trafos-2d.xlsx`, `trafos-3d.xlsx` |
+
+## ¿Por qué validar?
+
+Los valores de reactancia (X) en ENT pueden estar **desactualizados o tener errores**. Este sistema compara X_ENT con las otras dos fuentes para:
+- Confirmar los valores correctos (CORRECTO)
+- Detectar discrepancias significativas (DISCREPA)
+- Proponer qué valores cambiar automáticamente y cuáles revisar manualmente
+
 ## Flujo General
 
 ```
@@ -83,13 +108,17 @@ Sistema para homologar y validar datos de líneas eléctricas y transformadores 
 
 ## Uso
 
+El script principal `main.py` procesa los datos de un mes específico, aplicando reemplazos por mantenimiento y generando los archivos de salida.
+
 ```bash
-# Con mes como argumento
+# Opción 1: Con mes como argumento (formato YYYY-MM)
 python main.py 2025-06
 
-# Interactivo (solicita el mes)
+# Opción 2: Modo interactivo (solicita el mes)
 python main.py
 ```
+
+**¿Por qué el mes?** Las bases de datos reflejan el estado del sistema eléctrico en un momento dado. Un elemento puede tener un "reemplazo por mantenimiento" activo que cambia sus parámetros durante ciertos meses.
 
 ## Estructura del Proyecto
 
@@ -114,20 +143,34 @@ python main.py
 
 ## Carpeta `revision/`
 
-Contiene el análisis de validación de los valores de reactancia (X) de ENT comparados con CNE e Infotécnica.
+Contiene el análisis de validación de los valores de reactancia (X) de ENT comparados con CNE e Infotécnica. Aquí es donde se **decide qué valores X_ENT están correctos, cuáles cambiar y cuáles revisar manualmente**.
+
+**Ver `revision/README.md` para la documentación completa con gráficos, análisis de sensibilidad de umbrales y conclusiones.**
 
 ### Flujo de Validación
 
 ```
 revision/input/homologacion_*.xlsx          revision/output/homologacion_clasificada.xlsx
 ┌────────────────────────────┐              ┌────────────────────────────────────────────┐
-│ Columnas:                  │              │ Columnas agregadas:                        │
-│ - revision (1/CNE/Infotec/0)│    ───►     │ - categoria_cap1 (CORRECTO/DISCREPA/...)   │
-│ - X_ENT, X_CNE, X_Infotec  │              │ - magnitud_cap2 (para DISCREPA)            │
-│ - diff_X_CNE_%, diff_X_... │              │ - magnitud_cap3 (para CORRECTO)            │
-└────────────────────────────┘              │ - valor_sugerido, delta_X                  │
-                                            └────────────────────────────────────────────┘
+│ Columnas de entrada:       │              │ Columnas agregadas:                        │
+│ - revision (1/CNE/Infotec/0)│    ───►     │ - accion_propuesta                         │
+│ - X_ENT, X_CNE, X_Infotec  │              │   (MANTENER/CAMBIAR/REVISAR/SIN_VALIDAR)   │
+│ - diff_X_CNE_%, diff_X_... │              │ - clasificacion_validacion                 │
+│                            │              │   (CORRECTO/DISCREPA_*/SIN_REFERENCIA)     │
+│ La columna `revision`      │              │ - valor_sugerido (X recomendado)           │
+│ indica qué fuente es       │              │ - delta_X (|X_ENT - valor_sugerido|)       │
+│ confiable para validar     │              │ - fuente_valor_sugerido                    │
+└────────────────────────────┘              └────────────────────────────────────────────┘
 ```
+
+### Resultado del Análisis (umbral 15% y 50 Ω)
+
+| Acción | Casos | % | Significado |
+|--------|-------|---|-------------|
+| **MANTENER** | 1,022 | 51.0% | X_ENT validado, no requiere cambio |
+| **CAMBIAR** | 604 | 30.1% | Diferencia significativa pero cambio <50Ω: aplicar automáticamente |
+| **REVISAR** | 213 | 10.6% | Diferencia grande (≥50Ω): revisar manualmente |
+| **SIN_VALIDAR** | 165 | 8.2% | No hay fuente confiable para validar |
 
 ### Categorías de Validación
 
@@ -164,6 +207,34 @@ Ver `revision/README.md` para documentación detallada de umbrales y análisis.
 - pandas
 - openpyxl
 - fuzzywuzzy (o rapidfuzz)
+- matplotlib (solo para generar gráficos de validación)
+
+## ¿Cómo empezar? (Guía rápida para nuevos usuarios)
+
+1. **Instalar dependencias:**
+   ```bash
+   pip install pandas openpyxl rapidfuzz matplotlib
+   ```
+
+2. **Ubicar los archivos de entrada** en `inputs/`:
+   - `Base Ent/Base_ENT.xlsx` (base de referencia)
+   - `Actualizacion CNE/` (datos CNE)
+   - `Actualizacion Infotecnica/` (reportes Infotécnica)
+
+3. **Ejecutar la homologación** para un mes específico:
+   ```bash
+   python main.py 2025-06
+   ```
+   Esto genera `outputs/homologacion_YYYY-MM.csv` con los datos homologados de las tres fuentes.
+
+4. **Analizar la validación de reactancias:**
+   - El archivo clasificado está en `revision/output/homologacion_clasificada.xlsx`
+   - Ver `revision/README.md` para análisis completo con gráficos
+
+5. **Regenerar gráficos** (opcional):
+   ```bash
+   python revision/generar_graficos.py
+   ```
 
 ---
 

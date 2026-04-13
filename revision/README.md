@@ -2,28 +2,63 @@
 
 Este documento describe la estrategia de validación de los valores de reactancia (X) de la base ENT, comparándolos con las fuentes CNE e Infotécnica.
 
+## ¿Para qué sirve este análisis?
+
+Los valores de reactancia (X) en la base ENT pueden estar desactualizados o tener errores. Este análisis:
+
+1. **Compara** cada valor X_ENT con los valores de CNE y Infotécnica
+2. **Clasifica** cada registro según qué tan de acuerdo están las fuentes
+3. **Propone** qué hacer con cada valor: mantener, cambiar automáticamente o revisar manualmente
+
+El resultado es un archivo Excel con una columna `accion_propuesta` que permite tomar decisiones sobre qué valores corregir.
+
 ## Objetivo
 
 Identificar si los valores de X_ENT son correctos o presentan discrepancias respecto a las fuentes de referencia (CNE e Infotécnica).
 
-## Umbrales Elegidos
+## Dos Criterios de Decisión
 
-| Umbral | Valor | Uso | Acción |
-|--------|-------|-----|--------|
-| **Diferencia porcentual** | **15%** | Clasificar CORRECTO vs DISCREPA | `\|X_ENT - X_fuente\| / X_ENT × 100` |
-| **Magnitud del cambio** | **50 Ω** | Decidir CAMBIAR vs REVISAR | `\|X_ENT - valor_sugerido\|` |
+Se usan **dos umbrales** para tomar decisiones:
+
+| Umbral | Valor | ¿Para qué sirve? | Fórmula |
+|--------|-------|------------------|---------|
+| **Diferencia porcentual** | **15%** | Decide si el valor es CORRECTO o DISCREPA | `\|X_ENT - X_fuente\| / X_ENT × 100` |
+| **Magnitud del cambio** | **50 Ω** | Decide si CAMBIAR automáticamente o REVISAR a mano | `\|X_ENT - valor_sugerido\|` |
+
+**¿Por qué dos umbrales?**
+- El **porcentaje (15%)** detecta diferencias relativas, pero no considera si el cambio es pequeño en términos absolutos
+- La **magnitud (50 Ω)** considera el impacto real: un cambio del 50% en un valor pequeño puede ser solo 2 Ω (seguro de cambiar), mientras que un cambio del 20% en un valor grande puede ser 200 Ω (riesgoso, mejor revisar)
+
+## Árbol de Decisión Final
+
+```
+Para cada registro:
+├── ¿Hay fuente confiable?
+│   └── NO → SIN_VALIDAR (165 casos)
+│
+├── ¿Diferencia < 15%?
+│   └── SÍ → CORRECTO → MANTENER (1,022 casos)
+│
+└── Diferencia ≥ 15% → DISCREPA
+    ├── ¿ΔX < 50 Ω?
+    │   └── SÍ → CAMBIAR automáticamente (604 casos)
+    └── ¿ΔX ≥ 50 Ω?
+        └── SÍ → REVISAR manualmente (213 casos)
+```
 
 ## Índice
 
-1. [Capítulo 1: Clasificación de Validación](#capítulo-1-clasificación-de-validación-umbral-15) - Umbral 15%
-2. [Capítulo 2: Análisis de Magnitud en DISCREPANCIAS](#capítulo-2-análisis-de-magnitud-en-discrepancias-umbral-50-ω) - Umbral 50 Ω
-3. [Capítulo 3: Validación de Magnitud en CORRECTOS](#capítulo-3-validación-de-magnitud-en-correctos)
-4. [Columnas de Salida](#columnas-de-salida)
-5. [Conclusión y Propuesta](#conclusión-y-propuesta)
+1. [Capítulo 1: Clasificación de Validación](#capítulo-1-clasificación-de-validación-umbral-15) - Aplica el umbral 15% para clasificar correctos y discrepantes
+2. [Capítulo 2: Análisis de Magnitud en DISCREPANCIAS](#capítulo-2-análisis-de-magnitud-en-discrepancias-umbral-50-ω) - Aplica el umbral 50 Ω para decidir qué hacer con los discrepantes
+3. [Capítulo 3: Validación de Magnitud en CORRECTOS](#capítulo-3-validación-de-magnitud-en-correctos) - Verifica que ningún correcto tenga un cambio peligroso
+4. [Columnas de Salida](#columnas-de-salida) - Descripción del archivo generado
+5. [Conclusión y Propuesta](#conclusión-y-propuesta) - Resultado final y acciones propuestas
 
 ---
 
 # Capítulo 1: Clasificación de Validación (umbral 15%)
+
+En este capítulo se clasifica cada registro según su diferencia porcentual con las fuentes CNE e Infotécnica. Se usa el **umbral del 15%**: diferencias menores se consideran "coincidentes" (CORRECTO), diferencias mayores se consideran "no coincidentes" (DISCREPA).
 
 ## Columna `revision` (entrada)
 
@@ -173,6 +208,16 @@ if revision == CNE and X_CNE es NaN → SIN_REFERENCIA
 
 # Capítulo 2: Análisis de Magnitud en DISCREPANCIAS (umbral 50 Ω)
 
+El Capítulo 1 identificó 817 casos que DISCREPAN (diferencia ≥ 15%). En este capítulo se decide qué hacer con ellos: cambiar automáticamente o revisar manualmente.
+
+## ¿Por qué no cambiar todos los discrepantes?
+
+Algunos casos tienen diferencias porcentuales grandes pero en magnitud absoluta son pequeñas. Por ejemplo:
+- X_ENT = 2 Ω, X_CNE = 3 Ω → diferencia 50% pero solo 1 Ω absoluto → **seguro cambiar**
+- X_ENT = 200 Ω, X_CNE = 260 Ω → diferencia 30% y 60 Ω absolutos → **mejor revisar**
+
+Por eso se usa un segundo umbral: la **magnitud del cambio (ΔX)** en ohmios.
+
 ## Objetivo
 
 Para los casos que DISCREPAN, no solo importa el porcentaje de diferencia sino también **la magnitud absoluta del cambio** (ΔX). Un cambio pequeño en magnitud puede ser aceptable aunque el porcentaje sea alto.
@@ -321,6 +366,12 @@ CNE e Infotec no coinciden entre sí, ninguna coincide con ENT.
 
 # Capítulo 3: Validación de Magnitud en CORRECTOS
 
+Este capítulo hace una verificación cruzada: aunque un registro haya sido clasificado como CORRECTO (diff < 15%), ¿podría tener un ΔX tan grande que aún así requiera revisión?
+
+**Ejemplo hipotético:** X_ENT = 1000 Ω, X_CNE = 900 Ω → diferencia 10% (CORRECTO) pero ΔX = 100 Ω (muy grande).
+
+Este capítulo confirma que ningún caso CORRECTO tiene este problema en el dataset actual.
+
 ## Objetivo
 
 Verificar que los casos CORRECTO (diff < 15%) no tengan diferencias absolutas ≥ 50 Ω que requieran revisión.
@@ -357,13 +408,21 @@ Verificar que los casos CORRECTO (diff < 15%) no tengan diferencias absolutas �
 
 # Columnas de Salida
 
+El archivo `output/homologacion_clasificada.xlsx` contiene todas las columnas del archivo de entrada más estas columnas nuevas que resumen el análisis:
+
 | Columna | Descripción |
 |---------|-------------|
-| `accion_propuesta` | MANTENER / CAMBIAR / REVISAR / SIN_VALIDAR |
-| `clasificacion_validacion` | Categoría detallada (CORRECTO, DISCREPA_*, SIN_REFERENCIA) |
-| `valor_sugerido` | Valor de X recomendado según la fuente confiable |
+| `accion_propuesta` | **Decisión final**: MANTENER / CAMBIAR / REVISAR / SIN_VALIDAR |
+| `clasificacion_validacion` | Categoría detallada del Capítulo 1 (CORRECTO, DISCREPA_*, SIN_REFERENCIA) |
+| `valor_sugerido` | Valor de X recomendado (si se va a cambiar) |
 | `delta_X` | Magnitud del cambio: \|X_ENT - valor_sugerido\| |
-| `fuente_valor_sugerido` | Origen del valor sugerido (ver tabla abajo) |
+| `fuente_valor_sugerido` | De dónde viene el valor sugerido (ver tabla abajo) |
+
+**Cómo usar el archivo:**
+- Filtra por `accion_propuesta = MANTENER` → son los 1022 valores que están correctos y no requieren acción
+- Filtra por `accion_propuesta = CAMBIAR` → son los 604 valores que se pueden corregir automáticamente usando `valor_sugerido`
+- Filtra por `accion_propuesta = REVISAR` → son los 213 valores que requieren análisis caso por caso
+- Filtra por `accion_propuesta = SIN_VALIDAR` → son los 165 sin fuente confiable (buscar otras fuentes o mantener como están)
 
 ## Valores de `fuente_valor_sugerido`
 
