@@ -28,15 +28,15 @@ ax.text(1.2,0.5,"PMGD",ha="center",va="center",fontsize=7.5,color="white",fontwe
 ax.text(1.2,2.9,"SE A",ha="center",va="center",fontsize=8,color="white",fontweight="bold",zorder=4)
 ax.text(9.6,2.9,"SE B",ha="center",va="center",fontsize=8,color="white",fontweight="bold",zorder=4)
 ax.text(1.2,-0.05,"Barra de inyección\n(barra de baja tensión de la SE A)",ha="center",va="top",fontsize=8.2,color=ORANGE)
-ax.text(1.2,3.25,"Subestación del STN A\n(misma ubicación)",ha="center",va="bottom",fontsize=8.2,color=TEAL)
-ax.text(9.6,3.25,"Subestación del STN B",ha="center",va="bottom",fontsize=8.2,color=TEAL)
+ax.text(1.2,3.25,"Subestación A\n(misma ubicación)",ha="center",va="bottom",fontsize=8.2,color=TEAL)
+ax.text(9.6,3.25,"Subestación B",ha="center",va="bottom",fontsize=8.2,color=TEAL)
 ax.text(5.4,3.3,"Camino directo a SE A: 0 km, pero X = 250 Ω  →  descartado",ha="center",va="center",fontsize=9,color=GREY,fontweight="bold")
 ax.text(5.4,2.75,"Camino a SE B: 55 km, X = 8 + 8 + 6 + 30 = 52 Ω  →  SE más cercana",ha="center",va="center",fontsize=9,color=ORANGE,fontweight="bold")
 fig.savefig(OUT+"fig1_concepto.png",bbox_inches="tight",facecolor="white"); plt.close(fig)
 
 # ---------- Figura 2: caso Temuco ----------
 fig, ax = plt.subplots(figsize=(7.2, 4.2), dpi=200)
-ax.set_xlim(-0.9, 10.9); ax.set_ylim(-1.1, 4.6); ax.axis("off")
+ax.set_xlim(-0.9, 10.9); ax.set_ylim(-1.1, 4.9); ax.axis("off")
 pts={"T66":(9.6,0.6),"PIL":(7.4,0.6),"LLA":(5.6,0.6),"LAU":(3.8,0.6),"VIC":(2.3,0.6),"LP66":(0.6,0.6),
      "LP220":(0.6,3.1),"T220":(9.6,3.1)}
 def edge(a,b,label,color,lw,ls="-",dx=0,dy=0.22,ha="center",va="bottom",fs=8):
@@ -63,8 +63,8 @@ lnode("LP66","Los Peumos 66",'#5FA6B9',170,-0.3)
 lnode("LP220","Los Peumos 220 kV",TEAL,320,0.3,TEAL,True)
 lnode("T220","Temuco 220 kV",TEAL,320,0.3,TEAL,True)
 ax.text(9.6,-0.6,"PMGD conectado en la barra Temuco 66 kV",ha="center",va="top",fontsize=8.5,color=ORANGE,fontweight="bold")
-ax.text(0.6,3.75,"Barra de llegada: SE del STN asignada\nΣX = 53,7 Ω · 61,5 km",ha="center",va="bottom",fontsize=8.5,color=ORANGE,fontweight="bold")
-ax.text(9.6,3.75,"SE del STN del mismo lugar (no asignada)\nvía trafo: 265,4 Ω · 0 km\nvía Los Peumos: 76,6 Ω · 121,3 km",ha="center",va="bottom",fontsize=8.5,color=GREY,fontweight="bold")
+ax.text(0.6,3.75,"BARRA ASIGNADA\nΣX = 53,7 Ω · 61,5 km",ha="center",va="bottom",fontsize=8.5,color=ORANGE,fontweight="bold")
+ax.text(9.6,3.75,"Barra del transformador de alta reactancia\n(no asignada)\nvía trafo: 265,4 Ω · 0 km\nvía Los Peumos: 76,6 Ω · 121,3 km",ha="center",va="bottom",fontsize=8.5,color=GREY,fontweight="bold")
 ax.text(5.0,-0.95,"Red de 66 kV: camino de mínima distancia eléctrica (seleccionado)",ha="center",fontsize=8.5,color=ORANGE)
 fig.savefig(OUT+"fig2_caso_temuco.png",bbox_inches="tight",facecolor="white"); plt.close(fig)
 
