@@ -41,7 +41,7 @@ fig.savefig(OUT+"fig1_concepto.png", bbox_inches="tight", facecolor="white"); pl
 
 # ---------- Figura 2: caso La Palma 13 kV ----------
 fig, ax = plt.subplots(figsize=(8.6, 5.0), dpi=200)
-ax.set_xlim(-4.6, 16.4); ax.set_ylim(-2.7, 5.0); ax.axis("off")
+ax.set_xlim(-4.6, 17.2); ax.set_ylim(-2.7, 5.0); ax.axis("off")
 pts={"LP13":(1.0,-0.9),"LP66":(1.0,0.6),"IT66":(5.6,0.6),"IT154":(5.6,2.2),"IT220":(5.6,3.8),"AN220":(1.0,3.8),
      "LIN66":(-3.0,0.6),"LIN154":(-3.0,2.2),"MAU220":(-3.0,3.8),
      "SF66":(10.4,0.6),"SF154":(10.4,2.2),"TG220":(10.4,3.8),"CA220":(13.6,3.8)}
@@ -52,7 +52,7 @@ def edge(a,b,label,color,lw,ls="-",dx=0,dy=0.2,ha="center",va="bottom",fs=7.4,tc
 # camino seleccionado (naranja)
 edge("LP13","LP66","",ORANGE,3.2)
 ax.text(1.35,-0.9,"Trafo La Palma 66/13 kV · 0 km · 60,80 Ω",ha="left",va="center",fontsize=7.4,color=DARK)
-edge("LP66","IT66","5 líneas 66 kV\nLa Palma – El Ruil – Talca –\nPanguilemo – San Rafael – Itahue\n58,8 km · 10,65 Ω",ORANGE,3.2,dy=-0.28,va="top")
+edge("LP66","IT66","5 líneas 66 kV\nLa Palma – El Ruil – Talca –\nPanguilemo – San Rafael – Itahue\nkm sin dato · 10,65 Ω",ORANGE,3.2,dy=-0.28,va="top")
 edge("IT66","SF66","7 líneas 66 kV\nItahue – Molina – Curicó – Rauquén –\nTeno – Quinta – Chimbarongo – S. Fernando\n70,6 km · 29,70 Ω",ORANGE,3.2,dy=-0.28,va="top")
 edge("SF66","SF154","Trafo San Fernando 154/66 kV\n(3 unidades en paralelo)\n0 km · 18,63 Ω",ORANGE,3.2,dx=0.18,dy=0,ha="left",va="center")
 edge("SF154","TG220","Línea S. Fernando – Tinguiririca 154 kV\n3,3 km · 0,71 Ω\n+ trafo Tinguiririca 220/154 kV · 13,95 Ω",ORANGE,3.2,dx=0.18,dy=0,ha="left",va="center")
@@ -81,20 +81,20 @@ lnode("MAU220","Maule 220",'#9DBFC9',170,-0.3,0,ha="right")
 lnode("SF66","San Fernando 66",'#5FA6B9',170,-0.2,0.28,ha="right",va="bottom")
 lnode("SF154","San Fernando 154",'#5FA6B9',170,-0.22,0,ha="right")
 lnode("TG220","Tinguiririca 220",'#5FA6B9',170,-0.22,0,ha="right")
-lnode("CA220","Candelaria 220 kV\nBARRA ASIGNADA\n223,9 km · 150,7 Ω",TEAL,300,0.28,0,ha="left",tc=ORANGE,bold=True)
+lnode("CA220","Candelaria 220 kV\nBARRA ASIGNADA\n150,7 Ω · ≈ 199 km en línea recta",TEAL,300,0.28,0,ha="left",tc=ORANGE,bold=True)
 ax.text(3.0,-2.0,"Transformadores de alta reactancia rodeados: Linares 154/66 kV (164,2 Ω) e Itahue 154/66 kV (85,7 Ω equivalente)",ha="left",va="top",fontsize=8.3,color=GREY,fontweight="bold")
-ax.text(3.0,-2.35,"Caminos descartados (segmentados): a Ancoa 220 kV por Linares 109,0 km · 287,9 Ω;  a Itahue 220 kV por sus trafos 58,8 km · 206,0 Ω",ha="left",va="top",fontsize=8.3,color=GREY)
+ax.text(3.0,-2.35,"Caminos descartados (segmentados): a Ancoa 220 kV por Linares 109,0 km · 287,9 Ω;  a Itahue 220 kV por sus trafos 206,0 Ω (km sin dato)",ha="left",va="top",fontsize=8.3,color=GREY)
 fig.savefig(OUT+"fig2_caso_lapalma.png",bbox_inches="tight",facecolor="white"); plt.close(fig)
 
 # ---------- Figura 3: km vs ohm ----------
 fig, axes = plt.subplots(1, 2, figsize=(7.2, 3.0), dpi=200)
-labels=["A Ancoa 220 kV\npor Linares\n(más corto en km)","A Itahue 220 kV\npor trafos Itahue","A Candelaria 220 kV\npor San Fernando\n(seleccionado)"]
-km=[109.0,58.8,223.9]; xo=[287.9,206.0,150.7]
-for ax,vals,title,unit,win,wcol in [(axes[0],km,"Longitud del camino","km",0,TEAL),(axes[1],xo,"Distancia eléctrica (suma de X)","Ω",2,ORANGE)]:
+labels=["Ancoa 220 kV\n(por Linares)","Itahue 220 kV\n(por trafos Itahue)","Candelaria 220 kV\n(por San Fernando)"]
+km=[32.0,58.1,199.1]; xo=[287.9,206.0,150.7]
+for ax,vals,title,unit,win,wcol in [(axes[0],km,"Distancia en línea recta a la barra troncal","km",0,TEAL),(axes[1],xo,"Distancia eléctrica (suma de X)","Ω",2,ORANGE)]:
     colors=[GREY]*3; colors[win]=wcol
     bars=ax.bar(labels,vals,color=colors,width=0.55)
     for b,v in zip(bars,vals):
-        ax.text(b.get_x()+b.get_width()/2,b.get_height()+max(vals)*0.02,f"{v:.1f} {unit}".replace(".",","),ha="center",va="bottom",fontsize=9,color=DARK)
+        ax.text(b.get_x()+b.get_width()/2,b.get_height()+max(vals)*0.02,(f"≈ {v:.0f} {unit}" if unit=="km" else f"{v:.1f} {unit}".replace(".",",")),ha="center",va="bottom",fontsize=9,color=DARK)
     ax.set_title(title,fontsize=10.5,color=DARK,fontweight="bold"); ax.set_ylim(0,max(vals)*1.22); ax.set_yticks([])
     for s in ["top","right","left"]: ax.spines[s].set_visible(False)
     ax.spines["bottom"].set_color(GREY); ax.tick_params(axis="x",labelsize=7.8)
