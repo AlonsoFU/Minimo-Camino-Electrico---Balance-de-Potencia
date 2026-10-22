@@ -45,13 +45,13 @@ def edge(a,b,label,color,lw,ls="-",dx=0,dy=0.2,ha="center",va="bottom",fs=7.6,tc
     ax.text((x1+x2)/2+dx,(y1+y2)/2+dy,label,ha=ha,va=va,fontsize=fs,color=tc,linespacing=1.15)
 # camino seleccionado (naranja)
 edge("LP13","LP66","Trafo La Palma\n66/13 kV\n0 km · 60,80 Ω",ORANGE,3.2,dx=-0.2,dy=0,ha="right",va="center")
-edge("LP66","IT66","5 líneas 66 kV\nLa Palma – El Ruil –\nTalca – Panguilemo –\nSan Rafael – Itahue\n64,1 km · 10,84 Ω",ORANGE,3.2,dy=-0.28,va="top")
+edge("LP66","IT66","5 líneas 66 kV\nLa Palma – El Ruil –\nTalca – Panguilemo –\nSan Rafael – Itahue\n64,1 km · 10,65 Ω",ORANGE,3.2,dy=-0.28,va="top")
 edge("IT66","SF66","7 líneas 66 kV\nItahue – Molina – Curicó –\nRauquén – Teno – Quinta –\nChimbarongo – S. Fernando\n75,2 km · 29,70 Ω",ORANGE,3.2,dy=-0.28,va="top")
-edge("SF66","SF154","Trafo San Fernando 154/66 kV\n0 km · 38,12 Ω",ORANGE,3.2,dx=0.18,dy=0,ha="left",va="center")
+edge("SF66","SF154","Trafo San Fernando 154/66 kV\n(3 unidades en paralelo)\n0 km · 18,63 Ω",ORANGE,3.2,dx=0.18,dy=0,ha="left",va="center")
 edge("SF154","TG220","Línea S. Fernando – Tinguiririca 154 kV\n2,0 km · 0,71 Ω\n+ trafo Tinguiririca 220/154 kV · 13,95 Ω",ORANGE,3.2,dx=0.18,dy=0,ha="left",va="center")
-edge("TG220","CA220","Líneas 220 kV Tinguiririca –\nPuente Negro – Candelaria\n106,6 km · 32,41 Ω",ORANGE,3.2,dy=0.18)
+edge("TG220","CA220","Líneas 220 kV Tinguiririca –\nPuente Negro – Candelaria (2 circuitos)\n106,6 km · 16,20 Ω",ORANGE,3.2,dy=0.18)
 # camino directo (gris segmentado)
-edge("IT66","IT154","Trafo Itahue 154/66 kV\n0 km · 171,41 Ω",GREY,2.4,(0,(6,3)),dx=0.18,dy=0,ha="left",va="center",tc=GREY)
+edge("IT66","IT154","Trafo Itahue 154/66 kV\n(2 unidades de 171,4 Ω en paralelo)\n0 km · 85,70 Ω",GREY,2.4,(0,(6,3)),dx=0.18,dy=0,ha="left",va="center",tc=GREY)
 edge("IT154","IT220","Trafo Itahue 220/154 kV\n0 km · 48,85 Ω",GREY,2.4,(0,(6,3)),dx=0.18,dy=0,ha="left",va="center",tc=GREY)
 edge("IT220","AN220","Línea Itahue – Ancoa 220 kV\n66,4 km · 15,97 Ω",GREY,2.4,(0,(6,3)),dy=0.18,tc=GREY)
 def lnode(k,label,color,size,dx,dy,ha="center",va="center",tc=DARK,bold=False):
@@ -66,15 +66,15 @@ lnode("AN220","Ancoa 220 kV\nmás cercana en distancia\n(≈ 35 km en línea rec
 lnode("SF66","San Fernando 66",'#5FA6B9',170,-0.2,0.28,ha="right",va="bottom")
 lnode("SF154","San Fernando 154",'#5FA6B9',170,-0.22,0,ha="right")
 lnode("TG220","Tinguiririca 220",'#5FA6B9',170,-0.22,0,ha="right")
-lnode("CA220","Candelaria 220 kV\nBARRA ASIGNADA\n247,9 km · 186,5 Ω",TEAL,300,0.28,0,ha="left",tc=ORANGE,bold=True)
-ax.text(2.6,-2.0,"Barra del transformador de alta reactancia: Itahue 154 kV (trafo 154/66 kV de 171,4 Ω)",ha="left",va="top",fontsize=8.3,color=GREY,fontweight="bold")
-ax.text(2.6,-2.35,"Camino directo (segmentado): a Itahue 220 kV 64,1 km · 291,9 Ω;  a Ancoa 220 kV 130,5 km · 307,9 Ω  →  descartado",ha="left",va="top",fontsize=8.3,color=GREY)
+lnode("CA220","Candelaria 220 kV\nBARRA ASIGNADA\n247,9 km · 150,7 Ω",TEAL,300,0.28,0,ha="left",tc=ORANGE,bold=True)
+ax.text(2.6,-2.0,"Barra del transformador de alta reactancia: Itahue 154 kV (trafo 154/66 kV, 85,7 Ω equivalente)",ha="left",va="top",fontsize=8.3,color=GREY,fontweight="bold")
+ax.text(2.6,-2.35,"Camino directo (segmentado): a Itahue 220 kV 64,1 km · 206,0 Ω;  a Ancoa 220 kV 130,5 km · 222,0 Ω  →  descartado",ha="left",va="top",fontsize=8.3,color=GREY)
 fig.savefig(OUT+"fig2_caso_lapalma.png",bbox_inches="tight",facecolor="white"); plt.close(fig)
 
 # ---------- Figura 3: km vs ohm ----------
 fig, axes = plt.subplots(1, 2, figsize=(7.2, 3.0), dpi=200)
 labels=["Directo a\nItahue 220 kV\n(trafos Itahue)","Directo a\nAncoa 220 kV\n(trafos Itahue + línea)","Rodeo a\nCandelaria 220 kV\n(por San Fernando)"]
-km=[64.1,130.5,247.9]; xo=[291.9,307.9,186.5]
+km=[64.1,130.5,247.9]; xo=[206.0,222.0,150.7]
 for ax,vals,title,unit,win,wcol in [(axes[0],km,"Longitud del camino","km",0,TEAL),(axes[1],xo,"Distancia eléctrica (suma de X)","Ω",2,ORANGE)]:
     colors=[GREY]*3; colors[win]=wcol
     bars=ax.bar(labels,vals,color=colors,width=0.55)
