@@ -1,38 +1,43 @@
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+from matplotlib.patches import FancyBboxPatch, FancyArrowPatch
 from matplotlib import font_manager
 for f in ["/usr/share/fonts/truetype/crosextra/Carlito-Regular.ttf","/usr/share/fonts/truetype/crosextra/Carlito-Bold.ttf"]:
     try: font_manager.fontManager.addfont(f)
     except Exception: pass
 plt.rcParams["font.family"]="Carlito"
-TEAL="#30849B"; ORANGE="#E8752A"; GREY="#8C8C8C"; DARK="#404040"
+TEAL="#30849B"; ORANGE="#E8752A"; GREY="#8C8C8C"; DARK="#404040"; LIGHT="#E9EEF1"
 OUT="./"
 
-# ---------- Figura 1: concepto (camino directo con trafo de alta X vs rodeo) ----------
+def node(ax, x, y, label, color=TEAL, size=300, fs=8.5, textcolor="white"):
+    ax.scatter([x],[y], s=size, color=color, edgecolor="white", lw=1.5, zorder=3)
+    ax.text(x, y, label, ha="center", va="center", fontsize=fs, color=textcolor, fontweight="bold", zorder=4)
+
+# ---------- Figura 1: concepto de la metodología ----------
 fig, ax = plt.subplots(figsize=(7.2, 3.0), dpi=200)
-ax.set_xlim(-0.6, 10.6); ax.set_ylim(-0.9, 3.6); ax.axis("off")
-pts={"P":(1.2,0.5),"A":(1.2,2.9),"n1":(4.2,0.5),"n2":(7.2,0.5),"B":(9.6,0.5),"B2":(9.6,2.9)}
-def edge(a,b,label,color,lw,ls="-",dx=0,dy=0.22,ha="center",va="bottom",fs=8.5):
+ax.set_xlim(-0.5, 10.5); ax.set_ylim(-0.6, 3.4); ax.axis("off")
+# barra analizada a la izquierda, dos barras troncales a la derecha
+pts = {"P": (0.8, 1.4), "n1": (3.2, 2.4), "n2": (5.6, 2.4), "A": (9.4, 2.4), "n3": (3.2, 0.4), "B": (9.4, 0.4)}
+def edge(a, b, label, color=GREY, lw=2.0, ls="-", off=0.28):
     (x1,y1),(x2,y2)=pts[a],pts[b]
-    ax.plot([x1,x2],[y1,y2],color=color,lw=lw,ls=ls,zorder=1)
-    ax.text((x1+x2)/2+dx,(y1+y2)/2+dy,label,ha=ha,va=va,fontsize=fs,color=DARK)
-edge("P","A","Transformador\n0 km · X = 250 Ω",GREY,2.2,(0,(6,3)),dx=0.2,dy=0,ha="left",va="center")
-edge("P","n1","Línea · 20 km · X = 8 Ω",ORANGE,3.2)
-edge("n1","n2","Línea · 20 km · X = 8 Ω",ORANGE,3.2)
-edge("n2","B","Línea · 15 km · X = 6 Ω",ORANGE,3.2)
-edge("B","B2","Transformador\n0 km · X = 30 Ω",ORANGE,3.2,dx=-0.2,dy=0,ha="right",va="center")
-for k,c,s in [("P",ORANGE,420),("A",TEAL,420),("n1","#5FA6B9",150),("n2","#5FA6B9",150),("B","#5FA6B9",150),("B2",TEAL,420)]:
-    ax.scatter([pts[k][0]],[pts[k][1]],s=s,color=c,edgecolor="white",lw=1.5,zorder=3)
-ax.text(1.2,0.5,"Barra",ha="center",va="center",fontsize=7.5,color="white",fontweight="bold",zorder=4)
-ax.text(1.2,2.9,"SE A",ha="center",va="center",fontsize=8,color="white",fontweight="bold",zorder=4)
-ax.text(9.6,2.9,"SE B",ha="center",va="center",fontsize=8,color="white",fontweight="bold",zorder=4)
-ax.text(1.2,-0.05,"Barra analizada\n(barra de baja tensión de la SE A)",ha="center",va="top",fontsize=8.2,color=ORANGE)
-ax.text(1.2,3.25,"Subestación A\n(misma ubicación)",ha="center",va="bottom",fontsize=8.2,color=TEAL)
-ax.text(9.6,3.25,"Subestación B",ha="center",va="bottom",fontsize=8.2,color=TEAL)
-ax.text(5.4,3.3,"Camino directo a SE A: 0 km, pero X = 250 Ω  →  descartado",ha="center",va="center",fontsize=9,color=GREY,fontweight="bold")
-ax.text(5.4,2.75,"Camino a SE B: 55 km, X = 8 + 8 + 6 + 30 = 52 Ω  →  SE más cercana",ha="center",va="center",fontsize=9,color=ORANGE,fontweight="bold")
-fig.savefig(OUT+"fig1_concepto.png",bbox_inches="tight",facecolor="white"); plt.close(fig)
+    ax.plot([x1,x2],[y1,y2], color=color, lw=lw, ls=ls, zorder=1)
+    ax.text((x1+x2)/2, (y1+y2)/2+off, label, ha="center", va="bottom", fontsize=8.5, color=DARK)
+edge("P","n1","X₁ = 12 Ω", ORANGE, 3.2, off=0.22)
+edge("n1","n2","X₂ = 9 Ω", ORANGE, 3.2)
+edge("n2","A","X₃ = 7 Ω", ORANGE, 3.2)
+edge("P","n3","X₄ = 20 Ω", GREY, 2.0, (0,(6,3)), off=-0.55)
+edge("n3","B","X₅ = 15 Ω", GREY, 2.0, (0,(6,3)), off=-0.55)
+node(ax, *pts["P"], "Barra", ORANGE, 520, 8)
+for k in ("n1","n2","n3"): node(ax, *pts[k], "", "#5FA6B9", 140)
+node(ax, *pts["A"], "A", TEAL, 560, 8.5)
+node(ax, *pts["B"], "B", TEAL, 560, 8.5)
+ax.text(0.8, 0.75, "Barra\nanalizada", ha="center", va="top", fontsize=8.5, color=ORANGE)
+ax.text(9.4, 3.0, "Barra troncal A", ha="center", va="bottom", fontsize=8.5, color=TEAL)
+ax.text(9.4, -0.2, "Barra troncal B", ha="center", va="top", fontsize=8.5, color=TEAL)
+ax.text(5.6, 3.25, "Distancia eléctrica a A = 12 + 9 + 7 = 28 Ω  →  más cercana", ha="center", va="bottom", fontsize=9, color=ORANGE, fontweight="bold")
+ax.text(6.3, -0.45, "Distancia eléctrica a B = 20 + 15 = 35 Ω", ha="center", va="top", fontsize=9, color=GREY, fontweight="bold")
+fig.savefig(OUT+"fig1_concepto.png", bbox_inches="tight", facecolor="white"); plt.close(fig)
 
 # ---------- Figura 2: caso La Palma 13 kV ----------
 fig, ax = plt.subplots(figsize=(8.2, 4.9), dpi=200)
