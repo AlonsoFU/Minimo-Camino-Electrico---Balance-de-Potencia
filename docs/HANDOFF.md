@@ -158,6 +158,36 @@ Las coordenadas tienen problemas:
 - El Ruil aparece en las coordenadas como EL_RUIL_______066, pero en el ENT como RUIL1/RUIL2.
 - Los mapas filtran por una caja regional y omiten los nodos sin coordenada.
 
+### 4b. Criterios nuevos (2026-10-27, `scripts/analisis/criterios_v2/`, `criterios_v2_por_barra.csv`)
+
+- **Hallazgo de fondo.** El ENT entrega la X de cada línea en Ω a su propia tensión y la de cada
+  trafo en Ω referida al lado de alta. Así, el módulo suma Ω de distintas tensiones sin referirlos
+  a una base común. Por eso una línea de 66 kV pesa unas 11 veces menos de lo que corresponde
+  frente a 220 kV, y el camino largo en baja tensión le gana al trafo. Esa es la causa del rodeo.
+- **Criterios probados:**
+  - `P_ref220`: X·(220/V)², equivalente a una base común. El resultado no depende de la tensión
+    elegida.
+  - `P_C1`: el anterior, más destino = subestación troncal completa.
+  - `P_C2`.
+  - `C3`: solo los trafos que tocan la barra troncal (≈ C1).
+  - Reactancia efectiva de Thevenin, en Ω y referida. Se descarta porque se aleja más de PN2604.
+- **Resultados** (sin barras con problema de datos; "dif >100 km" = la troncal elegida está a más
+  de 100 km de la de PN2604):
+
+| | actual | C1 | C2 | P_ref220 | P_C1 |
+|---|---|---|---|---|---|
+| = PN2604 (de 1.442) | 1.020 | 1.145 | 1.149 | 1.101 | 1.194 |
+| Nuevas diferencias | — | 165 | 174 | 57 | 88 |
+| Dif >100 km | 119 | 63 | 32 | 44 | 30 |
+| Barra a >100 km de su troncal (PN2604: 83) | 174 | 103 | 98 | 96 | 80 |
+
+- **Comportamiento por caso:**
+  - `P_ref220` resuelve La Palma (Itahue).
+  - Teno y Curicó siguen yendo a Candelaria, porque el trafo Itahue 220/154 (48,9 Ω) es más pesado
+    que el de Tinguiririca (13,9 Ω).
+  - `P_C1` las devuelve a Itahue (76 de 88), pero manda Rancagua a A.Jahuel por su 154 kV. Esa es
+    la asimetría a favor de las subestaciones con varias tensiones.
+
 ## 5. Issues en `AlonsoFU/Balance-de-Potencia-Anual`
 
 - **#287: numeración del ENT.**
