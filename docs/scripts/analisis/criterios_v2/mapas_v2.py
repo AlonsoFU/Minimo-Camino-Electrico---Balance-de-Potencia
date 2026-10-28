@@ -16,7 +16,7 @@ for i in range(10):
 pncp=pncp.dropna(subset=['NombreEnt']); PN=set(pncp['NombreEnt']); sub_t=dict(zip(pncp['NombreEnt'],pncp['Subsistema']))
 cdf=pd.read_excel(INP+'conversor_coordenadas_Nodos.xlsx',sheet_name=0,header=None); cdf.columns=cdf.iloc[3].values; cdf=cdf.iloc[4:]
 C0={r['BarraFacturación']:(float(r['Longitud']),float(r['Latitud'])) for _,r in cdf[['BarraFacturación','Latitud','Longitud']].dropna().iterrows()}
-T3={'actual':'Hoy\nΩ sumados sin referir','P_ref220':'Criterio 1\nΩ referidos a una tensión común','P_C1':'Criterio 2\nreferidos + destino = subestación troncal'}
+T3={'actual':'Hoy\nΩ sumados sin referir','P_ref220':'Propuesta «Referido»\nΩ referidos a una tensión común','P_C1':'Propuesta «Referido + Subestación»\nΩ referidos + llegar a cualquier barra de la S/E troncal'}
 UN={'actual':'Ω','P_ref220':'Ω ref.','P_C1':'Ω ref.'}
 f=lambda v:f"{v:,.1f}".replace(',','X').replace('.',',').replace('X','.')
 def mapa(src,nombre,box,out,nombres,nota=''):
@@ -55,7 +55,7 @@ N={'CANDELARIA____220':'Candelaria','ITAHUE________220':'Itahue','ANCOA_________
 print('LaPalma'); mapa('LAPALMA_______013','La Palma 13 kV',(-72.2,-70.3,-36.2,-33.5),'v2_mapa_lapalma.png',{k:N[k] for k in ['ITAHUE________220','ANCOA_________220','CANDELARIA____220']})
 print('Curico'); mapa('CURICO________066','Curicó 66 kV',(-72.2,-70.3,-36.2,-33.5),'v2_mapa_curico.png',{k:N[k] for k in ['ITAHUE________220','CANDELARIA____220']})
 print('Machali'); mapa('MACHALI_______066','Machalí 66 kV',(-71.6,-70.3,-34.8,-33.4),'v2_mapa_machali.png',{k:N[k] for k in ['CANDELARIA____220','A.JAHUEL______220']},
-     nota="En el criterio 2 basta llegar a cualquier barra de la subestación (A.Jahuel 66 kV).")
+     nota="En «Referido + Subestación» basta llegar a cualquier barra de la subestación (A.Jahuel 66 kV).")
 
 # ---- barras apiladas: por qué cambia La Palma (desde Itahue 66 kV) ----
 cat={'L66':('Líneas 66 kV','#E8752A'),'TR':('Transformadores','#7B5EA7'),'LAT':('Líneas 154–220 kV','#30849B')}
@@ -69,7 +69,7 @@ o='ITAHUE________066'
 pA=['ITAHUE________066','ITAHUE________154','ITAHUE________220']
 pB=nx.dijkstra_path(Gs['actual'],o,'CANDELARIA____220',weight='w')
 fig,axs=plt.subplots(1,2,figsize=(12,5.6),dpi=170,sharey=False)
-for ax,k,tt in zip(axs,['actual','P_ref220'],['Hoy: Ω sumados sin referir','Criterio 1: Ω referidos a una tensión común']):
+for ax,k,tt in zip(axs,['actual','P_ref220'],['Hoy: Ω sumados sin referir','Propuesta «Referido»: Ω referidos a una tensión común']):
     g=Gs[k]; vals=[tramos(g,pA),tramos(g,pB)]
     lab=['A. Subir en Itahue\n(trafos 66/154/220)\n→ Itahue','B. Rodeo ~100 km por 66 kV\n(Molina–Curicó–S.Fernando)\n→ Candelaria']
     bot=[0,0]
@@ -84,6 +84,6 @@ for ax,k,tt in zip(axs,['actual','P_ref220'],['Hoy: Ω sumados sin referir','Cri
     for s_ in ['top','right']: ax.spines[s_].set_visible(False)
     ax.tick_params(axis='x',labelsize=10); ax.set_ylabel('Reactancia desde Itahue 66 kV',color=GREY)
 axs[0].legend(frameon=False,fontsize=10.5,loc='upper right')
-fig.suptitle('La Palma: por qué hoy se elige el rodeo y con el criterio 1 no',fontsize=14,color=DARK,fontweight='bold')
+fig.suptitle('La Palma: por qué hoy se elige el rodeo y con «Referido» no',fontsize=14,color=DARK,fontweight='bold')
 fig.text(0.5,0.01,'El tramo La Palma → Itahue 66 kV es común a ambos caminos y no se muestra. Referir a 220 kV multiplica los Ω de 66 kV por (220/66)² ≈ 11.',ha='center',fontsize=9.5,color=GREY)
 fig.tight_layout(rect=(0,0.04,1,0.95)); fig.savefig(S+'fig/v2_barras_lapalma.png',bbox_inches='tight',facecolor='white')

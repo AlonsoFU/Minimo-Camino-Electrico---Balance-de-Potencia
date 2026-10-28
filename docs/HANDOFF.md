@@ -164,6 +164,10 @@ Las coordenadas tienen problemas:
   trafo en Ω referida al lado de alta. Así, el módulo suma Ω de distintas tensiones sin referirlos
   a una base común. Por eso una línea de 66 kV pesa unas 11 veces menos de lo que corresponde
   frente a 220 kV, y el camino largo en baja tensión le gana al trafo. Esa es la causa del rodeo.
+- **Nombres acordados con el dueño:**
+  - Sus criterios: **«Anular trafos troncales»** (C1) y **«Anular todos los trafos»** (C2).
+  - Las propuestas de Claude: **«Referido»** (`P_ref220`) y **«Referido + Subestación»** (`P_C1`).
+  - Las figuras `v2_*`/`v3_*` usan estos nombres.
 - **Criterios probados:**
   - `P_ref220`: X·(220/V)², equivalente a una base común. El resultado no depende de la tensión
     elegida.
