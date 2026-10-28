@@ -60,5 +60,5 @@ ax.text(10.6,1.25,'Aquí una alternativa es «trafo» y la otra\n«línea de 66 
 ax.set_title('Caso 2 · Las alternativas se separan en la red de menor tensión  (316 barras: cambian 114, el 36 %)',fontsize=14.5,color=DARK,fontweight='bold',loc='left')
 fig.suptitle('¿Por qué «Referido» cambia solo algunas barras?  Lo que decide es dónde se separan los caminos',fontsize=17,color=DARK,fontweight='bold',y=0.995)
 fig.text(0.5,0.005,'Valores ilustrativos en Ω. Los conteos son reales (1.329 nodos del ENT; se comparan la mejor y la segunda mejor troncal con el método actual).\n'
-         'Los 116 cambios del caso 1 vienen de tramos de 500 kV dentro de la parte separada (al referir quedan ×0,19).',ha='center',fontsize=11,color=GREY)
+         'Los 116 cambios del caso 1 ocurren porque, al referir, cambia también el tramo inicial (la barra sube de tensión por otra subestación); solo 3 se deben a la red de 500 kV.',ha='center',fontsize=11,color=GREY)
 fig.tight_layout(rect=(0,0.04,1,0.97)); fig.savefig(S+'concepto_donde_se_separan.png',bbox_inches='tight',facecolor='white')
