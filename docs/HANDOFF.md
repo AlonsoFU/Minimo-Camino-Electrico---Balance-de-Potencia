@@ -192,6 +192,23 @@ Las coordenadas tienen problemas:
   - `P_C1` las devuelve a Itahue (76 de 88), pero manda Rancagua a A.Jahuel por su 154 kV. Esa es
     la asimetría a favor de las subestaciones con varias tensiones.
 
+- **La X de los trafos está referida al lado de alta.** Se verificó con el CSV CNE
+  `inputs/Actualizacion CNE/LinDatParOpe_2024_PNCP.csv` del repo antiguo:
+  - En 1.309 de 1.327 trafos, `LinVolt` es la tensión mayor.
+  - Con `LinPotMaxA->B` como potencia nominal, la impedancia mediana da 12,6 % si X está en AT y
+    363 % si está en BT. 1.148 trafos caen en el rango 5–20 % en AT, contra 41 en BT.
+- **Hallazgo de datos: el ENT tiene X de trafos muy distintas a las de la CNE.**
+
+  | Trafo | ENT (Ω) | CNE (Ω, equivalente en paralelo) |
+  |---|---|---|
+  | Itahue 154/66 | 85,7 | ~13,1 (tres trafos) |
+  | Itahue 220/154 | 48,9 | 15,6 |
+  | Linares 154/66 | 164 | ~19 (dos trafos) |
+  | Los Maquis 220/110 | 7,3 | 46,4 |
+
+  Con los valores CNE solo en Itahue y Linares, incluso el método **actual** asigna La Palma,
+  Curicó, Linares y Teno a Itahue, igual que PN2604. Script: `criterios_v2/test_cne.py`.
+
 ## 5. Issues en `AlonsoFU/Balance-de-Potencia-Anual`
 
 - **#287: numeración del ENT.**
