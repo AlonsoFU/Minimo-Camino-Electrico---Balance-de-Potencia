@@ -26,13 +26,13 @@ for i,(nm,src,x,v,c,istr) in enumerate(tramos):
     ax.text(xm,yH+0.35,f"{nm}\n({src})",ha='center',va='bottom',fontsize=11,color=GREY)
     ax.text(xm,yH-0.3,f"{fmt(x)} Ω",ha='center',va='top',fontsize=16,fontweight='bold',color=HOY)
     ax.add_patch(FancyArrowPatch((xm,yH-0.95),(xm,yR+0.95),arrowstyle='-|>',mutation_scale=20,color=GREY,lw=1.6))
-    ax.text(xm+0.2,(yH+yR)/2+0.05,f"× (220/{v})² = × {fmt(f)}",ha='left',va='center',fontsize=14,fontweight='bold',color=DARK,
+    ax.text(xm+0.2,(yH+yR)/2+0.05,f"× (V_ref / V)²\n= (220 / {v})²\n= {fmt(f)}",ha='left',va='center',fontsize=14,fontweight='bold',color=DARK,
             bbox=dict(boxstyle='round,pad=0.35',fc='#FFF1E0' if f>1 else '#EEF5F7',ec='none'))
-    ax.text(xm,yR+0.35,f"{fmt(x)} × {fmt(f)}",ha='center',va='bottom',fontsize=12,color=GREY)
+    ax.text(xm,yR+0.35,f"{fmt(x)} × (220 / {v})²",ha='center',va='bottom',fontsize=12,color=GREY)
     ax.text(xm,yR-0.3,f"= {fmt(r)} Ω",ha='center',va='top',fontsize=16,fontweight='bold',color=REF if v==220 else L66)
 ax.text(11.4,yH,f"Total\n{fmt(tH)} Ω",fontsize=17,fontweight='bold',color=HOY,va='center')
 ax.text(11.4,yR,f"Total\n{fmt(tR)} Ω",fontsize=17,fontweight='bold',color=REF,va='center')
 ax.set_title('Llanquihue 66 kV → Rahue 220 kV: el mismo camino, sin referir y referido',fontsize=17,fontweight='bold',color=DARK)
-fig.text(0.5,0.02,'La línea de 66 kV se multiplica × 11,11 porque viene en Ω de 66 kV. El trafo ya viene en Ω de 220 kV (su lado de alta), así que queda igual.',
+fig.text(0.5,0.02,'V_ref = 220 kV (tensión a la que se refiere todo); V = tensión en que viene cada Ω (columna V [kV] del ENT).\nLa línea viene en 66 kV: (220/66)² = 11,11. El trafo viene en 220 kV (su lado de alta): (220/220)² = 1, queda igual.',
          ha='center',fontsize=12.5,color=DARK,bbox=dict(boxstyle='round,pad=0.6',fc='#F4F4F4',ec='none'))
 fig.tight_layout(rect=(0,0.06,1,1)); fig.savefig(S+'simple_rahue.png',bbox_inches='tight',facecolor='white')
