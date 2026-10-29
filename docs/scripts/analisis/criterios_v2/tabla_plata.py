@@ -23,7 +23,7 @@ def tabla(k):
     o['Flujo Tx (MW)']=d.barra.map(txmw).fillna(0).round(1).values
     o['Monto inyección+retiro (MM$/mes)']=(o['Δ precio ($/kW/mes)'].abs()*(o['Inyección (MW)']+o['Retiro (MW)'])/1000).round(2)
     return o.sort_values('Δ precio ($/kW/mes)',key=abs,ascending=False)
-hojas={nom[k]+' vs PN2604':tabla(k) for k in ['P_C1','P_ref220','actual']}
+hojas={nom[k].replace('Referido + Subestación','Ref+Subestación')+' vs PN2604':tabla(k) for k in ['P_C1','P_ref220','actual']}
 res=[]
 for n,o in hojas.items():
     for ps in ['Sí','No']:
@@ -39,6 +39,12 @@ with pd.ExcelWriter(OUT,engine='openpyxl') as w:
         'Δ precio = precio de la troncal del criterio − precio de la troncal PN2604.']}).to_excel(w,sheet_name='Resumen',index=False,startrow=0)
     res.to_excel(w,sheet_name='Resumen',index=False,startrow=6)
     for n,o in hojas.items(): o.to_excel(w,sheet_name=n[:31],index=False)
+    o=hojas['Ref+Subestación vs PN2604'].copy(); o['Cambio']=o['Troncal PN2604'].str.replace('_','').str[:-3]+' → '+o.iloc[:,2].str.replace('_','').str[:-3]
+    gg=o.groupby('Cambio').agg(**{'Barras':('Barra','size'),'Con PSUF':('Tiene PSUF (filas Tx)',lambda s:(s=='Sí').sum()),'Δ precio ($/kW/mes)':('Δ precio ($/kW/mes)','first'),
+        'km entre troncales':('km entre troncales','first'),'Inyección (MW)':('Inyección (MW)','sum'),'Retiro (MW)':('Retiro (MW)','sum'),'Flujo Tx (MW)':('Flujo Tx (MW)','sum'),
+        'Monto iny+ret (MM$/mes)':('Monto inyección+retiro (MM$/mes)','sum')})
+    gg['Monto si Tx se valorizara (MM$/mes)']=(gg['Δ precio ($/kW/mes)'].abs()*gg['Flujo Tx (MW)']/1000).round(1)
+    gg.sort_values('Monto iny+ret (MM$/mes)',ascending=False).round(1).to_excel(w,sheet_name='Ref+Sub por cambio')
 from openpyxl import load_workbook
 from openpyxl.styles import Font, PatternFill
 wb=load_workbook(OUT)
@@ -49,4 +55,4 @@ for ws in wb.worksheets:
 wb['Resumen'].column_dimensions['A'].width=110
 wb.save(OUT)
 print(res.to_string(index=False))
-print(hojas['Referido + Subestación vs PN2604'].head(25).to_string(index=False))
+print(hojas['Ref+Subestación vs PN2604'].head(5).to_string(index=False))
