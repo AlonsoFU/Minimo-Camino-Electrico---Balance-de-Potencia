@@ -45,6 +45,14 @@ with pd.ExcelWriter(OUT,engine='openpyxl') as w:
         'Monto iny+ret (MM$/mes)':('Monto inyección+retiro (MM$/mes)','sum')})
     gg['Monto si Tx se valorizara (MM$/mes)']=(gg['Δ precio ($/kW/mes)'].abs()*gg['Flujo Tx (MW)']/1000).round(1)
     gg.sort_values('Monto iny+ret (MM$/mes)',ascending=False).round(1).to_excel(w,sheet_name='Ref+Sub por cambio')
+    p=o[o['Tiene PSUF (filas Tx)']=='Sí']
+    gp=p.groupby('Cambio').agg(**{'Barras con PSUF':('Barra','size'),'Δ precio ($/kW/mes)':('Δ precio ($/kW/mes)','first'),
+        'km entre troncales':('km entre troncales','first'),'Inyección (MW)':('Inyección (MW)','sum'),'Retiro (MW)':('Retiro (MW)','sum'),'Flujo Tx (MW)':('Flujo Tx (MW)','sum'),
+        'Monto iny+ret (MM$/mes)':('Monto inyección+retiro (MM$/mes)','sum')})
+    gp['Monto si Tx se valorizara (MM$/mes)']=(gp['Δ precio ($/kW/mes)'].abs()*gp['Flujo Tx (MW)']/1000).round(1)
+    gp=gp.sort_values('Monto iny+ret (MM$/mes)',ascending=False).round(1); gp.to_excel(w,sheet_name='Ref+Sub PSUF por cambio')
+    p.drop(columns=['Cambio']).to_excel(w,sheet_name='Ref+Sub PSUF detalle',index=False)
+    print(gp.to_string()); print('TOTAL',gp.sum(numeric_only=True).round(1).to_dict())
 from openpyxl import load_workbook
 from openpyxl.styles import Font, PatternFill
 wb=load_workbook(OUT)
@@ -54,5 +62,4 @@ for ws in wb.worksheets:
     ws.freeze_panes='B2' if ws.title!='Resumen' else None
 wb['Resumen'].column_dimensions['A'].width=110
 wb.save(OUT)
-print(res.to_string(index=False))
-print(hojas['Ref+Subestación vs PN2604'].head(5).to_string(index=False))
+
