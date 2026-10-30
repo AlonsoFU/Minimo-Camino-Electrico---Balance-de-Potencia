@@ -38,17 +38,18 @@ se mezcla con `main`. Los detalles de método y los números están en `docs/HAN
 - **Casos borde de «Referido»:**
   - Red de 500 kV (Jadresic, Kallpa, Cumbres).
   - Casi empates (Los Andes, Concepción).
-  - Usar |Z| en vez de X cambia solo 6 barras.
+  - Usar |Z| en vez de X: en «Referido» cambian 6 barras; en «Referido + Subestación», 99
+    (casi empates en redes urbanas). Detalle en `docs/HANDOFF.md` §4d.
 
 ## Contenido
 
 | Carpeta | Qué hay |
 |---|---|
-| `datos/` | `diferencias_*.csv` (módulo vs PN2604), `analisis_criterios_transformadores_PN2604.xlsx` (C1/C2), `criterios_ev.pkl`, `criterios_v2_por_barra.csv` (asignación con 8 criterios) y `precio_por_barra_criterios.xlsx` (Δ precio por barra, PSUF y montos) |
+| `datos/` | `diferencias_*.csv` (módulo vs PN2604), `analisis_criterios_transformadores_PN2604.xlsx` (C1/C2), `criterios_ev.pkl`, `criterios_v2_por_barra.csv` (asignación con 8 criterios), `criterios_con_resistencia_por_barra.csv` (X vs |Z|) y `precio_por_barra_criterios.xlsx` (Δ precio por barra, PSUF y montos) |
 | `figuras/anular_trafos/` | Mapas de 3 paneles hoy / C1 / C2 (Tilcoco, La Reina, Jadresic, Panguipulli, etc.) |
 | `figuras/referido/` | Ver la tabla de abajo |
 | `scripts/anular_trafos/` | Escenarios C1/C2, flag #287 y mapas |
-| `scripts/referido/` | `banco.py` (todos los criterios), métricas, pruebas CNE y \|Z\|, tablas de plata y figuras |
+| `scripts/referido/` | `banco.py` (todos los criterios), métricas, pruebas CNE y \|Z\| (`con_r.py`, `con_r_plata.py`), tablas de plata y figuras |
 
 ### Figuras de «Referido»
 

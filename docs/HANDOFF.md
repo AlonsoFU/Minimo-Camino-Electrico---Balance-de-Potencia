@@ -259,6 +259,47 @@ Las coordenadas tienen problemas:
 - **Organización.** El dueño decidió guardar el análisis aparte en `analisis_criterios/` (con
   README índice), no en `docs/`. La rama no se mezcla con main.
 
+### 4d. Criterios con resistencia (|Z| en vez de X), 2026-10-30
+
+Scripts `analisis_criterios/scripts/referido/con_r.py` y `con_r_plata.py`; tabla por barra en
+`analisis_criterios/datos/criterios_con_resistencia_por_barra.csv`.
+
+- **Supuestos:**
+  - Peso por tramo = |Z| = √(R² + X²). R y X se refieren con el mismo (220/V)².
+  - Paralelos en complejo (1/Zeq = Σ 1/Zi). Hacerlo sobre los módulos da exactamente lo mismo.
+  - En serie se suman los |Z| de cada tramo, porque Dijkstra necesita pesos sumables. Es una cota
+    superior de |ΣR + jΣX|.
+  - R tal como viene en el ENT: 3 líneas y 4 trafos con R = 0. No se corrige por temperatura.
+  - En «Referido + Subestación» se anulan R y X de los trafos C1.
+  - El resto sin cambios: mantenimientos, proxy, desempate alfabético, solo inyección y retiro a
+    precio PN2604.
+- **Resultados (1.442 barras):**
+
+  | Criterio | = PN2604 | Cambian vs hoy | MM$/mes vs hoy |
+  |---|---|---|---|
+  | Hoy (X) | 1.020 | — | — |
+  | «Referido» X | 1.101 | 244 | 610 |
+  | «Referido» \|Z\| | 1.101 | 248 | 660 |
+  | «Referido + Subestación» X | 1.194 | 368 | 932 |
+  | «Referido + Subestación» \|Z\| | 1.197 | 396 | 961 |
+
+- **X → |Z| en «Referido»:** cambian 6 barras.
+  - Curicó y Curicó2 pasan de Candelaria a Itahue, que coincide con PN2604.
+  - E.Sauce va de P.Azúcar a L.Vilos.
+  - C.Huichahue va de Valdivia a Ciruelos.
+  - Impacto: ~50 MM$/mes.
+- **X → |Z| en «Referido + Subestación»:** cambian 99 barras, ~45 MM$/mes.
+  - Son casi empates: margen menor al 5 % en 76 de ellas.
+  - Se concentran en redes urbanas de 110/66 kV:
+    - Lagunillas → Hualpén: 34 barras.
+    - C.Navia → C.Chena: 31.
+    - L.Maquis → Nogales: 17.
+  - Entre esos pares los precios son muy parecidos (~10 $/kW/mes), salvo L.Maquis/Nogales y Andes.
+  - Con PN2604 coinciden 49 con |Z| y 46 con X: no mejora.
+- **Sensibilidad a la suma en serie:** usando el |ΣZ| exacto del camino, «Referido» queda en 1.103
+  y «Referido + Subestación» baja a 1.171. Esto muestra que este último es sensible donde hay casi
+  empates.
+
 ## 5. Issues en `AlonsoFU/Balance-de-Potencia-Anual`
 
 - **#287: numeración del ENT.**
