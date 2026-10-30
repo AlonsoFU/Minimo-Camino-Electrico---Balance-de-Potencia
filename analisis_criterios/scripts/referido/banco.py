@@ -9,7 +9,7 @@ OUT = '/tmp/claude-0/-home-user/aef6561c-d05e-5d6f-b069-1de59162b42e/scratchpad/
 INP = '/home/user/balance-de-potencia-anual/data/minimo_camino/inputs/2025/pre/'; ENT = INP + 'Ent2026.xlsx'
 EPS = 1e-6
 VREF = 220.0
-ev = pd.read_pickle('/home/user/Minimo-Camino-Electrico---Balance-de-Potencia/docs/scripts/analisis/criterios_ev.pkl')
+ev = pd.read_pickle('/home/user/Minimo-Camino-Electrico---Balance-de-Potencia/analisis_criterios/datos/criterios_ev.pkl')
 
 barras = mc.cargar_barras(ENT); lineas = mc.cargar_lineas(ENT); linman = mc.cargar_linman(ENT)
 full = pd.read_excel(ENT, sheet_name='lineas', header=4)

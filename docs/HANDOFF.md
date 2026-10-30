@@ -22,18 +22,19 @@ Rama: `claude/relaxed-ptolemy-70ek36`. Última actualización: 2026-10-27.
 - **Asociación de referencia: solo el bloque PN2604 de la hoja 04 de `Balance_2609_def.xlsm`.**
   Ese archivo lo subió el usuario y no está en el repo.
 
-## 2. Entregables en `docs/`
+## 2. Dónde está cada cosa
 
-| Archivo | Qué es |
-|---|---|
-| `Minuta_Minimo_Camino_Electrico.docx` | Minuta CEN (6 págs.) con el estilo de `Minuta_Enlight.docx` |
-| `figuras/fig1..fig3*.png` | Figuras de la minuta: concepto, caso La Palma y comparación |
-| `figuras/mapa_*.png` | Mapas de 3 paneles (hoy / C1 / C2) para el análisis de criterios |
-| `diferencias_modulo_vs_PN2604.csv` | Barras donde el módulo ≠ PN2604 |
-| `diferencias_PN2604_por_escenario.csv` | Qué escenario de trafos explica cada diferencia |
-| `analisis_criterios_transformadores_PN2604.xlsx` | Análisis de criterios con hojas Resumen, Cambios críticos, Grupos C1/C2, Barras (flags #287/#288) y Origen |
-| `scripts/minuta/` | Construcción del docx y de las figuras 1–3 |
-| `scripts/analisis/` | Escenarios, flag #287 y mapas; `criterios_ev.pkl` es el resultado (1.445 barras × 46 cols) |
+- **`docs/`: solo la minuta.**
+  - `Minuta_Minimo_Camino_Electrico.docx`: minuta CEN (6 págs.) con el estilo de `Minuta_Enlight.docx`.
+  - `figuras/fig1..fig3*.png`: figuras de la minuta (concepto, caso La Palma y comparación).
+  - `scripts/minuta/`: construcción del docx y de las figuras 1–3.
+- **`analisis_criterios/`: todo el análisis complementario de criterios.** Se mantiene aparte por
+  decisión del dueño (2026-10-30), para no mezclarlo con el repo. Esta rama no se mezcla con main.
+  Su `README.md` es el índice:
+  - `datos/`: CSV, Excel y `criterios_ev.pkl` (1.445 barras × 46 columnas).
+  - `figuras/anular_trafos/`: los mapas `mapa_*.png` de C1/C2.
+  - `figuras/referido/`: conceptos, ejemplos y mapas de «Referido».
+  - `scripts/anular_trafos/` y `scripts/referido/`.
 
 ### Estructura de la minuta
 
@@ -106,7 +107,7 @@ Los paraIds deben ser < 0x80000000, o validate.py falla.
 ## 4. Criterios evaluados (anular X de trafos, contra PN2604)
 
 La X "anulada" se implementa como 1e-6, porque el módulo descarta aristas con X ≤ 0. El script
-es `scripts/analisis/criterios.py`.
+es `analisis_criterios/scripts/anular_trafos/criterios.py`.
 
 - **Criterio 1:** trafos de subestaciones que tienen una barra troncal PNCP, por prefijo de 14
   caracteres. Son 83 trafos, incluyendo los de 13 kV.
@@ -158,7 +159,7 @@ Las coordenadas tienen problemas:
 - El Ruil aparece en las coordenadas como EL_RUIL_______066, pero en el ENT como RUIL1/RUIL2.
 - Los mapas filtran por una caja regional y omiten los nodos sin coordenada.
 
-### 4b. Criterios nuevos (2026-10-27, `scripts/analisis/criterios_v2/`, `criterios_v2_por_barra.csv`)
+### 4b. Criterios nuevos (2026-10-27, `analisis_criterios/scripts/referido/`, `analisis_criterios/datos/criterios_v2_por_barra.csv`)
 
 - **Hallazgo de fondo.** El ENT entrega la X de cada línea en Ω a su propia tensión y la de cada
   trafo en Ω referida al lado de alta. Así, el módulo suma Ω de distintas tensiones sin referirlos
@@ -207,7 +208,7 @@ Las coordenadas tienen problemas:
   | Los Maquis 220/110 | 7,3 | 46,4 |
 
   Con los valores CNE solo en Itahue y Linares, incluso el método **actual** asigna La Palma,
-  Curicó, Linares y Teno a Itahue, igual que PN2604. Script: `criterios_v2/test_cne.py`.
+  Curicó, Linares y Teno a Itahue, igual que PN2604. Script: `analisis_criterios/scripts/referido/test_cne.py`.
 
 ## 5. Issues en `AlonsoFU/Balance-de-Potencia-Anual`
 
@@ -240,7 +241,7 @@ Las coordenadas tienen problemas:
 
 ## 7. Notas operativas
 
-- Los scripts de `scripts/analisis/` tienen rutas absolutas:
+- Los scripts de `analisis_criterios/scripts/` tienen rutas absolutas:
   - `/home/user/balance-de-potencia-anual/...` para el clon del repo Balance.
   - Un scratchpad con `up/bal.xlsm` para el Balance_2609_def.
   - Al retomar, ajustar las constantes `INP`, `U`, `OUT` y `S`.

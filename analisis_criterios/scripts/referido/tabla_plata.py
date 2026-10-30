@@ -1,7 +1,7 @@
 import pandas as pd, numpy as np, warnings; warnings.filterwarnings('ignore')
 exec(open('metr.py').read().split("R=pd.read_pickle")[0])
 U='/tmp/claude-0/-home-user-Minimo-Camino-Electrico---Balance-de-Potencia/aef6561c-d05e-5d6f-b069-1de59162b42e/scratchpad/up/bal.xlsm'
-OUT='/home/user/Minimo-Camino-Electrico---Balance-de-Potencia/docs/precio_por_barra_criterios.xlsx'
+OUT='/home/user/Minimo-Camino-Electrico---Balance-de-Potencia/analisis_criterios/datos/precio_por_barra_criterios.xlsx'
 f=pd.read_excel(U,sheet_name='05. BALANCE FÍSICO',header=None).iloc[6:][[7,13,14]]; f.columns=['barra','mw','tipo']
 f['mw']=pd.to_numeric(f.mw,errors='coerce').fillna(0)
 g=f[f.tipo!='Tx']; tx=f[f.tipo=='Tx']
