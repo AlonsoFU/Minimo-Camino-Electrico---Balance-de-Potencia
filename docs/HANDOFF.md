@@ -1,6 +1,6 @@
 # HANDOFF — Minuta y análisis del mínimo camino eléctrico
 
-Rama: `claude/relaxed-ptolemy-70ek36`. Última actualización: 2026-10-27.
+Rama: `claude/relaxed-ptolemy-70ek36`. Última actualización: 2026-10-30.
 
 ## 1. Fuente de verdad (regla del dueño)
 
@@ -210,6 +210,55 @@ Las coordenadas tienen problemas:
   Con los valores CNE solo en Itahue y Linares, incluso el método **actual** asigna La Palma,
   Curicó, Linares y Teno a Itahue, igual que PN2604. Script: `analisis_criterios/scripts/referido/test_cne.py`.
 
+### 4c. Sesión 2026-10-28/30 (hallazgos adicionales)
+
+- **El R de 2023 tampoco referenciaba.** El usuario subió `CaminoMin_2023.R`:
+  - Lee `V [kV]` pero solo usa X (`Xinv = 1/X`, `Xfinal`, Dijkstra de igraph).
+  - Nunca hubo p.u. El `Minimo_camino_AFU.R` de 2025 no se recibió.
+- **Argumento central de «Referido».**
+  - X = V/I. Al pasar por un trafo, V se multiplica por (V_ref/V) e I se divide por lo mismo, así
+    que X se multiplica por (V_ref/V)².
+  - Es lo que hacen DIgSILENT y PSS/E (por unidad: X_pu = X_ref220 / 484 con base 100 MVA).
+  - Da lo mismo a qué tensión se refiera. Solo cambia la escala.
+- **Usar |Z| en vez de X:**
+  - «Referido» cambia 6 barras.
+  - «Referido + Subestación» cambia 99, casi todas casi empates.
+  - Se recomienda mantener X (modelo DC).
+- **Cambio por criterio (de 1.442 barras):**
+
+  | Criterio | Cambian vs módulo | Difieren de PN2604 (hoy 422) |
+  |---|---|---|
+  | «Referido» | 244 | 341 |
+  | «Referido + Subestación» | 368 | 248 |
+
+  - De los 244 de «Referido»: 138 van hacia PN2604, 57 se alejan y 49 caen en una tercera troncal.
+  - Solo 3 cambios se deben a la red de 500 kV: Jadresic, Kallpa y Cumbres.
+- **Plata** (`analisis_criterios/datos/precio_por_barra_criterios.xlsx`).
+  - Método: Δ precio PN2604 × MW de inyección/retiro (Gx/Bfact de la hoja 05). Excluye las filas Tx.
+    El dueño pidió considerar solo inyecciones y retiros.
+  - «Referido + Subestación» vs PN2604:
+    - 109 barras con inyección o retiro, ~488 MM$/mes. Equivale al 0,26 % de lo valorizado.
+    - Neto: inyecciones +31 y retiros −68 MM$/mes.
+    - 140 barras suben de precio (61 con MW) y 107 bajan (48 con MW).
+  - Los tres cambios que concentran el 56 %:
+    - C.Chena→A.Jahuel (95).
+    - Candelaria→A.Jahuel (93).
+    - Quillota→Nogales (86).
+  - Hojas "Ref+Sub PSUF …": PSUF = la barra tiene filas Tx, misma definición que `mb_dim_barra`.
+- **Los 5 casos que "empeoran" frente a PN2604 no los causa el criterio:**
+  - PEQ 220: cuelga eléctricamente de Lagunas.
+  - Capricornio: está eléctricamente más cerca de Laberinto.
+  - Quinta: el dato de los trafos de Itahue.
+  - Tap Pulelfu: error de subsistema. Base_Potencia la pone en S1, y sus vecinas Capullo y Copihues
+    están en S2.
+  - Todos dan lo mismo con el módulo actual.
+- **Figuras didácticas** (en `analisis_criterios/figuras/referido/`):
+  - `simple_rahue.png`: Llanquihue 66 → Rahue, una línea y un trafo, con el factor (V_ref/V)².
+  - `simple_llanquihue.png`.
+  - `nodos_lapalma.png`.
+- **Organización.** El dueño decidió guardar el análisis aparte en `analisis_criterios/` (con
+  README índice), no en `docs/`. La rama no se mezcla con main.
+
 ## 5. Issues en `AlonsoFU/Balance-de-Potencia-Anual`
 
 - **#287: numeración del ENT.**
@@ -238,6 +287,16 @@ Las coordenadas tienen problemas:
   que la troncal.
 - [ ] Agregar a la minuta una sección que compare las alternativas C1/C2.
 - [ ] Corregir #287 (el dueño decide).
+- [ ] Probar un desempate geográfico cuando la diferencia eléctrica sea < 2 %. Resolvería Los Andes,
+  Juncal y Concepción.
+- [ ] Comparación completa de las X de trafos ENT vs CNE/Infotécnica en todo el sistema.
+- [ ] Confirmar si las filas Tx (PSUF) se valorizan a precio de nudo. Si se valorizan, el monto
+  sube de ~488 a ~2.370 MM$/mes.
+- [ ] Posibles issues de datos:
+  - Subsistema de Tap Pulelfu (S1 → S2).
+  - X de los trafos de Itahue, Linares y Los Maquis.
+- [ ] Incorporar «Referido» a la minuta como alternativa metodológica. Ya hay un texto propuesto en
+  la conversación: el modelo DC más las reactancias referidas a una tensión común.
 
 ## 7. Notas operativas
 
