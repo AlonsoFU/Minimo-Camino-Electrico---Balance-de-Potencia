@@ -63,6 +63,8 @@ se mezcla con `main`. Los detalles de método y los números están en `docs/HAN
 | `didactico_referir_lapalma.png`, `nodos_lapalma.png`, `nodos_linares.png`, `tramos_linares.png`, `con_sin_transformacion_linares.png` | Caminos reales, sin y con referir |
 | `tres_criterios_*.png` | Barras donde hoy, «Referido» y «Referido + Subestación» dan troncales distintas |
 | `v2_*.png`, `v3_*.png`, `referido_ejemplos_*.png` | Mapas de ejemplos (corrige, cambio nuevo, tercera troncal) |
+| `r_que_agrega.png` | Qué suma la R: \|Z\| = √(R² + X²) en un trafo, una línea de 220 kV y una de 66 kV |
+| `r_andalien.png`, `r_san_rafael.png`, `r_la_reina.png` | «Referido + Subestación»: dos rutas casi empatadas donde la R cambia la troncal |
 | `referido_sin_sentido_*.png`, `caso_peq.png` | Casos borde y diferencias con PN2604 |
 
 ## Notas para reproducir
