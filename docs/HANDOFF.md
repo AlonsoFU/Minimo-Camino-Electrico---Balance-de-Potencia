@@ -296,6 +296,17 @@ Scripts `analisis_criterios/scripts/referido/con_r.py` y `con_r_plata.py`; tabla
     - L.Maquis → Nogales: 17.
   - Entre esos pares los precios son muy parecidos (~10 $/kW/mes), salvo L.Maquis/Nogales y Andes.
   - Con PN2604 coinciden 49 con |Z| y 46 con X: no mejora.
+- **Por qué R mueve más en «Referido + Subestación»** (`por_que_r.py`, `por_que_r2.py`):
+  - En «Referido», el trafo hacia la troncal separa a las candidatas (C.Navia 24,3 Ω y C.Chena 6,4 Ω
+    a 220 kV). Los casi empates comparten casi todo el camino y difieren en un tramo de 220 kV con el
+    mismo R/X, así que R escala igual las dos rutas. Solo 1 de 760 casi empates (<5 %) tiene R/X
+    distinto entre rutas.
+  - En «Referido + Subestación», ese trafo vale 0. Las rutas se separan antes, en la red de 110/66 kV,
+    con líneas de R/X distinto, y R penaliza la más resistiva. Pasa en 24 de 685 casi empates.
+  - La X del camino que está en trafos (R/X ~0,02) baja de 62 % a 28 %; el R/X del camino sube de
+    0,18 a 0,24.
+  - Ejemplo La Reina 13 kV: desde Ochagavía, a C.Navia por Metro–Renca (X 8,5 Ω, R 2,7 Ω) o a
+    C.Chena por Lo Espejo (X 8,9 Ω, R 1,8 Ω). Gana C.Navia con X por 0,3 % y C.Chena con |Z|.
 - **Sensibilidad a la suma en serie:** usando el |ΣZ| exacto del camino, «Referido» queda en 1.103
   y «Referido + Subestación» baja a 1.171. Esto muestra que este último es sensible donde hay casi
   empates.
