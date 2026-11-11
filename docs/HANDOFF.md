@@ -307,6 +307,13 @@ Scripts `analisis_criterios/scripts/referido/con_r.py` y `con_r_plata.py`; tabla
     0,18 a 0,24.
   - Ejemplo La Reina 13 kV: desde Ochagavía, a C.Navia por Metro–Renca (X 8,5 Ω, R 2,7 Ω) o a
     C.Chena por Lo Espejo (X 8,9 Ω, R 1,8 Ω). Gana C.Navia con X por 0,3 % y C.Chena con |Z|.
+- **Qué cuenta como "subestación"** (`subest_niveles.py`). El 2.2 de los decretos dice "subestación
+  del STN" sin precisar niveles de tensión. En «Referido + Subestación» se anulan 83 trafos: 60
+  tocan directo la barra troncal (220/x, 500/220) y 23 son internos de niveles menores (110/66,
+  154/66, 66/13). El pareo por nombre arrastra casos dudosos: Hualpén 154–Petropower 66 y
+  PPeuco 110–Polpaico 23. La variante intermedia, que anula solo los 60 trafos que tocan la troncal,
+  da 1.180 = PN2604 y 362 cambios vs hoy. Difiere de «Referido + Subestación» en solo 14 barras y
+  de «Referido» en 255.
 - **Sensibilidad a la suma en serie:** usando el |ΣZ| exacto del camino, «Referido» queda en 1.103
   y «Referido + Subestación» baja a 1.171. Esto muestra que este último es sensible donde hay casi
   empates.
