@@ -45,7 +45,7 @@ se mezcla con `main`. Los detalles de método y los números están en `docs/HAN
 
 | Carpeta | Qué hay |
 |---|---|
-| `datos/` | `diferencias_*.csv` (módulo vs PN2604), `analisis_criterios_transformadores_PN2604.xlsx` (C1/C2), `criterios_ev.pkl`, `criterios_v2_por_barra.csv` (asignación con 8 criterios), `criterios_con_resistencia_por_barra.csv` (X vs |Z|), **`comparacion_criterios.xlsx` (comparación consolidada de los 9 criterios, resumen y por barra)** y `precio_por_barra_criterios.xlsx` (Δ precio por barra, PSUF y montos) |
+| `datos/` | `diferencias_*.csv` (módulo vs PN2604), `analisis_criterios_transformadores_PN2604.xlsx` (C1/C2), `criterios_ev.pkl`, `criterios_v2_por_barra.csv` (asignación con 8 criterios), `criterios_con_resistencia_por_barra.csv` (X vs |Z|), **`comparacion_criterios.xlsx` (comparación consolidada de los 9 criterios, resumen y por barra)**, **`tramos_decisivos.xlsx` (plan de análisis de datos y tramos cuya corrección cambia la asignación)** y `precio_por_barra_criterios.xlsx` (Δ precio por barra, PSUF y montos) |
 | `figuras/anular_trafos/` | Mapas de 3 paneles hoy / C1 / C2 (Tilcoco, La Reina, Jadresic, Panguipulli, etc.) |
 | `figuras/referido/` | Ver la tabla de abajo |
 | `scripts/anular_trafos/` | Escenarios C1/C2, flag #287 y mapas |

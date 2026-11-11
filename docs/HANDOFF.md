@@ -366,6 +366,30 @@ usando la columna `revision` (1 o CNE → X_CNE; Infotec → X_Infotec; 0 → si
   Los datos mueven tantas barras como el criterio, pero el orden entre criterios se mantiene. Los
   criterios referidos son menos sensibles a los datos que el de hoy.
 
+### 4g. Tramos decisivos (2026-11-11)
+
+Archivo `analisis_criterios/datos/tramos_decisivos.xlsx`, con scripts `decisivos.py` y
+`decisivos_xlsx.py`.
+
+- **Método:** se reutiliza la validación previa del dueño (`revision/output/homologacion_clasificada.xlsx`).
+  A cada tramo DISCREPA se le asigna su valor sugerido, uno a la vez, y se recalcula la troncal de
+  las 1.442 barras. El cálculo usa Dijkstra desde las 50 troncales y reproduce 1.442/1.442.
+- **Resultados:**
+  - Referido + trafo troncal: 727 tramos probados, 47 decisivos (39 con plata), 227 barras
+    afectadas.
+  - Hoy: 765 tramos probados, 51 decisivos, 368 barras afectadas.
+  - Los principales con «Referido + trafo troncal»:
+    - L.Almendros 220/110: 144 MM$/mes.
+    - Ventanas 220/110: 87.
+    - Teno 154/66: 60.
+    - Crucero–Kimal: 34.
+    - Maule 154/66: 30.
+- **Patrón:** varios trafos tienen en el ENT una X ≈ 3 veces la de las fuentes (L.Almendros,
+  Maule, Codegua, Charrúa, Concepción). Hay que aclarar si es base MVA o banco de unidades.
+- Los trafos de las troncales (A.Jahuel, Itahue 220/154, Charrúa, Concepción) son decisivos hoy,
+  pero dejan de importar con el criterio porque quedan anulados.
+- **Pendiente:** verificar a mano los decisivos, corregirlos y volver a correr (paso 6).
+
 ## 5. Issues en `AlonsoFU/Balance-de-Potencia-Anual`
 
 - **#287: numeración del ENT.**
