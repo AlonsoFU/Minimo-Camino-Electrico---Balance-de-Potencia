@@ -318,6 +318,23 @@ Scripts `analisis_criterios/scripts/referido/con_r.py` y `con_r_plata.py`; tabla
   y «Referido + Subestación» baja a 1.171. Esto muestra que este último es sensible donde hay casi
   empates.
 
+### 4e. Comparación consolidada (2026-11-11)
+
+El archivo `analisis_criterios/datos/comparacion_criterios.xlsx` (script `comparacion_final.py`)
+compara 9 criterios: Hoy, C1, C2, y Referido / Referido + trafo troncal / Referido + Subestación,
+cada uno con X y con |Z|.
+
+| Criterio | = PN2604 | Cambian vs hoy | Barra→troncal >100 km | MM$/mes movidos |
+|---|---|---|---|---|
+| Hoy | 1.020 | — | 174 | — |
+| Referido + trafo troncal, X | 1.180 | 362 | 86 | 878 |
+| Referido + Subestación, X | 1.194 | 368 | 80 | 932 |
+
+El numeral 2.2 de los decretos dice "mínima distancia eléctrica" hasta la "subestación", determinada
+por el Coordinador. No define X ni Z ni qué niveles de tensión cuentan. Recomendación vigente:
+referir, medir hasta la subestación con la lectura intermedia y usar X, con R solo para desempatar
+diferencias menores al 2 %. X o |Z| es una elección del dueño.
+
 ## 5. Issues en `AlonsoFU/Balance-de-Potencia-Anual`
 
 - **#287: numeración del ENT.**
