@@ -388,6 +388,16 @@ Archivo `analisis_criterios/datos/tramos_decisivos.xlsx`, con scripts `decisivos
   Maule, Codegua, Charrúa, Concepción). Hay que aclarar si es base MVA o banco de unidades.
 - Los trafos de las troncales (A.Jahuel, Itahue 220/154, Charrúa, Concepción) son decisivos hoy,
   pero dejan de importar con el criterio porque quedan anulados.
+- **Patrón ×3 verificado con las fichas de Infotécnica** (`inputs/Actualizacion Infotecnica/reporte_transformadores-2d/3d.xlsx`).
+  X = Z % · V² / S_base:
+  - L.Almendros: 10,57 % a 400 MVA y 220 kV da 12,8 Ω (ENT 38,0).
+  - Maule N°1: 8,39 % a 36 MVA y 154 kV da 55,3 Ω (ENT 165,7).
+  - Charrúa JT1: 8,01 % a 300 MVA da 13,5 Ω (ENT 40,8).
+  - Concepción JT7: 5,94 % a 201 MVA da 15,0 Ω (ENT 43,8).
+
+  El ENT equivale a usar S/3 (o un error de (√3)²). No depende del tipo de trafo (aparece en T,
+  BA y A, de 2 y 3 devanados), así que es un error de carga, no de representación: las fuentes
+  están bien. Codegua no calza (ENT/Infotécnica = 4,0); revisar aparte.
 - **Pendiente:** verificar a mano los decisivos, corregirlos y volver a correr (paso 6).
 
 ## 5. Issues en `AlonsoFU/Balance-de-Potencia-Anual`
