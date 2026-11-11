@@ -335,6 +335,37 @@ por el Coordinador. No define X ni Z ni qué niveles de tensión cuentan. Recome
 referir, medir hasta la subestación con la lectura intermedia y usar X, con R solo para desempatar
 diferencias menores al 2 %. X o |Z| es una elección del dueño.
 
+### 4f. Calidad de los datos del ENT (2026-11-11)
+
+Scripts `datos_x.py` y `datos_ceros.py`. Referencia: `revision/homologacion_infotecnica_CNE_peajes.xlsx`,
+usando la columna `revision` (1 o CNE → X_CNE; Infotec → X_Infotec; 0 → sin referencia).
+
+- **Cobertura:** 1.839 de 2.004 filas tienen referencia válida; 1.688 de los 1.831 tramos
+  operativos.
+- **Discrepancias (|X_ref/X_ENT − 1|):**
+  - Líneas (1.216): 571 bajo 5 %, 250 entre 5 y 20 %, 97 entre 20 y 50 %, 298 sobre 50 %.
+  - Trafos (623): 146 bajo 5 %, 48 entre 5 y 20 %, 74 entre 20 y 50 %, 355 sobre 50 %.
+  - Hay patrones sistemáticos en trafos: 89 con razón ≈ 1/3 y 39 con ≈ 2. Puede ser cómo se
+    representan unidades en paralelo o la base MVA, no necesariamente errores.
+- **Errores claros:**
+  - 4 trafos 66/13 con X = 0,000378 Ω (placeholder): La Unión, Picarte y Puerto Varas (2). La CNE
+    da entre 15 y 33 Ω.
+  - Ancoa–Colbún 220 con X = 0,00726 Ω: a verificar.
+  - Los tramos con 0,0042 Ω son conexiones o taps, plausibles.
+- **La homologación también tiene pareos malos:** Melipeuco ↔ El Peñón, Lo Aguirre ↔ Alto Jahuel,
+  Chocalán. Por eso el reemplazo automático es una sensibilidad, no una corrección.
+- **Impacto de reemplazar X del ENT por la referencia (barras que cambian solo por datos):**
+
+  | Criterio | Reemplazo si \|dif\| ≥ 20 % (777 tramos) | Reemplazo total (1.688) | = PN2604 (ENT → total) |
+  |---|---|---|---|
+  | Hoy | 412 | 366 | 1.020 → 1.106 |
+  | Referido | 270 | 219 | 1.101 → 1.124 |
+  | Referido + trafo troncal | 231 | 181 | 1.180 → 1.177 |
+  | Referido + Subestación | 233 | 183 | 1.194 → 1.177 |
+
+  Los datos mueven tantas barras como el criterio, pero el orden entre criterios se mantiene. Los
+  criterios referidos son menos sensibles a los datos que el de hoy.
+
 ## 5. Issues en `AlonsoFU/Balance-de-Potencia-Anual`
 
 - **#287: numeración del ENT.**
