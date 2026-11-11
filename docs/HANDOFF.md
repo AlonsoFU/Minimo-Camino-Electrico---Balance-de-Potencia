@@ -398,6 +398,16 @@ Archivo `analisis_criterios/datos/tramos_decisivos.xlsx`, con scripts `decisivos
   El ENT equivale a usar S/3 (o un error de (√3)²). No depende del tipo de trafo (aparece en T,
   BA y A, de 2 y 3 devanados), así que es un error de carga, no de representación: las fuentes
   están bien. Codegua no calza (ENT/Infotécnica = 4,0); revisar aparte.
+- **Otros factores, revisados con fichas:** no responden a una sola causa.
+  - ×2 y ×½: solo 17 de 68 son filas de unidades en paralelo. Varios "×2" contra el valor sugerido
+    son en realidad ×3 contra la ficha (Alto del Carmen, Florida, La Dehesa).
+  - ×4: no es por referir. En 110/13 o 66/13 ese factor sería 25 a 71; contra la ficha da ×4,1 a
+    ×5,8.
+  - Las fichas también tienen errores: Ochagavía con S = 336 MVA en un trafo de 13,3 MVA, y
+    Polpaico 500/220.
+
+  Conclusión: no se puede corregir por grupo en automático. Los decisivos se revisan caso a caso
+  con la ficha, más una prueba de plausibilidad: Z entre 4 y 15 % y S consistente con el nombre.
 - **Pendiente:** verificar a mano los decisivos, corregirlos y volver a correr (paso 6).
 
 ## 5. Issues en `AlonsoFU/Balance-de-Potencia-Anual`
