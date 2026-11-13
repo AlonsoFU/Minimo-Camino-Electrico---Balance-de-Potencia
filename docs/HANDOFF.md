@@ -440,6 +440,26 @@ ganador y el camino a la 2ª troncal.
   - L.Changos–Kimal no apareció en la prueba uno a uno (§4g), porque ahí se corrigió un circuito a
     la vez. Los circuitos en paralelo hay que corregirlos juntos.
 
+### 4i. Efectos en cadena de las correcciones (2026-11-13)
+
+Script `cadena.py`; secuencia en `analisis_criterios/datos/secuencia_correcciones.xlsx`. Usa
+«Referido + trafo troncal» y 668 bloques DISCREPA, con los paralelos corregidos juntos.
+
+- **De a uno:** 44 bloques decisivos, 243 barras (unión).
+- **Juntos:**
+  - Los 44 decisivos: 193 barras, 541 MM$/mes. 9 barras cambian solo al combinar y 59 se
+    cancelan.
+  - Los 668 bloques: 183 barras, 395 MM$. Los no decisivos combinados también mueven el resultado.
+- **Secuencia que recalcula en cada paso:**
+  - 6 pasos dan 521 de 541 MM$.
+  - Hay interacciones: Crucero–Kimal pasa de 16 a 26 barras después de L.Changos–Kimal; Itahue, de
+    4 a 25 después de Teno y Maule; Linares, de 14 a 4.
+  - Las interacciones son locales, por zona: Kimal, Maule–Itahue–Teno–Linares, Dichas, Santiago
+    oriente.
+- **Regla:** no sumar efectos individuales. El resultado depende solo del conjunto aplicado, no del
+  orden. Revisar por zona en rondas, recalcular el ranking tras cada ronda y cerrar aplicando el
+  resto por regla, con un recálculo final.
+
 ## 5. Issues en `AlonsoFU/Balance-de-Potencia-Anual`
 
 - **#287: numeración del ENT.**
