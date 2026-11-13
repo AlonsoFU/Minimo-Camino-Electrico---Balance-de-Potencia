@@ -4,6 +4,8 @@ Material de apoyo a la minuta (`docs/Minuta_Minimo_Camino_Electrico.docx`). No f
 código ni de los entregables del repo. Vive solo en la rama `claude/relaxed-ptolemy-70ek36`, que no
 se mezcla con `main`. Los detalles de método y los números están en `docs/HANDOFF.md`, §3–§4b.
 
+**Empezar por [`LOGICA.md`](LOGICA.md)**: la lógica completa del análisis y el plan de actualización de datos, en forma concisa.
+
 ## Nombres de los criterios
 
 | Nombre | Origen | Qué hace |
