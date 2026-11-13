@@ -410,6 +410,24 @@ Archivo `analisis_criterios/datos/tramos_decisivos.xlsx`, con scripts `decisivos
   con la ficha, más una prueba de plausibilidad: Z entre 4 y 15 % y S consistente con el nombre.
 - **Pendiente:** verificar a mano los decisivos, corregirlos y volver a correr (paso 6).
 
+### 4h. Trafos sensibles en caminos con retiro (2026-11-13)
+
+Archivo `analisis_criterios/datos/trafos_sensibles_retiros.xlsx` (script `retiros_trafos.py`).
+Usa «Referido + trafo troncal» y las 527 barras con retiro (12.043 MW). Para cada barra calcula
+el cambio de X que da vuelta su troncal: margen / X de cada trafo no compartido entre el camino
+ganador y el camino a la 2ª troncal.
+
+- Solo 11 trafos están en la parte de los caminos que decide; 7 la dan vuelta con ≤20 %.
+- Datos dudosos y sensibles:
+  - Ventanas 220/110: ENT = ⅓ de las fuentes. Con +200 % da vuelta 16 barras, 77 MM$/mes.
+  - L.Almendros 220/110: ENT = 3×. Basta −4 %.
+  - Melipilla 110/66: ENT = 4,9×.
+- Sensibles pero con datos validados:
+  - Esmeralda / Liqcau: el sector también está afectado por #287.
+  - R.Aconcagua.
+  - Nueva Guindo / Coronel: 17 barras, poca plata.
+- Conteo ×3 (`x3_conteo.py`): 66 trafos; 8 tocan la troncal (anulados); quedan 58; 10 decisivos.
+
 ## 5. Issues en `AlonsoFU/Balance-de-Potencia-Anual`
 
 - **#287: numeración del ENT.**
