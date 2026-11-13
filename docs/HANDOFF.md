@@ -428,6 +428,18 @@ ganador y el camino a la 2ª troncal.
   - Nueva Guindo / Coronel: 17 barras, poca plata.
 - Conteo ×3 (`x3_conteo.py`): 66 trafos; 8 tocan la troncal (anulados); quedan 58; 10 decisivos.
 
+- **Ampliado a barras con inyección o retiro y a todos los tramos** (`ivr_*.py`, archivo
+  `tramos_sensibles_iny_ret.xlsx`): 700 barras, 22.705 MW.
+  - En las partes de los caminos que deciden hay 158 tramos: 11 trafos y 147 líneas. 47 dan
+    vuelta alguna barra con un cambio ≤20 %.
+  - Corregir los DISCREPA al valor sugerido cambia algo en 12 tramos. Los principales:
+    - L.Changos–Kimal 500 (2 circuitos, ENT 2,9×): 4 barras, 218 MM$/mes.
+    - Ventanas 220/110: 87.
+    - Crucero–Kimal 220: 34.
+    - L.Almendros: 10.
+  - L.Changos–Kimal no apareció en la prueba uno a uno (§4g), porque ahí se corrigió un circuito a
+    la vez. Los circuitos en paralelo hay que corregirlos juntos.
+
 ## 5. Issues en `AlonsoFU/Balance-de-Potencia-Anual`
 
 - **#287: numeración del ENT.**
