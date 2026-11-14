@@ -21,6 +21,11 @@ Resultados en `datos/resultados.xlsx`.
   mantiene el ENT.
 - Corregir los datos cambia ~180–230 barras. El orden entre criterios no cambia.
 
+## Efecto geográfico de corregir los datos
+- Con el método de hoy, corregir los datos aleja barras de su troncal: se acercan 56 y se alejan 146.
+- Con el método propuesto, las acerca: se acercan 122 y se alejan 44.
+- Ejemplos: Teno, Rauquén y Aguas Claras pasan de Candelaria (~110 km) a Itahue (~35 km).
+
 ## Qué revisar primero
 - Solo 44 tramos cambian el resultado; los otros 624 no.
 - Los 10 primeros cubren el 91 % del impacto.
