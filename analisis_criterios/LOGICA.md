@@ -26,6 +26,11 @@ Resultados en `datos/resultados.xlsx`.
 - Con el método propuesto, las acerca: se acercan 122 y se alejan 44.
 - Ejemplos: Teno, Rauquén y Aguas Claras pasan de Candelaria (~110 km) a Itahue (~35 km).
 
+## Señal de sospecha por tramo
+- Si corregir un tramo aleja las barras de su troncal, el valor corregido es sospechoso.
+- 16 de los 44 tramos decisivos alejan más barras de las que acercan. Entre ellos están L.Changos–Kimal,
+  L.Almendros, El Salto–San Cristóbal y A.Melipilla–Dichas.
+
 ## Qué revisar primero
 - Solo 44 tramos cambian el resultado; los otros 624 no.
 - Los 10 primeros cubren el 91 % del impacto.
