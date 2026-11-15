@@ -26,10 +26,13 @@ Resultados en `datos/resultados.xlsx`.
 - Con el método propuesto, las acerca: se acercan 122 y se alejan 44.
 - Ejemplos: Teno, Rauquén y Aguas Claras pasan de Candelaria (~110 km) a Itahue (~35 km).
 
-## Señal de sospecha por tramo
-- Si corregir un tramo aleja las barras de su troncal, el valor corregido es sospechoso.
-- 16 de los 44 tramos decisivos alejan más barras de las que acercan. Entre ellos están L.Changos–Kimal,
-  L.Almendros, El Salto–San Cristóbal y A.Melipilla–Dichas.
+## Calidad del cambio por tramo
+- Por tramo no solo se mide cuánto cambia, también si el cambio tiene sentido: si la barra queda
+  más cerca o más lejos de su troncal, y si gana o pierde coincidencia con PN2604.
+- De los 44 tramos decisivos: 21 mejoran, 13 empeoran, 6 son mixtos y 4 no se pueden evaluar.
+- Los que empeoran concentran la mayor parte de la plata (L.Changos–Kimal, L.Almendros): se
+  revisan primero y con más cuidado.
+- A veces la geografía y PN2604 no coinciden (Maule, A.Melipilla–Dichas): ahí decide la ficha.
 
 ## Qué revisar primero
 - Solo 44 tramos cambian el resultado; los otros 624 no.
