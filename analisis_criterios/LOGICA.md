@@ -82,6 +82,12 @@ Resultados en `datos/resultados.xlsx`.
 
   Regla: donde aparece una combinación, probar exhaustivamente esa zona y corregirla completa, nunca a
   medias.
+- **Prueba exhaustiva en las 6 zonas con combinaciones** (entorno de 2 saltos, ~10.700 recálculos):
+  - Las Vegas, Calera, Chiloé y Puerto Varas: efecto chico (≤6 MM$/mes), corregidas completas o por partes.
+  - Kimal: corregir solo L.Changos–Kimal mueve 227 MM$/mes; corregir la zona completa, 34.
+  - Mulchén: corregir 3 tramos mueve 270 MM$/mes; la zona completa, 36.
+
+  Esto confirma la regla de corregir cada zona completa.
 - Se revisan líneas y trafos por igual.
 
 Figuras: `figuras/datos/busqueda_combinaciones.png` (cómo se buscan las combinaciones) y
