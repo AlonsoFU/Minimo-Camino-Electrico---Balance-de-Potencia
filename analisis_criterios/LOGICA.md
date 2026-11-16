@@ -74,6 +74,14 @@ Resultados en `datos/resultados.xlsx`.
   borde.
 - **Combinaciones:** se buscan por grupos, no probando todos los pares. Las zonas son tramos ordenados
   de norte a sur en grupos de 40; al final se prueba todo junto, para captar combinaciones entre zonas.
+- **Robustez de la búsqueda:** se repitió con 4 agrupaciones (latitud, troncal más cercana y dos al azar).
+  Coinciden en las combinaciones chicas; solo difieren en la zona de Mulchén. Ahí se probaron todas las
+  combinaciones de hasta 4 de sus 10 tramos:
+  - corrigiendo 3 tramos sin Los Notros–Mulchén: 12 barras, 270 MM$/mes;
+  - corrigiendo la zona completa: 4 barras, 36 MM$/mes.
+
+  Regla: donde aparece una combinación, probar exhaustivamente esa zona y corregirla completa, nunca a
+  medias.
 - Se revisan líneas y trafos por igual.
 
 Figuras: `figuras/datos/busqueda_combinaciones.png` (cómo se buscan las combinaciones) y
