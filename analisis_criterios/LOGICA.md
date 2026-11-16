@@ -72,8 +72,8 @@ Resultados en `datos/resultados.xlsx`.
   fuentes coincidan no basta si el cambio empeora la asignación (L.Changos–Kimal).
 - **Red de 500 kV:** al referir se acorta ×0,19 y puede atraer barras lejanas; se revisa como caso
   borde.
-- **Combinaciones:** se buscan por grupos (por zona, partiendo los grupos que cambian algo), no
-  probando todos los pares.
+- **Combinaciones:** se buscan por grupos, no probando todos los pares. Las zonas son tramos ordenados
+  de norte a sur en grupos de 40; al final se prueba todo junto, para captar combinaciones entre zonas.
 - Se revisan líneas y trafos por igual.
 
 Figuras: `figuras/datos/busqueda_combinaciones.png` (cómo se buscan las combinaciones) y
