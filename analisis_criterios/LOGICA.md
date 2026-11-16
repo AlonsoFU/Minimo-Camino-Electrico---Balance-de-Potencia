@@ -50,6 +50,35 @@ Resultados en `datos/resultados.xlsx`.
 - Solo una pesa: Los Notros–Mulchén–Santa Clara–Charrúa (36 MM$/mes), que lleva Mulchén, Los Olmos y
   Picoltué a Cautín (más lejos).
 
+## Consideraciones estándar (aplican siempre)
+- **Referir:** toda reactancia (y R, si se usa) se lleva a 220 kV con (220/V)²; V es la columna V del
+  ENT, que en los trafos es el lado de alta.
+- **X o |Z|:**
+  - |Z| es lo más completo físicamente.
+  - Con R cambian ~100 barras casi empatadas (diferencias menores al 5 %); la R decide esos empates.
+  - El resultado depende de cómo se suma la R en serie: 1.197 contra 1.171 coincidencias con PN2604.
+  - La R difiere de las fuentes en el 53 % de los tramos, contra ~41 % en la X. Si se usa |Z|, hay
+    que validar la R igual que la X.
+- **Paralelos:** se combinan como 1/Z = Σ 1/Zi, y se corrigen en bloque. Corregir un solo circuito
+  subestima el efecto (L.Changos–Kimal).
+- **Trafos anulados:** los que el criterio deja en 0 no se revisan; su dato no importa.
+- **Probar todos, revisar solo los decisivos** (los que cambian alguna troncal). Es una foto del
+  estado actual: tras cada ronda se vuelve a probar todo.
+- **Nunca sumar efectos individuales:** el resultado depende del conjunto de correcciones, no del
+  orden. Siempre se recalcula con todo lo aplicado.
+- **Si el cambio tiene sentido:** queda más cerca o más lejos de su troncal (±5 km) y gana o pierde
+  coincidencia con PN2604. Si las dos señales se contradicen, decide la ficha.
+- **Las fuentes también fallan:** hay pareos malos en la homologación y fichas imposibles. Que las
+  fuentes coincidan no basta si el cambio empeora la asignación (L.Changos–Kimal).
+- **Red de 500 kV:** al referir se acorta ×0,19 y puede atraer barras lejanas; se revisa como caso
+  borde.
+- **Combinaciones:** se buscan por grupos (por zona, partiendo los grupos que cambian algo), no
+  probando todos los pares.
+- Se revisan líneas y trafos por igual.
+
+Figuras: `figuras/datos/busqueda_combinaciones.png` (cómo se buscan las combinaciones) y
+`figuras/datos/caso_lchangos_kimal.png` (un tramo que mueve mucho).
+
 ## Plan en rondas
 1. Ordenar los tramos por impacto.
 2. Agruparlos por zona.
