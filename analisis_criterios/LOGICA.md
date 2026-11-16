@@ -43,6 +43,13 @@ Resultados en `datos/resultados.xlsx`.
 - Ocurre solo entre tramos de la misma zona.
 - Regla: siempre recalcular con todo lo ya corregido.
 
+## Combinaciones (prueba por grupos)
+- Se probaron los 624 tramos no decisivos agrupados por zona, partiendo cada grupo que cambiaba
+  algo hasta aislar la combinación responsable (~390 recálculos).
+- Se encontraron 6 combinaciones de 2–3 tramos que solo cambian algo juntas: 15 barras, ~41 MM$/mes.
+- Solo una pesa: Los Notros–Mulchén–Santa Clara–Charrúa (36 MM$/mes), que lleva Mulchén, Los Olmos y
+  Picoltué a Cautín (más lejos).
+
 ## Plan en rondas
 1. Ordenar los tramos por impacto.
 2. Agruparlos por zona.
