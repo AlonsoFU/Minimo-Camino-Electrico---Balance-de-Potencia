@@ -93,6 +93,13 @@ Resultados en `datos/resultados.xlsx`.
 Figuras: `figuras/datos/busqueda_combinaciones.png` (cómo se buscan las combinaciones) y
 `figuras/datos/caso_lchangos_kimal.png` (un tramo que mueve mucho).
 
+## Zonas
+- Zona: un tramo decisivo o de combinación, más los tramos que difieren a ≤2 conexiones; las que
+  comparten tramos se juntan.
+- Resultado: 16 zonas, 244 tramos (44 decisivos y 200 vecinos). Solo ~15 vecinos tienen
+  interacción probada.
+- Pendiente: probar decisivo + vecinos en las 10 zonas no probadas.
+
 ## Plan en rondas
 1. Ordenar los tramos por impacto.
 2. Agruparlos por zona.
@@ -103,7 +110,7 @@ Figuras: `figuras/datos/busqueda_combinaciones.png` (cómo se buscan las combina
 7. Aplicar el resto por regla y recalcular una última vez.
 
 ## Decisiones tuyas
-- Criterio.
+- Metodología (pendiente).
 - Fuente oficial para X.
 - Confirmar el ×3.
 - #287, #288 y Tap Pulelfu.

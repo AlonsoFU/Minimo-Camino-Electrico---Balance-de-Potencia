@@ -460,6 +460,71 @@ Script `cadena.py`; secuencia en `analisis_criterios/datos/secuencia_correccione
   orden. Revisar por zona en rondas, recalcular el ranking tras cada ronda y cerrar aplicando el
   resto por regla, con un recálculo final.
 
+### 4j. Plan de revisión de datos: calidad, combinaciones y zonas (2026-11-14/17)
+
+Punteo para presentar: `analisis_criterios/LOGICA.md`. Resultados: `analisis_criterios/datos/resultados.xlsx`
+(hojas 1–7) y `resultados_refsub_z.xlsx`. Todo es **simulación sobre una copia**: el ENT no se toca.
+
+- **Objetivo:** saber qué datos conviene verificar y corregir antes de cambiar el ENT, sin revisar
+  los 668 tramos que discrepan.
+- **Método base:** se corrige un tramo (o un bloque de paralelos) al valor sugerido de la validación
+  previa del dueño, se recalcula la troncal de las 1.442 barras y se cuentan las barras y la plata
+  que cambian. Los efectos individuales nunca se suman; siempre se recalcula con todo lo aplicado.
+- **Tramos decisivos por criterio** (`dec_criterios.py`, `dec_criterios_geo.py`):
+
+  | Criterio | Decisivos | Mejoran / empeoran (geografía, ±5 km) |
+  |---|---|---|
+  | Hoy (X) | 35 | 12 / 21 |
+  | Ref + trafo troncal (X) | 44 | 27 / 13 |
+  | Ref + trafo troncal (\|Z\|) | 48 | 21 / 21 |
+  | Ref + misma subestación (X) | 40 | 23 / 13 |
+  | Ref + misma subestación (\|Z\|) | 43 | 20 / 17 |
+
+- **Calidad del cambio** (`calidad_tramo.py`, `geo_tramo.py`): se mide si la barra queda más cerca o
+  más lejos y si gana o pierde coincidencia con PN2604. Con «Ref + trafo troncal» y X:
+  - cambiar: 12 tramos, 202 MM$/mes;
+  - revisar ficha: 11 tramos, 71;
+  - no cambiar sin ficha: 11 tramos, 392;
+  - sin señal: 10 tramos, 36.
+- **No decisivos que pasan a decisivos** (`nodec_post.py`): 3 después de aplicar los 12; 7 (318 MM$)
+  después de aplicar los 44.
+- **«Ref + misma subestación» con |Z|, completo** (`ref_sub_z.py`):
+  - 43 decisivos (14 cambiar, 9 revisar, 14 no cambiar, 6 sin señal);
+  - juntos: 182 barras y 528 MM$;
+  - **validación de R:** difiere en 1.064 de 1.996 tramos (53 %); en 205 la X coincide y la R no.
+- **Por qué X es más estable que |Z|:** la R decide ~100 casi empates (<5 %); el resultado depende
+  de cómo se suma la R en serie (1.197 contra 1.171); la R está menos validada. La metodología
+  queda pendiente: decide el dueño.
+- **Combinaciones de no decisivos** (`grupos.py`, `grupos2.py`, `grupos_robusto.py`):
+  - Prueba por grupos: tramos ordenados de norte a sur en grupos de 40; los grupos que cambian algo
+    se parten hasta aislar la combinación (ddmin); al final se prueba todo junto.
+  - Se repitió con 4 agrupaciones (latitud, troncal más cercana, dos al azar): coinciden salvo en
+    Mulchén.
+- **Prueba exhaustiva por zona** (`zonas_exh.py`; entorno de 2 saltos, todas las combinaciones de
+  hasta 4 tramos, ~10.700 recálculos):
+
+  | Zona | Zona completa (MM$/mes) | Peor parcial (MM$/mes) |
+  |---|---|---|
+  | Kimal | 34 | 227 (solo L.Changos–Kimal) |
+  | Mulchén | 36 | 270 |
+  | Las Vegas, Calera, Chiloé, Puerto Varas | ≤ 6 | ≤ 6 |
+
+  **Regla:** cada zona se corrige completa, nunca a medias.
+- **Casos ilustrados:**
+  - `analisis_criterios/figuras/datos/busqueda_combinaciones.png`.
+  - `caso_lchangos_kimal.png`: las fuentes coinciden en que el ENT está mal (106,8 contra
+    36,9 Ω), pero corregir solo ese tramo deja 10 barras más lejos (227 MM$). Es el caso borde de
+    500 kV.
+- **Definición de zona** (`zonas_def.py`): un tramo decisivo o de combinación, más los tramos que
+  difieren a ≤2 conexiones; las zonas que comparten tramos se juntan. Resultado: 16 zonas, 244 tramos
+  (44 decisivos y 200 vecinos). La más grande (83 tramos, red central) hay que partirla. De los 200
+  vecinos, solo ~15 tienen interacción probada.
+- **Escala de la plata:** el total valorizado (inyección y retiro a precio de su troncal) es
+  ~190.000 MM$/mes. Corregir los 44 mueve ~540 (0,3 %) y el cambio de método ~880 (0,5 %).
+- **Hueco abierto:** en 10 de las 16 zonas no se probaron combinaciones de un decisivo con sus
+  vecinos (el caso Kimal). Plan: exhaustivo hasta 4 tramos en las zonas de ≤20 tramos y prueba por
+  grupos dentro de las zonas grandes (83, 27 y 22).
+
 ## 5. Issues en `AlonsoFU/Balance-de-Potencia-Anual`
 
 - **#287: numeración del ENT.**
@@ -481,6 +546,13 @@ Script `cadena.py`; secuencia en `analisis_criterios/datos/secuencia_correccione
   llevan el footer de Claude Code.
 
 ## 6. Pendientes / ofrecidos (sin confirmar por el dueño)
+
+- [ ] Cerrar el hueco de combinaciones decisivo + vecinos en las 10 zonas restantes (§4j).
+- [ ] Ranking por zona completa (no por tramo) y lista de fichas a revisar.
+- [ ] Validar la R de los tramos decisivos (necesario si se usa |Z|).
+- [ ] Regla para la red de 500 kV (caso L.Changos–Kimal).
+- [ ] Decisiones del dueño: metodología, fuente oficial de X, confirmar ×3 con quien mantiene el
+  ENT, #287/#288/Tap Pulelfu.
 
 - [ ] Registrar como issue de datos el empate de Illapa por tramos idénticos.
 - [ ] Hoja de revisión manual de los cambios críticos agrupados.
