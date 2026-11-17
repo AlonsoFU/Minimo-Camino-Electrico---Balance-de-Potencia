@@ -535,6 +535,14 @@ Punteo para presentar: `analisis_criterios/LOGICA.md`. Resultados: `analisis_cri
     subestación). Unión de los 4 criterios: 112 tramos; 66 están en los cuatro.
   - **Corrección:** antes se dijo que solo pesaban 22 vecinos (zona central y Kimal). Ese conteo
     miraba solo esas dos zonas. Contando todas, con interacción mayor a 1 MM$/mes, son ~50.
+- **Comparación final contra la base actual** (`final_vs_base*.py`, hoja 11). La base es el método actual
+  con el ENT; el final, el método nuevo con los datos corregidos.
+  - El final difiere de la base en 506 barras y ~1.240–1.285 MM$/mes.
+  - El método solo explica 362–396 barras; los datos agregan ~110–145 más.
+  - Corrigiendo solo la lista a revisar (76–98 tramos) se reproduce el final en 489–494 de esas 506
+    barras.
+  - La coincidencia con PN2604 baja de ~1.190 a ~1.165 al corregir los datos (PN2604 se hizo con los
+    datos viejos).
 - **Escala de la plata:** el total valorizado (inyección y retiro a precio de su troncal) es
   ~190.000 MM$/mes. Corregir los 44 mueve ~540 (0,3 %) y el cambio de método ~880 (0,5 %).
 - **Hueco cerrado** (`hueco.py`, 13.170 recálculos; hojas 8–9 de `resultados.xlsx`). En las zonas de
