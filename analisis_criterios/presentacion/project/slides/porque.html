@@ -1,0 +1,30 @@
+<section id="porque">
+<p class="eyebrow">La explicación</p>
+<h2>¿Por qué solo esos 44?</h2>
+<div class="row" style="gap:40px; align-items:center;">
+<div class="diagram anim" style="--i:0;">
+<svg aria-label="Una barra con un tramo común que se divide en dos caminos, hacia la troncal A y la troncal B" width="900" height="560" viewBox="0 0 900 560">
+<line x1="92" y1="280" x2="362" y2="280" stroke="#B8C0CA" stroke-width="12" stroke-linecap="round"/>
+<line x1="380" y1="280" x2="800" y2="100" stroke="#1F6F86" stroke-width="10" stroke-linecap="round"/>
+<line x1="380" y1="280" x2="800" y2="460" stroke="#C2571A" stroke-width="10" stroke-linecap="round"/>
+<circle cx="70" cy="280" r="24" fill="#FFFFFF" stroke="#14213D" stroke-width="5"/>
+<circle cx="380" cy="280" r="18" fill="#FFFFFF" stroke="#14213D" stroke-width="5"/>
+<rect x="790" y="70" width="64" height="64" rx="8" fill="#1F6F86"/>
+<rect x="790" y="430" width="64" height="64" rx="8" fill="#C2571A"/>
+</svg>
+<p class="lab b" style="left:20px; top:322px; width:140px;">Barra</p>
+<p class="lab grey" style="left:100px; top:150px; width:280px;">Tramo común: suma lo mismo a los dos caminos, no decide</p>
+<p class="lab teal" style="left:760px; top:24px; width:140px;">Troncal A</p>
+<p class="lab orange" style="left:760px; top:506px; width:140px;">Troncal B</p>
+<p class="lab b" style="left:580px; top:240px; width:300px;">Aquí se decide qué troncal gana</p>
+</div>
+<div class="col" style="width:724px; gap:28px;">
+<p class="strong anim" style="--i:1;">Un tramo cambia la asignación solo si:</p>
+<div class="stat anim" style="--i:2;"><p class="k">13</p><p class="v">está donde se decide y su cambio supera la diferencia entre A y B</p></div>
+<div class="stat anim" style="--i:3;"><p class="k">22</p><p class="v">al bajar su reactancia abre un camino nuevo más corto</p></div>
+<div class="stat anim" style="--i:4;"><p class="k">9</p><p class="v">al subir su reactancia desvía el camino</p></div>
+<p class="note anim" style="--i:5;">Los otros 624 están en el tramo común, fuera de los caminos, o cambian menos que la diferencia.</p>
+</div>
+</div>
+<aside>Una barra se asigna a la troncal con menor distancia eléctrica. Lo que decide es la diferencia entre la mejor y la segunda. Un dato en el tramo común suma igual a ambas y no cambia nada. De los 44 decisivos: 13 están donde se decide y superan la diferencia, 22 abren un camino nuevo al bajar su X y 9 desvían el camino al subirla.</aside>
+</section>
