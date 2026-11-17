@@ -98,7 +98,8 @@ Figuras: `figuras/datos/busqueda_combinaciones.png` (cómo se buscan las combina
   comparten tramos se juntan.
 - Resultado: 16 zonas, 244 tramos (44 decisivos y 200 vecinos). Solo ~15 vecinos tienen
   interacción probada.
-- Pendiente: probar decisivo + vecinos en las 10 zonas no probadas.
+- Probado decisivo + vecinos en las 16 zonas (13.170 recálculos): los vecinos solo pesan en la zona
+  central (+36 MM$/mes) y en Kimal (anulan 166 MM$/mes); en el resto basta con los decisivos.
 
 ## Plan en rondas
 1. Ordenar los tramos por impacto.

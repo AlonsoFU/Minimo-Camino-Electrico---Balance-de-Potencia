@@ -521,9 +521,19 @@ Punteo para presentar: `analisis_criterios/LOGICA.md`. Resultados: `analisis_cri
   vecinos, solo ~15 tienen interacción probada.
 - **Escala de la plata:** el total valorizado (inyección y retiro a precio de su troncal) es
   ~190.000 MM$/mes. Corregir los 44 mueve ~540 (0,3 %) y el cambio de método ~880 (0,5 %).
-- **Hueco abierto:** en 10 de las 16 zonas no se probaron combinaciones de un decisivo con sus
-  vecinos (el caso Kimal). Plan: exhaustivo hasta 4 tramos en las zonas de ≤20 tramos y prueba por
-  grupos dentro de las zonas grandes (83, 27 y 22).
+- **Hueco cerrado** (`hueco.py`, 13.170 recálculos; hojas 8–9 de `resultados.xlsx`). En las zonas de
+  ≤20 tramos se probaron todas las combinaciones de 2–4 tramos con al menos un decisivo; en las grandes,
+  cada decisivo con cada vecino más ddmin. Comparación de decisivos solos (juntos) contra la zona
+  completa, en MM$/mes:
+  - Zona central (83 tramos, incluye Mulchén): 236 → 272 (+36).
+  - Kimal: 200 → 34 (los vecinos anulan L.Changos–Kimal).
+  - El Salto: 10 → 0.
+  - El Laurel: 3 → 0.
+  - Calera / Las Vegas: 13 → 16.
+  - En las otras 11 zonas los vecinos no cambian nada.
+
+  Conclusión: los vecinos pesan de verdad solo en la zona central y en Kimal; en las demás basta con
+  los decisivos.
 
 ## 5. Issues en `AlonsoFU/Balance-de-Potencia-Anual`
 
@@ -547,7 +557,6 @@ Punteo para presentar: `analisis_criterios/LOGICA.md`. Resultados: `analisis_cri
 
 ## 6. Pendientes / ofrecidos (sin confirmar por el dueño)
 
-- [ ] Cerrar el hueco de combinaciones decisivo + vecinos en las 10 zonas restantes (§4j).
 - [ ] Ranking por zona completa (no por tramo) y lista de fichas a revisar.
 - [ ] Validar la R de los tramos decisivos (necesario si se usa |Z|).
 - [ ] Regla para la red de 500 kV (caso L.Changos–Kimal).
