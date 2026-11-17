@@ -519,6 +519,22 @@ Punteo para presentar: `analisis_criterios/LOGICA.md`. Resultados: `analisis_cri
   difieren a ≤2 conexiones; las zonas que comparten tramos se juntan. Resultado: 16 zonas, 244 tramos
   (44 decisivos y 200 vecinos). La más grande (83 tramos, red central) hay que partirla. De los 200
   vecinos, solo ~15 tienen interacción probada.
+- **Registro auditable (2026-11-17):** se repitieron todas las pruebas para 4 criterios (trafo troncal y
+  misma subestación, cada uno con X y |Z|), guardando cada recálculo en
+  `analisis_criterios/datos/registro_pruebas.sqlite.gz` (52.446 pruebas; ver `REGISTRO_PRUEBAS.md`;
+  scripts `registro.py` y `post_registro.py`).
+
+  | Criterio | Decisivos | Vecinos con interacción > 1 MM$/mes | Total a revisar |
+  |---|---|---|---|
+  | Trafo troncal, X | 44 | 50 | 94 |
+  | Trafo troncal, \|Z\| | 48 | 50 | 98 |
+  | Misma subestación, X | 40 | 36 | 76 |
+  | Misma subestación, \|Z\| | 43 | 51 | 94 |
+
+  - Las listas de X y de |Z| comparten 83 de 94–98 tramos (trafo troncal) y 67 de 76–94 (misma
+    subestación). Unión de los 4 criterios: 112 tramos; 66 están en los cuatro.
+  - **Corrección:** antes se dijo que solo pesaban 22 vecinos (zona central y Kimal). Ese conteo
+    miraba solo esas dos zonas. Contando todas, con interacción mayor a 1 MM$/mes, son ~50.
 - **Escala de la plata:** el total valorizado (inyección y retiro a precio de su troncal) es
   ~190.000 MM$/mes. Corregir los 44 mueve ~540 (0,3 %) y el cambio de método ~880 (0,5 %).
 - **Hueco cerrado** (`hueco.py`, 13.170 recálculos; hojas 8–9 de `resultados.xlsx`). En las zonas de

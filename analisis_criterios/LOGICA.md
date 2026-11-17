@@ -24,7 +24,8 @@ Resultados en `datos/resultados.xlsx`; el detalle está en `docs/HANDOFF.md` §4
 - Solo 44 tramos cambian el resultado; los 10 primeros cubren el 91 % del impacto.
 - Por tramo se mira si el cambio tiene sentido: si la barra queda más cerca o más lejos de su
   troncal, y si gana o pierde coincidencia con PN2604.
-- Vecinos: solo pesan en la zona central y en Kimal; ahí se revisa la zona completa.
+- Vecinos: además de los decisivos hay que revisar los vecinos que interactúan con ellos (más de 1 MM$/mes).
+  Total a revisar: 76–98 tramos según el criterio (`datos/registro_pruebas.sqlite.gz`).
 
 ## Por qué solo 44 afectan (demostración)
 - **Prueba directa sobre todos:** los 668 tramos se corrigieron uno a uno y se recalculó la troncal de las
