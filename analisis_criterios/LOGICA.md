@@ -26,6 +26,22 @@ Resultados en `datos/resultados.xlsx`; el detalle está en `docs/HANDOFF.md` §4
   troncal, y si gana o pierde coincidencia con PN2604.
 - Vecinos: solo pesan en la zona central y en Kimal; ahí se revisa la zona completa.
 
+## Por qué solo 44 afectan (demostración)
+- **Prueba directa sobre todos:** los 668 tramos se corrigieron uno a uno y se recalculó la troncal de las
+  1.442 barras. 624 no cambian ninguna barra; 44 sí (`cadena.py`, hoja 3).
+- **Mecanismo:** una barra cambia solo si la corrección altera el orden entre su troncal y la siguiente.
+  - 13 de los 44 están en la parte del camino que diferencia a la troncal ganadora de la segunda, y su
+    corrección supera ese margen.
+  - 22 abren un camino nuevo más corto al bajar su X.
+  - 9 desvían el camino al subir su X.
+
+  El resto está en tramos comunes a ambos caminos, fuera de los caminos, o su corrección es menor que el
+  margen (`embudo.py`).
+- **Combinaciones:** al juntar tramos solo se agregan vecinos en la zona central y en Kimal.
+- **Límite:** vale para los datos y el método actuales; tras cada ronda se vuelve a probar.
+- **Afectar no es estar malo:** que un tramo difiera sale de la validación; que esté malo se demuestra
+  con la ficha.
+
 ## Reglas
 - Corregir circuitos en paralelo juntos y zonas completas, nunca a medias.
 - Siempre recalcular con todo lo corregido; no sumar efectos individuales.
