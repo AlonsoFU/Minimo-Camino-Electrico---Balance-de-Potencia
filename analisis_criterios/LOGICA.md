@@ -2,6 +2,15 @@
 
 Resultados en `datos/resultados.xlsx`; el detalle está en `docs/HANDOFF.md` §4j.
 
+## Base de comparación
+- La base es **PN2604**, la asignación vigente; el "módulo actual" es solo lo que calcula hoy el código.
+- Contra PN2604:
+  - El módulo actual difiere en 422 barras (946 MM$/mes), y 318 de ellas quedan más lejos.
+  - El método nuevo con datos corregidos difiere en ~275–279 barras (630–670 MM$/mes): la mitad queda más
+    cerca y la mitad más lejos.
+  - El método actual con datos corregidos difiere en 524.
+  - Detalle en la hoja 13 de `datos/resultados.xlsx`.
+
 ## Problema
 - La norma (2.2 de los decretos) pide la subestación a "mínima distancia eléctrica", sin decir cómo
   se calcula.

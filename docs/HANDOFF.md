@@ -543,6 +543,16 @@ Punteo para presentar: `analisis_criterios/LOGICA.md`. Resultados: `analisis_cri
     barras.
   - La coincidencia con PN2604 baja de ~1.190 a ~1.165 al corregir los datos (PN2604 se hizo con los
     datos viejos).
+- **Base = PN2604** (pedido del dueño, 2026-11-18): las comparaciones finales se hacen contra la asignación
+  vigente, no contra el módulo (hoja 13, `vs_pn2.py`).
+
+  | Escenario | Distintas a PN2604 | MM$/mes | Más cerca / más lejos que PN2604 |
+  |---|---|---|---|
+  | Módulo actual | 422 | 946 | 56 / 318 |
+  | Método actual + datos corregidos | 524 | 1.257 | 62 / 408 |
+  | Nuevo + datos actuales | 245–262 | 488–555 | 59–93 / 132–146 |
+  | Nuevo + datos corregidos | 275–279 | 632–672 | 104–108 / 108–112 |
+
 - **Escala de la plata:** el total valorizado (inyección y retiro a precio de su troncal) es
   ~190.000 MM$/mes. Corregir los 44 mueve ~540 (0,3 %) y el cambio de método ~880 (0,5 %).
 - **Hueco cerrado** (`hueco.py`, 13.170 recálculos; hojas 8–9 de `resultados.xlsx`). En las zonas de
