@@ -2,14 +2,33 @@
 
 Resultados en `datos/resultados.xlsx`; el detalle está en `docs/HANDOFF.md` §4j.
 
-## Base de comparación
-- La base es **PN2604**, la asignación vigente; el "módulo actual" es solo lo que calcula hoy el código.
-- Contra PN2604:
-  - El módulo actual difiere en 422 barras (946 MM$/mes), y 318 de ellas quedan más lejos.
-  - El método nuevo con datos corregidos difiere en ~275–279 barras (630–670 MM$/mes): la mitad queda más
-    cerca y la mitad más lejos.
-  - El método actual con datos corregidos difiere en 524.
-  - Detalle en la hoja 13 de `datos/resultados.xlsx`.
+## Comparación contra lo vigente (PN2604)
+
+La base es PN2604, la asignación vigente. El "módulo actual" es solo lo que calcula hoy el código.
+
+| Método (datos actuales → corregidos) | Barras distintas a PN2604 | Barras que cambian al corregir los datos (mismo método, antes y después) | MM$/mes | Más cerca / más lejos que PN2604 | Barras a >100 km |
+|---|---|---|---|---|---|
+| PN2604 (vigente) | 0 | — | 0 | — | 83 |
+| Actual, sin referir (módulo) | 422 → 524 | 216 | 946 → 1.257 | 56/318 → 62/408 | 174 → 169 |
+| Referido, X | 341 → 399 | 168 | 662 → 839 | 98/202 → 105/232 | 96 → 95 |
+| Referido, R | 341 → 379 | 183 | 612 → 932 | 100/200 → 103/214 | 93 → 98 |
+| Referido + subestación troncal, X | 248–262 → 277–279 | 183 | 488–554 → 632–633 | 59–67/140–146 → 104–106/112 | 80–86 → 83 |
+| Referido + subestación troncal, R | 245–257 → 275–279 | 167 | 508–555 → 670–672 | 85–93/132–136 → 104–108/108 | 82–86 → 84 |
+
+Rangos de "subestación troncal": de anular solo el trafo que toca la barra troncal a unir toda la subestación.
+Datos corregidos: los 668 tramos al valor sugerido de la validación. Hoja 13 de `datos/resultados.xlsx`.
+
+**Qué decir al presentarla**
+- El código actual ya difiere de PN2604 en 422 barras, y casi siempre hacia troncales más lejanas (318).
+- Unir la subestación troncal es lo que más acerca el resultado a lo vigente: ~250 barras distintas.
+- Corregir los datos con el método actual empeora: la diferencia con PN2604 pasa de 422 a 524 barras.
+- Con el método nuevo, corregir los datos cambia ~170–180 barras de su propio resultado, pero la
+  diferencia con PN2604 solo sube ~20–30: unas 70 barras pasan a coincidir con PN2604 y unas 95 dejan de
+  coincidir.
+- **Conclusión:** el método nuevo hace al resultado más estable frente a la corrección de datos. Igual hay
+  que corregirlos.
+- X o R da casi lo mismo dentro de cada variante.
+- PN2604 se calculó con los datos viejos, así que perder algo de coincidencia al corregir es esperable.
 
 ## Problema
 - La norma (2.2 de los decretos) pide la subestación a "mínima distancia eléctrica", sin decir cómo
