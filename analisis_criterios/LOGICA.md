@@ -29,6 +29,11 @@ Datos corregidos: los 668 tramos al valor sugerido de la validación. Hoja 13 de
   que corregirlos.
 - X o R da casi lo mismo dentro de cada variante.
 - PN2604 se calculó con los datos viejos, así que perder algo de coincidencia al corregir es esperable.
+- **MM$/mes** = Σ |Δ precio| × MW de inyección más retiro, sobre las barras distintas a PN2604. Se separa en lo que sube y lo que
+  baja (hoja 14). El código actual sube +708 / −238 (neto +470); el método nuevo con datos corregidos, ~+280 / −372
+  (neto −75 a −112).
+- **Distancia:** "más lejos que PN2604" se cuenta solo entre las barras distintas. En el total de barras, la distancia
+  promedio a la troncal es 50 km con PN2604, 63 con el código actual y ~53–54 con el método nuevo con datos corregidos.
 
 ## Problema
 - La norma (2.2 de los decretos) pide la subestación a "mínima distancia eléctrica", sin decir cómo
