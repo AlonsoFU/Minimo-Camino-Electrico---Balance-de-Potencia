@@ -586,6 +586,10 @@ Punteo para presentar: `analisis_criterios/LOGICA.md`. Resultados: `analisis_cri
   - **El dueño evalúa la corrección; no corregirla por cuenta propia.**
 - **#288: proxy de Tap San Joaquín.** El proxy elige mal; San Andrés 154 queda como segundo
   candidato.
+- **#305: casos raros** (troncal a >100 km) que quedan con la metodología referida: 20 barras, con su causa (#287, #288,
+  Tap Pulelfu, Mulchén, Fopaco, 500 kV, Juncal).
+- **#306: tramos críticos** del ENT con orden de mérito por zona: Kimal, Santiago oriente, Ventanas,
+  Maule–Itahue–Teno–Linares, Mulchén, resto; más reglas de corrección.
 - Regla del repo: los pendientes van como issues, Claude no cierra issues y los comentarios
   llevan el footer de Claude Code.
 
