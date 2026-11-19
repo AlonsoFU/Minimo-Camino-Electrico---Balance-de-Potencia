@@ -21,19 +21,21 @@ def ef_g(t, z):
     return 'No cambia el final'
 # ---- confianza del valor sugerido
 def confianza(t):
-    r = L.loc[t]; f = str(r['Fuente sugerida']); cc, ci = r['Confianza pareo CNE'], r['Confianza pareo Infotécnica']; xc, xi = r['X CNE'], r['X Infotécnica']
-    usa_c = 'CNE' in f or 'Promedio' in f; usa_i = 'Infotec' in f or 'Promedio' in f; m = []; niv = 'Alta'
-    dud = [n for n, u, c in [('CNE', usa_c, cc), ('Infotécnica', usa_i, ci)] if u and pd.notna(c) and c < 80]
-    if dud: niv = 'Baja'; m.append('pareo dudoso con ' + ' y '.join(dud))
-    nulo = [n for n, x in [('CNE', xc), ('Infotécnica', xi)] if pd.notna(x) and x < 0.01]
-    if pd.notna(r['X sugerida']) and r['X sugerida'] < 0.01: niv = 'Baja'; m.append('el valor sugerido es casi nulo')
-    if nulo: niv = 'Baja'; m.append(' y '.join(nulo) + ' trae un valor casi nulo')
-    elif pd.isna(xc) or pd.isna(xi): niv = 'Baja' if niv == 'Baja' else 'Media'; m.append('una sola fuente')
+    r = L.loc[t]; f = str(r['Fuente sugerida']); m = []
+    est = {}
+    for n, x, c in [('CNE', r['X CNE'], r['Confianza pareo CNE']), ('Infotécnica', r['X Infotécnica'], r['Confianza pareo Infotécnica'])]:
+        est[n] = 'no hay' if pd.isna(x) else ('pareo dudoso' if pd.notna(c) and c < 80 else ('valor casi nulo' if x < 0.01 else 'ok'))
+    usa = [n for n, k in [('CNE', 'CNE'), ('Infotécnica', 'Infotec')] if k in f or 'Promedio' in f]
+    malas_usadas = [n for n in usa if est[n] != 'ok']
+    if malas_usadas or (pd.notna(r['X sugerida']) and r['X sugerida'] < 0.01):
+        niv = 'Baja'; m += [f'la sugerida usa {n} ({est[n]})' for n in malas_usadas]
+        if pd.notna(r['X sugerida']) and r['X sugerida'] < 0.01: m.append('el valor sugerido es casi nulo')
+    elif all(v == 'ok' for v in est.values()):
+        d_ = max(r['X CNE'], r['X Infotécnica']) / min(r['X CNE'], r['X Infotécnica'])
+        niv = 'Alta' if d_ <= 1.2 else ('Media' if d_ <= 2 else 'Baja')
+        m.append('CNE e Infotécnica coinciden' if d_ <= 1.2 else f'CNE e Infotécnica difieren {d_:.1f} veces')
     else:
-        dif_ = max(xc, xi) / min(xc, xi)
-        if dif_ > 2: niv = 'Baja'; m.append(f'CNE e Infotécnica difieren {dif_:.1f} veces')
-        elif dif_ > 1.2: niv = 'Baja' if niv == 'Baja' else 'Media'; m.append(f'CNE e Infotécnica difieren {dif_:.1f} veces')
-        else: m.append('CNE e Infotécnica coinciden')
+        niv = 'Media'; otra = [n for n in est if est[n] != 'ok'][0]; m.append(f'una sola fuente válida ({otra}: {est[otra]})')
     return niv, '; '.join(m)
 CONF = {t: confianza(t) for t in Lst.Tramo}
 razon = lambda t: (L.loc[t, 'X ENT'] / L.loc[t, 'X sugerida']) if pd.notna(L.loc[t, 'X sugerida']) and L.loc[t, 'X sugerida'] > 0 else None
@@ -85,7 +87,7 @@ leeme = [('Qué es', 'Los 116 tramos (líneas y trafos) del ENT que hay que revi
          ('Crítico / vecino', 'Crítico: mueve alguna barra por sí solo (no significa que ese movimiento sea el final). Vecino: solo importa junto con otros. Combinado: Mulchén.'),
          ('Resto de la zona', 'Tramos que no cambian el resultado final si los imprescindibles se corrigen al valor sugerido. Se revisan igual: si la ficha cambia un imprescindible, pueden pasar a importar.'),
          ('Datos', 'X y R en Ω, tal como vienen de la validación ENT–CNE–Infotécnica (homologacion_clasificada.xlsx). X sugerida: el valor que propone la validación; hay que confirmarlo con la ficha.'),
-         ('Confianza', 'Del valor sugerido. Alta: CNE e Infotécnica coinciden (hasta 20 %) y el pareo de nombres es bueno. Media: difieren hasta 2 veces, o hay una sola fuente. Baja: difieren más de 2 veces, una fuente trae un valor casi nulo, o el pareo de nombres es dudoso (menor a 80). Empezar las fichas por los imprescindibles de confianza baja.'),
+         ('Confianza', 'Del valor sugerido. Una fuente es válida si existe, su pareo de nombres es bueno (80 o más) y su valor no es casi nulo. Alta: las dos son válidas y coinciden (hasta 20 %). Media: difieren hasta 2 veces, o hay una sola válida. Baja: difieren más de 2 veces, o la sugerida usa una fuente no válida. Empezar las fichas por los imprescindibles de confianza baja.'),
          ('Efectos', 'Método nuevo (referido a 220 kV + subestación troncal), contra el mismo método con el ENT actual. Rango de 4 variantes: TT o MS, con X o con R. MM$/mes = Σ |Δ precio| × MW de inyección y retiro.'),
          ('Límite', 'Todo se calculó con los valores sugeridos. Si la ficha da otro valor, o confirma el del ENT, se recalcula.'),
          ('Otras hojas', 'Zonas y Zonas por variante: efecto de cada zona. Avance por etapa: acumulado por variante. Verificación: independencia entre zonas. Detalle: efecto de cada tramo solo.')]
@@ -118,7 +120,12 @@ for n, wz in [('Etapas', {'B': 62, 'H': 16, 'I': 16, 'J': 20, 'K': 70}), ('Zonas
     for k, v in wz.items(): ws.column_dimensions[k].width = v
     for r in ws.iter_rows(min_row=2):
         for c in r: c.alignment = Alignment(wrap_text=True, vertical='top')
-ws = wb['Etapas']
+ws = wb['Etapas']; ws.row_dimensions[1].height = 62
+for k, v in {'A': 8, 'C': 9, 'D': 9, 'E': 9, 'F': 16, 'G': 18, 'H': 18, 'I': 18, 'J': 24}.items(): ws.column_dimensions[k].width = v
+for r in ws.iter_rows(min_row=1):
+    for c in r:
+        if c.column_letter not in ('B', 'K'): c.alignment = Alignment(horizontal='center', vertical='center', wrap_text=True)
+        elif c.row > 1: c.alignment = Alignment(horizontal='left', vertical='center', wrap_text=True, indent=1)
 for c in ws[ws.max_row]: c.font = Font(bold=True)
 # ---- Revisión
 ws = wb['Revisión']; hdr = [c.value for c in ws[2]]; col = {h: i + 1 for i, h in enumerate(hdr)}

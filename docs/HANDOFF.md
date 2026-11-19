@@ -739,14 +739,16 @@ variantes.
   | 5 | Kimal | 19 | 17 / 2 | 6 | 34 | 97–99 % | 258–278 |
   | 6 | El Laurel, Codegua e independientes chicos | 24 | 11 / 13 | 13 | 4–10 | 100 % | 276–285 |
 - **Confianza del valor sugerido** (columna de la hoja Revisión):
-  - Alta: CNE e Infotécnica coinciden (hasta 20 %) y el pareo de nombres es bueno.
-  - Media: difieren hasta 2 veces, o hay una sola fuente.
-  - Baja: difieren más de 2 veces, una fuente trae un valor casi nulo, o el pareo es dudoso (menor a 80).
-  - De los 48 imprescindibles: 19 alta, 11 media y 18 baja. 10 de los 18 de confianza baja están en la etapa 4.
+  - Una fuente es válida si existe, su pareo de nombres es bueno (80 o más) y su valor no es casi nulo.
+  - Alta: las dos fuentes son válidas y coinciden (hasta 20 %).
+  - Media: difieren hasta 2 veces, o hay una sola fuente válida.
+  - Baja: difieren más de 2 veces, o la sugerida usa una fuente no válida.
+  - De los 48 imprescindibles: 19 alta, 19 media y 10 baja. 6 de los 10 de confianza baja están en la etapa 4.
   - Casos a mirar primero:
     - Fopaco: la X sugerida es 0, viene de Infotécnica con pareo dudoso (CNE da 3,59 Ω).
-    - La Pólvora–Dichas y Nueva Chuqui–Chuquicamata: CNE trae 0,0001 Ω.
-    - Tap S.Rafael–Totoralillo: CNE e Infotécnica difieren 12,6 veces.
+    - Sant Solar–Ppeuco, L.Vegas–Sant Solar, C.Calera1 110/62, Turibe–Esmeralda, A.Jahuel–Tap Sta Marta y
+      L.Verde 110/66: la sugerida usa una fuente con pareo dudoso.
+    - Teno 154/66, El Salto–San Cristóbal y S.Rafael 110/13: CNE e Infotécnica difieren más de 2 veces.
 - **Correcciones al listado anterior:**
   - Mulchén decía "se puede corregir solo"; se corrige con los 4 juntos.
   - La columna MM$ "solo" quedó en Detalle, porque engaña: L.Changos–Kimal solo da 227 MM$/mes y Kimal
