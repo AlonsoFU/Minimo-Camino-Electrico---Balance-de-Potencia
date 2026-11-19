@@ -58,7 +58,9 @@ Datos corregidos: los 668 tramos al valor sugerido de la validación. Hoja 13 de
 - Por tramo se mira si el cambio tiene sentido: si la barra queda más cerca o más lejos de su
   troncal, y si gana o pierde coincidencia con PN2604.
 - Vecinos: además de los decisivos hay que revisar los vecinos que interactúan con ellos (más de 1 MM$/mes).
-- Listado final: 116 tramos en 11 zonas y 22 independientes (`datos/listado_tramos.xlsx`, hoja Revisión).
+- Listado final (`datos/listado_tramos.xlsx`): 48 tramos imprescindibles en 27 grupos, más 68 que no cambian el
+  resultado. Corregir los 48 da lo mismo que corregir los 116 que mueven alguna barra.
+  - Un grupo son los tramos que se corrigen juntos: uno solo puede dar un efecto falso.
   - Una zona son los tramos que interactúan: corregidos juntos no dan lo mismo que por separado (prueba por pares).
   - Cada zona da el mismo efecto corregida sola que dentro de la lista, así que el orden entre zonas no importa.
   - Corregir la lista da lo mismo que corregir los 668, salvo 5–14 barras y 2–4 MM$/mes.

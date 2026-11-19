@@ -574,19 +574,20 @@ Punteo para presentar: `analisis_criterios/LOGICA.md`. Resultados: `analisis_cri
 **Archivos clave** (todos en `analisis_criterios/`):
 - `LOGICA.md`: resumen en punteo. Empieza con la **tabla comparativa contra PN2604** y el punteo "Qué decir al
   presentarla", que el dueño pidió conservar.
-- `datos/listado_tramos.xlsx`: **listado final de los 116 tramos a corregir** (rehecho y verificado el 2026-11-19,
-  ver §4l; lo genera `scripts/referido/listado_excel2.py`). Hojas:
-  - Leeme: definiciones, en una línea cada una.
-  - **Etapas**: el plan. Por etapa: tramos, líneas y trafos, imprescindibles, grupos, MM$/mes, plata acumulada y
-    barras distintas a PN2604.
-  - **Revisión**: una fila por tramo, ordenada por etapa, zona y grupo, en 4 bloques:
-    - Identificación.
-    - Por qué importa: imprescindible, crítico/vecino, solo o en grupo, con quién se corrige, efecto del grupo y
-      de la zona.
-    - Datos: X y R de ENT, CNE e Infotécnica, X sugerida y su fuente, razón ENT/sugerida, nombres en las fuentes,
-      **confianza del valor sugerido** (alta/media/baja) y su motivo.
-    - Para llenar con la ficha (columnas amarillas).
-  - Zonas, Zonas por variante, Avance por etapa, Verificación y Detalle (efecto de cada tramo solo).
+- `datos/listado_tramos.xlsx`: **listado para revisar, versión simple** (2026-11-19, ver §4l; lo genera
+  `scripts/referido/listado_simple.py`). Cada dato aparece una sola vez, y la base metodológica va escrita arriba
+  de cada hoja. Hojas:
+  - Leeme: definiciones, una línea cada una.
+  - **Etapas**: el plan, una fila por etapa (imprescindibles, líneas y trafos, grupos, resto, MM$/mes y plata
+    acumulada).
+  - **Grupos**: una fila por grupo (27). Qué tramos se corrigen juntos, cuánto mueven (barras, más cerca, más
+    lejos, MM$/mes), confianza más baja y la advertencia de no corregir a medias.
+  - **Tramos**: una fila por imprescindible (48), solo con sus datos (X de ENT, CNE, Infotécnica y sugerida,
+    confianza y motivo, nombre en Infotécnica, código ENT) y las columnas amarillas para llenar con la ficha.
+  - Resto: los 68 tramos que no cambian el resultado; se corrigen por regla.
+- `datos/listado_tramos_respaldo.xlsx`: el detalle completo (lo genera `listado_excel2.py`). Trae todo por tramo
+  (R, nombres en CNE, efecto por zona), Zonas, Zonas por variante, Avance por etapa contra PN2604, Verificación y
+  Detalle.
 - `datos/resultados.xlsx`, hojas 1–16. Las más usadas:
   - 13: todos los escenarios contra PN2604.
   - 14: plata que sube y que baja, y distancia promedio.
@@ -693,7 +694,7 @@ variantes.
 - **Rondas.** Después de la ronda 5 (92 tramos) falta solo un 1–3 % de la plata (4–10 MM$/mes).
   - Las rondas 1–2 acercan a PN2604: las barras distintas bajan de 245–262 a 218–225.
   - La ronda 3 (Santiago oriente y Mulchén) aleja: sube a 241–268. Al final quedan 276–285.
-- **Imprescindibles: 48 tramos** (37 críticos, 8 vecinos y 3 de Mulchén). Columna en la hoja Revisión.
+- **Imprescindibles: 48 tramos** (37 críticos, 8 vecinos y 3 de Mulchén). Son la hoja Tramos del listado.
   - Con solo estos corregidos se obtiene el mismo resultado que con los 116, en las 4 variantes (0 barras
     distintas).
   - Ninguno se puede quitar sin cambiar el resultado (`nuc1.py` y una segunda pasada en `nuc2.py`, que sacó
@@ -711,7 +712,7 @@ variantes.
     combinaciones en las 4 variantes) de modo que:
     - cada grupo corregido solo da exactamente su parte del resultado final, sin barras en troncal equivocada;
     - cualquier combinación de grupos da la suma de sus efectos.
-  - Resultado (columnas Grupo, Se corrige junto con y Efecto):
+  - Resultado (hoja Grupos del listado):
     - Maule: 2 grupos (Teno 154/66 + Quinta–Teno 66; Maule + Linares + Itahue 154/66).
     - Aconcagua: 3 grupos.
     - Atacama: 2 grupos.
@@ -738,7 +739,7 @@ variantes.
   | 4 | Aconcagua, Fopaco, Turibe, Melipilla, Atacama y Dichas | 46 | 24 / 22 | 16 | 24–80 | 87–91 % | 241–261 |
   | 5 | Kimal | 19 | 17 / 2 | 6 | 34 | 97–99 % | 258–278 |
   | 6 | El Laurel, Codegua e independientes chicos | 24 | 11 / 13 | 13 | 4–10 | 100 % | 276–285 |
-- **Confianza del valor sugerido** (columna de la hoja Revisión):
+- **Confianza del valor sugerido** (columna de la hoja Tramos):
   - Una fuente es válida si existe, su pareo de nombres es bueno (80 o más) y su valor no es casi nulo.
   - Alta: las dos fuentes son válidas y coinciden (hasta 20 %).
   - Media: difieren hasta 2 veces, o hay una sola fuente válida.
