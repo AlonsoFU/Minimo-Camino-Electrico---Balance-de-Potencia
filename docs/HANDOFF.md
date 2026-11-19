@@ -569,6 +569,70 @@ Punteo para presentar: `analisis_criterios/LOGICA.md`. Resultados: `analisis_cri
   Conclusión: los vecinos pesan de verdad solo en la zona central y en Kimal; en las demás basta con
   los decisivos.
 
+### 4k. Estado al cierre de la sesión 2026-11-19 (para retomar)
+
+**Archivos clave** (todos en `analisis_criterios/`):
+- `LOGICA.md`: resumen en punteo. Empieza con la **tabla comparativa contra PN2604** y el punteo "Qué decir al
+  presentarla", que el dueño pidió conservar.
+- `datos/listado_tramos.xlsx`: **listado final de los 116 tramos a corregir.** Columnas:
+  - Orden, Zona, Crítico/vecino, Tipo y Tensión;
+  - revision (1/CNE/Infotec/0);
+  - X y R de ENT, CNE e Infotécnica, la X sugerida y su fuente;
+  - nombres y confianza del pareo;
+  - efecto al corregir el tramo solo: TT-X y MS-R (barras, MM$ que suben y bajan, más cerca y más lejos,
+    Δ km);
+  - "Se puede corregir solo".
+
+  La hoja Leeme explica la base metodológica.
+- `datos/resultados.xlsx`, hojas 1–16. Las más usadas:
+  - 13: todos los escenarios contra PN2604.
+  - 14: plata que sube y que baja, y distancia promedio.
+  - 15: % por zona.
+  - 16: barras más cerca o más lejos por zona, con el resto, la lista completa y los 668.
+- `datos/registro_pruebas.sqlite.gz` (+ `REGISTRO_PRUEBAS.md`): las 52.446 pruebas, auditables.
+- `datos/lista_revision.xlsx`: los 112 tramos por variante.
+- `presentacion/`: fuentes de la presentación (10 láminas; artifact
+  https://claude.ai/artifact/4UsMzNCY3a8ZAVxcdhhHSY, privado).
+
+**Base de todo:** PN2604, la asignación vigente. Método nuevo = Referido (referir a 220 kV) + subestación troncal,
+en 4 variantes: TT (anula solo el trafo que toca la barra troncal) o MS (toda la subestación), con X o |Z|. La
+metodología final la decide el dueño. Los datos corregidos son el valor sugerido de su validación
+(`revision/output/homologacion_clasificada.xlsx`).
+
+**Tabla comparativa clave (contra PN2604; datos actuales → corregidos):**
+
+| Método | Distintas a PN2604 | Barras que cambian al corregir (mismo método) | MM$/mes | Más cerca / más lejos que PN2604 | >100 km |
+|---|---|---|---|---|---|
+| PN2604 | 0 | — | 0 | — | 83 |
+| Actual, sin referir | 422 → 524 | 216 | 946 → 1.257 | 56/318 → 62/408 | 174 → 169 |
+| Referido, X | 341 → 399 | 168 | 662 → 839 | 98/202 → 105/232 | 96 → 95 |
+| Referido, R | 341 → 379 | 183 | 612 → 932 | 100/200 → 103/214 | 93 → 98 |
+| Ref + subestación, X | 248–262 → 277–279 | 183 | 488–554 → 632–633 | 59–67/140–146 → 104–106/112 | 80–86 → 83 |
+| Ref + subestación, R | 245–257 → 275–279 | 167 | 508–555 → 670–672 | 85–93/132–136 → 104–108/108 | 82–86 → 84 |
+
+**Acotaciones acordadas:**
+- MM$/mes es absoluto (Σ |Δ precio| × MW). Contra PN2604, el código actual da +708 / −238 (neto +470); el método
+  nuevo con datos corregidos, ~+280 / −372 (neto −75 a −112).
+- "Más cerca / más lejos" solo cuenta las barras distintas a PN2604. En promedio total: PN2604 50 km, código actual
+  63, método nuevo corregido ~53–54.
+- El método nuevo hace al resultado más estable frente a la corrección de datos: +20–30 barras contra PN2604, en vez
+  de +102 con el método actual. Igual hay que corregir.
+- Casos raros (>100 km nuevos): 20, casi todos explicados (#287, #288, Tap Pulelfu, Mulchén, Fopaco, 500 kV,
+  Juncal) → #305.
+- Las correcciones parciales son peligrosas: se corrige cada zona completa. Kimal corregida completa mueve poco
+  (34 MM$, 18 tramos); nunca corregir solo L.Changos–Kimal.
+
+**Orden de revisión vigente** (listado_tramos.xlsx; #306):
+1. Ventanas.
+2. Maule–Itahue–Teno–Linares.
+3. Santiago oriente y Mulchén (alejan barras: revisar bien).
+4. Resto de los comunes, e independientes de más de 2 MM$/mes (Fopaco, Tap S.Rafael–Totoralillo y S.Rafael
+   110/13, que pesan con R; S.Fernando 154/66; Renca–Altamirano).
+5. Kimal, completa.
+6. Lo que queda: grupos Calera C. 62, Codegua 66, El Laurel 220 e independientes chicos.
+
+En total son 57 críticos y 59 vecinos.
+
 ## 5. Issues en `AlonsoFU/Balance-de-Potencia-Anual`
 
 - **#287: numeración del ENT.**
