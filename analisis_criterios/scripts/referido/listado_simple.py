@@ -45,7 +45,7 @@ ETA = pd.DataFrame(et)
 # ---- Tramos: una fila por tramo imprescindible, solo sus datos
 ng = I.groupby(['Etapa', 'Zona', 'G']).t.transform('size')
 TRA = pd.DataFrame({'Etapa': I.Etapa.values, 'Grupo': I.Gv.values, 'Tramo': I.Nombre.values,
-                    '¿Se puede corregir solo?': ['Sí' if n == 1 else f'No: con los otros {n - 1} de su grupo' for n in ng], 'Tipo': I.Tipo.values, 'Circuitos o unidades': I['Unidades en paralelo'].values,
+                    '¿Se puede corregir solo?': ['Sí' if n == 1 else ('No: con el otro de su grupo' if n == 2 else f'No: con los otros {n - 1} de su grupo') for n in ng], 'Tipo': I.Tipo.values, 'Circuitos o unidades': I['Unidades en paralelo'].values,
                     'X ENT (Ω)': I['X ENT (Ω)'].values, 'X CNE (Ω)': I['X CNE (Ω)'].values, 'X Infotécnica (Ω)': I['X Infotécnica (Ω)'].values, 'X sugerida (Ω)': I['X sugerida (Ω)'].values,
                     'Confianza': I['Confianza del valor sugerido'].values, 'Motivo': I.Motivo.values, 'Nombre en Infotécnica': I['Nombre en Infotécnica'].values, 'Código ENT': I.t.values,
                     'X según ficha (Ω)': '', 'R según ficha (Ω)': '', 'Ficha (documento y fecha)': '', '¿Corregir?': '', 'Responsable y fecha': '', 'Comentario': ''})

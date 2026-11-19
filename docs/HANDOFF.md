@@ -750,6 +750,13 @@ variantes.
     - Sant Solar–Ppeuco, L.Vegas–Sant Solar, C.Calera1 110/62, Turibe–Esmeralda, A.Jahuel–Tap Sta Marta y
       L.Verde 110/66: la sugerida usa una fuente con pareo dudoso.
     - Teno 154/66, El Salto–San Cristóbal y S.Rafael 110/13: CNE e Infotécnica difieren más de 2 veces.
+- **Corregir solo los de confianza alta** (`solo_alta.py`, 4 variantes):
+  - Los 19 de confianza alta: 51–109 barras y 223–253 MM$/mes, pero 4–7 barras quedan en una troncal equivocada
+    (18–31 MM$/mes), porque 10 de ellos son de grupos con tramos de confianza media o baja.
+  - Solo los grupos completos de confianza alta (9 tramos: Mulchén, C.Pinto–S.Andrés y 5 independientes): 13–47
+    barras, 39–42 MM$/mes y ninguna barra mal.
+  - Alta y media, solo grupos completos (30 tramos): 89–143 barras, 170–195 MM$/mes y ninguna barra mal.
+  - Regla: se puede avanzar por confianza, pero por grupos completos.
 - **Correcciones al listado anterior:**
   - Mulchén decía "se puede corregir solo"; se corrige con los 4 juntos.
   - La columna MM$ "solo" quedó en Detalle, porque engaña: L.Changos–Kimal solo da 227 MM$/mes y Kimal
