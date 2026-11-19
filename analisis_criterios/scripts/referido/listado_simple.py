@@ -43,7 +43,9 @@ et.append({'Etapa': 'Total', 'Qué se revisa': '', 'Tramos imprescindibles': len
            'Resto de la zona (por regla)': int((~R_.imp).sum()), 'MM$/mes que mueve': rg(list(tot)), 'Plata acumulada (%)': '100', 'Nota': 'Después de cada etapa se recalcula.'})
 ETA = pd.DataFrame(et)
 # ---- Tramos: una fila por tramo imprescindible, solo sus datos
-TRA = pd.DataFrame({'Etapa': I.Etapa.values, 'Grupo': I.Gv.values, 'Tramo': I.Nombre.values, 'Tipo': I.Tipo.values, 'Circuitos o unidades': I['Unidades en paralelo'].values,
+ng = I.groupby(['Etapa', 'Zona', 'G']).t.transform('size')
+TRA = pd.DataFrame({'Etapa': I.Etapa.values, 'Grupo': I.Gv.values, 'Tramo': I.Nombre.values,
+                    '¿Se puede corregir solo?': ['Sí' if n == 1 else f'No: con los otros {n - 1} de su grupo' for n in ng], 'Tipo': I.Tipo.values, 'Circuitos o unidades': I['Unidades en paralelo'].values,
                     'X ENT (Ω)': I['X ENT (Ω)'].values, 'X CNE (Ω)': I['X CNE (Ω)'].values, 'X Infotécnica (Ω)': I['X Infotécnica (Ω)'].values, 'X sugerida (Ω)': I['X sugerida (Ω)'].values,
                     'Confianza': I['Confianza del valor sugerido'].values, 'Motivo': I.Motivo.values, 'Nombre en Infotécnica': I['Nombre en Infotécnica'].values, 'Código ENT': I.t.values,
                     'X según ficha (Ω)': '', 'R según ficha (Ω)': '', 'Ficha (documento y fecha)': '', '¿Corregir?': '', 'Responsable y fecha': '', 'Comentario': ''})
@@ -54,7 +56,7 @@ leeme = [('Qué es', 'Los tramos del ENT (líneas y trafos) que hay que revisar 
          ('Base', BASE_TXT.replace('BASE: ', '')),
          ('Hojas', 'Etapas: el plan. Grupos: qué se corrige junto y cuánto mueve. Tramos: los 48 imprescindibles con sus datos, para llenar con la ficha. Resto: 68 tramos que no cambian el resultado.'),
          ('Imprescindibles', '48 tramos. Corrigiendo solo estos se obtiene el mismo resultado que con los 116 que mueven alguna barra (0 barras distintas, en las 4 variantes), y casi el mismo que con los 668 que difieren de las fuentes (5 a 14 barras, 2 a 4 MM$/mes).'),
-         ('Grupo', 'Tramos que se corrigen juntos. Cada grupo solo da su efecto real y los grupos se suman en cualquier orden. Un tramo de un grupo corregido solo puede dar un efecto falso.'),
+         ('Grupo', 'Tramos que se corrigen juntos (hoja Tramos, columna "¿Se puede corregir solo?"). Cada grupo solo da su efecto real y los grupos se suman en cualquier orden. Un tramo de un grupo corregido solo puede dar un efecto falso.'),
          ('Confianza', 'Del valor sugerido. Alta: CNE e Infotécnica son válidas y coinciden (hasta 20 %). Media: difieren hasta 2 veces, o hay una sola válida. Baja: difieren más de 2 veces, o la sugerida usa una fuente mal pareada o con valor casi nulo.'),
          ('Efectos', 'Barras que cambian de troncal; cuántas quedan a más de 5 km más cerca o más lejos; MM$/mes = Σ |Δ precio| × MW de inyección y retiro.'),
          ('Límite', 'Todo se calculó con los valores sugeridos. Si la ficha da otro valor, o confirma el del ENT, se recalcula.'),
@@ -101,11 +103,12 @@ ws = hoja('Grupos', GRU, BASE_TXT, {'Zona': 28, 'Grupo': 24, 'Tramos que se corr
                                     'Confianza más baja del grupo': 13, 'Nota': 62}, {'Zona', 'Grupo', 'Tramos que se corrigen juntos', 'Nota'}, alto=48)
 bandas(ws, (0, 1), (0, 1))
 ws = hoja('Tramos', TRA, BASE_TXT + ' Llenar las columnas amarillas con la ficha; se corrige lo que la ficha confirme y se recalcula el grupo.',
-          {'Grupo': 24, 'Tramo': 30, 'Tipo': 8, 'Circuitos o unidades': 10, 'Confianza': 10, 'Motivo': 42, 'Nombre en Infotécnica': 40, 'Código ENT': 40,
+          {'Grupo': 24, 'Tramo': 30, '¿Se puede corregir solo?': 24, 'Tipo': 8, 'Circuitos o unidades': 10, 'Confianza': 10, 'Motivo': 42, 'Nombre en Infotécnica': 40, 'Código ENT': 40,
            'X según ficha (Ω)': 12, 'R según ficha (Ω)': 12, 'Ficha (documento y fecha)': 26, '¿Corregir?': 11, 'Responsable y fecha': 18, 'Comentario': 36},
           {'Grupo', 'Tramo', 'Motivo', 'Nombre en Infotécnica', 'Código ENT'}, llenar=6, alto=48)
-bandas(ws, (0, 1), (0, 1), solo=2); ws.freeze_panes = 'D3'; ws.auto_filter.ref = f'A2:{CL(len(TRA.columns))}{ws.max_row}'
-for r in ws.iter_rows(min_row=3): r[2].font = Font(bold=True); r[12].font = Font(color='7F7F7F')
+bandas(ws, (0, 1), (0, 1), solo=2); ws.freeze_panes = 'E3'; ws.auto_filter.ref = f'A2:{CL(len(TRA.columns))}{ws.max_row}'
+for r in ws.iter_rows(min_row=3):
+    r[2].font = Font(bold=True); r[13].font = Font(color='7F7F7F'); r[3].font = Font(bold=True, color='2E7D32' if r[3].value == 'Sí' else 'B23A48')
 dv = DataValidation(type='list', formula1='"Sí,No,Pendiente"', allow_blank=True); ws.add_data_validation(dv); k = CL(list(TRA.columns).index('¿Corregir?') + 1); dv.add(f'{k}3:{k}{ws.max_row}')
 ws = hoja('Resto', RES, 'Estos 68 tramos no cambian el resultado final si los 48 imprescindibles se corrigen al valor sugerido. Se corrigen por regla, sin ficha. Si la ficha cambia un imprescindible, se recalcula y alguno puede pasar a importar.',
           {'Zona': 38, 'Tramo': 32, 'Tipo': 8, 'Confianza': 10, 'Código ENT': 40}, {'Zona', 'Tramo', 'Código ENT'})
