@@ -74,6 +74,21 @@ Rev = pd.DataFrame({'Orden': Lst.Orden, 'Zona': Lst.Zona, 'Crítico / vecino': L
                     'Efecto de corregir su zona (4 variantes)': [ef_tramo(t, z) for t, z in zip(Lst.Tramo, Lst.Zona)],
                     'Si se omite: MM$/mes': Lst['Si se omite: MM$/mes (máx. 4 variantes)'],
                     'X según ficha (Ω)': '', 'R según ficha (Ω)': '', 'Ficha (documento y fecha)': '', '¿Corregir?': '', 'Valor aplicado (Ω)': '', 'Responsable': '', 'Fecha': '', 'Comentario': ''})
+# orden de la hoja Revisión: etapa > zona > grupos de imprescindibles (cada grupo junto) > resto de la zona
+mm_solo = pd.to_numeric(Lst['MM$/mes (solo, promedio)'], errors='coerce').fillna(0).values
+zrank = {z: i for i, z in enumerate(dict.fromkeys(Rev.Zona))}
+grank = {}
+for z, bl in GR.items():
+    for i, b in enumerate(bl, 1):
+        for t in b: grank[t] = i
+Rev['Grupo'] = [g if g else ('Resto de la zona (no cambia el final)' if z != 'Independiente' else 'No cambia el final') for g, z in zip(Rev.Grupo, Rev.Zona)]
+Rev['_k'] = list(zip(Rev.Orden, Rev.Zona.map(zrank), [0 if i == 'Sí' else 1 for i in Rev['Imprescindible (de los 48)']],
+                     [grank.get(t, 0) for t in Rev.Tramo], [0 if c == 'Crítico' else 1 for c in Rev['Crítico / vecino']], -mm_solo))
+Rev = Rev.sort_values('_k').drop(columns='_k').reset_index(drop=True).rename(columns={'Orden': 'Etapa'})
+cols = ['Etapa', 'Zona', 'Grupo', 'Tramo', 'Tipo', 'Tensión (kV)', 'Imprescindible (de los 48)', 'Crítico / vecino', 'Efecto', 'Se corrige junto con',
+        'Solo: barras en troncal equivocada (máx.)', 'Unidades en paralelo', 'X ENT (Ω)', 'X sugerida (Ω)', 'Fuente sugerida', 'Fuentes confiables (1/CNE/Infotec/0)',
+        'Efecto de corregir su zona (4 variantes)', 'Si se omite: MM$/mes']
+Rev = Rev[cols + [c for c in Rev.columns if c not in cols]]
 nota = ['QUÉ ES: los 116 tramos (líneas y trafos) del ENT cuyo dato difiere de CNE o Infotécnica y que cambian la troncal de alguna barra, solos o junto con otros. Los otros 552 tramos que difieren no mueven ninguna barra.',
         'BASE: método nuevo «Referido + subestación troncal» (reactancias referidas a 220 kV y medidas hasta la subestación troncal), en 4 variantes: TT (anula solo el trafo que toca la barra troncal) o MS (toda la subestación), con X o con |Z| (R). Dato corregido = valor sugerido de la validación (homologación ENT–CNE–Infotécnica). Cada efecto se mide contra el mismo método con el ENT actual.',
         'CÓMO USARLO: revisar por Orden (ronda) y por Zona en la hoja Revisión. Cada zona se corrige completa, nunca a medias. Llenar las columnas amarillas con la ficha; recién entonces se aplica la corrección y se recalcula.',
@@ -105,7 +120,7 @@ for ws in wb.worksheets:
     ws.freeze_panes = 'A2'
 ws = wb['Leeme']; ws.column_dimensions['A'].width = 170
 for r in ws.iter_rows(min_row=2): r[0].alignment = Alignment(wrap_text=True, vertical='top')
-ws = wb['Revisión']; ws.freeze_panes = 'G2'
+ws = wb['Revisión']; ws.freeze_panes = 'E2'
 hd = [c.value for c in ws[1]]; ci = hd.index('Imprescindible (de los 48)')
 for r in ws.iter_rows(min_row=2):
     if r[ci].value == 'Sí': r[ci].font = Font(bold=True, color='B23A48')
@@ -118,7 +133,8 @@ dv = DataValidation(type='list', formula1='"Sí,No,Pendiente"', allow_blank=True
 L_ = ws[1][hdr.index('¿Corregir?')].column_letter; dv.add(f'{L_}2:{L_}{ws.max_row}')
 banda = PatternFill('solid', fgColor='EAF3F5'); prev = None; on = False
 for r in ws.iter_rows(min_row=2):
-    if r[1].value != prev: on = not on; prev = r[1].value
+    key = (r[1].value, r[2].value)
+    if key != prev: on = not on; prev = key
     if on:
         for c in r[:i0]: c.fill = banda
 ws = wb['Zonas']; ws.column_dimensions['I'].width = 95; ws.column_dimensions['B'].width = 40
