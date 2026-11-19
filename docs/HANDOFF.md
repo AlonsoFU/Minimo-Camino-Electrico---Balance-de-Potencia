@@ -610,6 +610,31 @@ metodología final la decide el dueño. Los datos corregidos son el valor sugeri
 | Ref + subestación, X | 248–262 → 277–279 | 183 | 488–554 → 632–633 | 59–67/140–146 → 104–106/112 | 80–86 → 83 |
 | Ref + subestación, R | 245–257 → 275–279 | 167 | 508–555 → 670–672 | 85–93/132–136 → 104–108/108 | 82–86 → 84 |
 
+**Segunda tabla clave: qué pasa al corregir cada zona** (método nuevo, antes contra después; TT-X a MS-R; hoja 16):
+
+| Qué se corrige | Tramos | Barras que cambian | Más cerca | Más lejos | Δ km promedio | MM$/mes | Lectura |
+|---|---|---|---|---|---|---|---|
+| Ventanas | 2 | 37 | 33 | 1 | −14 | 87 | Acerca |
+| Maule–Itahue–Teno–Linares | 6 | 8–10 | 8–10 | 0 | −55 | 6–62 | Acerca mucho |
+| Resto de los comunes | 4 | 38–39 | 9–15 | 18–22 | −5 a +2 | 30–34 | Mixto |
+| Kimal | 18 | 17 | 1 | 2 | +4 | 34 | Casi neutro |
+| Santiago oriente | 4 | 15–19 | 0 | 15–19 | +19 | 133–144 | Aleja |
+| Mulchén | 4 | 4 | 0 | 4 | +53 | 36 | Aleja |
+| Las 6 zonas juntas | 38 | 120–125 | 51–59 | 44 | −3 a −5 | 329–393 | Parejo |
+| Resto de la lista | 78 | 77–95 | 29–62 | 16–17 | −11 a +1 | 24–79 | Acerca, poca plata |
+| Lista completa | 112 | 158–183 | 79–114 | 35–38 | −5 a −11 | 349–361 | Acerca |
+| Todos (668) | 668 | 167–183 | 84–113 | 39–40 | −5 a −10 | 389–395 | Acerca |
+
+**El dueño marcó estas dos tablas como las más importantes.**
+
+**Próxima sesión:**
+1. Leer este §4k y `analisis_criterios/LOGICA.md`.
+2. Esperar las decisiones del dueño: variante de la metodología (TT/MS, X/|Z|), fuente oficial de X,
+   confirmación del ×3, y #287/#288/Tap Pulelfu.
+3. Con fichas verificadas por el dueño: aplicar la ronda 1 (Ventanas, luego Maule), recalcular y repetir las
+   pruebas con `registro.py`.
+4. Si se elige |Z|: validar la R de los tramos del listado.
+
 **Acotaciones acordadas:**
 - MM$/mes es absoluto (Σ |Δ precio| × MW). Contra PN2604, el código actual da +708 / −238 (neto +470); el método
   nuevo con datos corregidos, ~+280 / −372 (neto −75 a −112).
