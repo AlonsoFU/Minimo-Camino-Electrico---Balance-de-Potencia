@@ -58,7 +58,19 @@ Datos corregidos: los 668 tramos al valor sugerido de la validación. Hoja 13 de
 - Por tramo se mira si el cambio tiene sentido: si la barra queda más cerca o más lejos de su
   troncal, y si gana o pierde coincidencia con PN2604.
 - Vecinos: además de los decisivos hay que revisar los vecinos que interactúan con ellos (más de 1 MM$/mes).
-  Total a revisar: 76–98 tramos según el criterio (`datos/registro_pruebas.sqlite.gz`).
+- Listado final: 116 tramos en 11 zonas y 22 independientes (`datos/listado_tramos.xlsx`, hoja Revisión).
+  - Una zona son los tramos que interactúan: corregidos juntos no dan lo mismo que por separado (prueba por pares).
+  - Cada zona da el mismo efecto corregida sola que dentro de la lista, así que el orden entre zonas no importa.
+  - Corregir la lista da lo mismo que corregir los 668, salvo 5–14 barras y 2–4 MM$/mes.
+- Orden:
+  1. Ventanas.
+  2. Maule.
+  3. Santiago oriente y Mulchén (alejan barras).
+  4. Aconcagua, Melipilla, Atacama, Dichas, Fopaco y Turibe.
+  5. Kimal.
+  6. Los chicos.
+
+  Después de la ronda 5 falta solo un 1–3 % de la plata.
 
 ## Por qué solo 44 afectan (demostración)
 - **Prueba directa sobre todos:** los 668 tramos se corrigieron uno a uno y se recalculó la troncal de las

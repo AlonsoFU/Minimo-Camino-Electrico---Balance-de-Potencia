@@ -574,16 +574,16 @@ Punteo para presentar: `analisis_criterios/LOGICA.md`. Resultados: `analisis_cri
 **Archivos clave** (todos en `analisis_criterios/`):
 - `LOGICA.md`: resumen en punteo. Empieza con la **tabla comparativa contra PN2604** y el punteo "Qué decir al
   presentarla", que el dueño pidió conservar.
-- `datos/listado_tramos.xlsx`: **listado final de los 116 tramos a corregir.** Columnas:
-  - Orden, Zona, Crítico/vecino, Tipo y Tensión;
-  - revision (1/CNE/Infotec/0);
-  - X y R de ENT, CNE e Infotécnica, la X sugerida y su fuente;
-  - nombres y confianza del pareo;
-  - efecto al corregir el tramo solo: TT-X y MS-R (barras, MM$ que suben y bajan, más cerca y más lejos,
-    Δ km);
-  - "Se puede corregir solo".
-
-  La hoja Leeme explica la base metodológica.
+- `datos/listado_tramos.xlsx`: **listado final de los 116 tramos a corregir** (rehecho y verificado el 2026-11-19,
+  ver §4l). Hojas:
+  - Leeme: base metodológica y cómo usarlo.
+  - **Revisión**: para llenar, con columnas amarillas (X y R según ficha, ficha, ¿corregir?, valor aplicado,
+    responsable, fecha, comentario).
+  - Zonas: resumen, con el rango de las 4 variantes.
+  - Zonas por variante.
+  - Rondas: avance acumulado y contra PN2604.
+  - Verificación.
+  - Detalle: X y R de ENT, CNE e Infotécnica, pareo, y efecto de cada tramo solo.
 - `datos/resultados.xlsx`, hojas 1–16. Las más usadas:
   - 13: todos los escenarios contra PN2604.
   - 14: plata que sube y que baja, y distancia promedio.
@@ -610,20 +610,27 @@ metodología final la decide el dueño. Los datos corregidos son el valor sugeri
 | Ref + subestación, X | 248–262 → 277–279 | 183 | 488–554 → 632–633 | 59–67/140–146 → 104–106/112 | 80–86 → 83 |
 | Ref + subestación, R | 245–257 → 275–279 | 167 | 508–555 → 670–672 | 85–93/132–136 → 104–108/108 | 82–86 → 84 |
 
-**Segunda tabla clave: qué pasa al corregir cada zona** (método nuevo, antes contra después; TT-X a MS-R; hoja 16):
+**Segunda tabla clave: qué pasa al corregir cada zona** (método nuevo, antes contra después; rango de las 4
+variantes; zonas definitivas de §4l; hoja Zonas del listado y hoja 16 de `resultados.xlsx`):
 
-| Qué se corrige | Tramos | Barras que cambian | Más cerca | Más lejos | Δ km promedio | MM$/mes | Lectura |
-|---|---|---|---|---|---|---|---|
-| Ventanas | 2 | 37 | 33 | 1 | −14 | 87 | Acerca |
-| Maule–Itahue–Teno–Linares | 6 | 8–10 | 8–10 | 0 | −55 | 6–62 | Acerca mucho |
-| Resto de los comunes | 4 | 38–39 | 9–15 | 18–22 | −5 a +2 | 30–34 | Mixto |
-| Kimal | 18 | 17 | 1 | 2 | +4 | 34 | Casi neutro |
-| Santiago oriente | 4 | 15–19 | 0 | 15–19 | +19 | 133–144 | Aleja |
-| Mulchén | 4 | 4 | 0 | 4 | +53 | 36 | Aleja |
-| Las 6 zonas juntas | 38 | 120–125 | 51–59 | 44 | −3 a −5 | 329–393 | Parejo |
-| Resto de la lista | 78 | 77–95 | 29–62 | 16–17 | −11 a +1 | 24–79 | Acerca, poca plata |
-| Lista completa | 112 | 158–183 | 79–114 | 35–38 | −5 a −11 | 349–361 | Acerca |
-| Todos (668) | 668 | 167–183 | 84–113 | 39–40 | −5 a −10 | 389–395 | Acerca |
+| Ronda | Qué se corrige | Tramos | Barras que cambian | Más cerca | Más lejos | Δ km promedio | MM$/mes | Lectura |
+|---|---|---|---|---|---|---|---|---|
+| 1 | Ventanas | 2 | 37 | 33 | 1 | −14 | 87 | Acerca |
+| 2 | Maule–Itahue–Teno–Linares | 13 | 8–10 | 8–10 | 0 | −56 a −49 | 6–62 | Acerca mucho |
+| 3 | Santiago oriente | 8 | 19–43 | 0–1 | 19–24 | +9 a +19 | 139–144 | Aleja |
+| 3 | Mulchén | 4 | 4 | 0 | 4 | +53 | 36 | Aleja; solo con los 4 juntos |
+| 4 | Aconcagua (Calera–S.Rafael) | 20 | 14 | 3–13 | 1–9 | −45 a +33 | 6–22 | Con X aleja, con R acerca |
+| 4 | Melipilla–Isla de Maipo | 13 | 6–11 | 4–11 | 0 | −42 a −24 | 4 | Acerca, poca plata |
+| 4 | Atacama (Cardones–Maitencillo–D.Almagro) | 9 | 5 | 3 | 0 | −32 | 5 | Acerca, poca plata |
+| 4 | Dichas 220 | 2 | 1 | 1 | 0 | −38 | 0 | Sin plata |
+| 4 | Fopaco (independiente) | 1 | 0–3 | 0 | 0–3 | +416 | 0–39 | Solo con R; caso raro (#305) |
+| 4 | Turibe–Esmeralda (independiente) | 1 | 5 | 5 | 0 | −45 | 9 | Acerca |
+| 5 | Kimal | 19 | 17 | 1 | 2 | +4 | 34 | Casi neutro |
+| 6 | El Laurel 220 | 2 | 0–11 | 0–4 | 0–3 | −5 | 0–3 | Solo con X |
+| 6 | Codegua 66 | 2 | 1 | 0 | 1 | +32 | 0 | Sin plata |
+| 6 | Independientes chicos | 20 | 19–53 | 7–40 | 4 | −16 a −13 | 4–8 | Acerca, poca plata |
+| | Lista completa | 116 | 162–187 | 79–114 | 39–42 | −10 a −4 | 342–422 | Acerca |
+| | Todos (668) | 668 | 167–183 | 84–113 | 39–40 | −10 a −4 | 341–426 | Casi igual que la lista |
 
 **El dueño marcó estas dos tablas como las más importantes.**
 
@@ -649,14 +656,45 @@ metodología final la decide el dueño. Los datos corregidos son el valor sugeri
 
 **Orden de revisión vigente** (listado_tramos.xlsx; #306):
 1. Ventanas.
-2. Maule–Itahue–Teno–Linares.
-3. Santiago oriente y Mulchén (alejan barras: revisar bien).
-4. Resto de los comunes, e independientes de más de 2 MM$/mes (Fopaco, Tap S.Rafael–Totoralillo y S.Rafael
-   110/13, que pesan con R; S.Fernando 154/66; Renca–Altamirano).
+2. Maule–Itahue–Teno–Linares, con S.Fernando 154/66.
+3. Santiago oriente (con Renca–Altamirano) y Mulchén. Alejan barras: revisar bien.
+4. Aconcagua (Calera C. 62 con Tap S.Rafael–Totoralillo y S.Rafael 110/13), Melipilla–Isla de Maipo, Atacama,
+   Dichas 220, Fopaco y Turibe–Esmeralda.
 5. Kimal, completa.
-6. Lo que queda: grupos Calera C. 62, Codegua 66, El Laurel 220 e independientes chicos.
+6. El Laurel 220, Codegua 66 e independientes chicos.
 
-En total son 57 críticos y 59 vecinos.
+En total son 57 críticos, 55 vecinos y 4 combinados (Mulchén).
+
+### 4l. Verificación del listado (2026-11-19)
+
+Scripts en `scripts/referido/`: `listado_verif.py`, `listado_pares.py`, `listado_final.py` y `listado_excel.py`.
+Parten del listado anterior, guardado como `listado_v1.xlsx` en el directorio de trabajo. Todo se hizo en las 4
+variantes.
+
+- **Zonas redefinidas por interacción.**
+  - Se probaron los 820 pares de unidades del listado (grupo previo, Mulchén o tramo suelto).
+  - Dos unidades interactúan si corregirlas juntas no da lo mismo que corregirlas por separado. Umbral: 1 MM$/mes.
+  - Fusiones resultantes:
+    - S.Fernando 154/66 → Maule (hasta 21 MM$/mes con TT-R).
+    - Renca–Altamirano → Santiago oriente (32 MM$/mes con R).
+    - Tap S.Rafael–Totoralillo y S.Rafael 110/13 → Calera C. 62, que pasa a llamarse Aconcagua (11 MM$/mes cada
+      uno).
+  - El antiguo "Resto de los comunes" eran 3 grupos que no interactúan entre sí, más Turibe–Esmeralda suelto. Se
+    separaron en Melipilla–Isla de Maipo, Atacama y Dichas 220.
+- **Independencia entre zonas.** Cada zona da el mismo efecto corregida sola que dentro de la lista completa. Única
+  excepción: Ventanas, que difiere en 6 barras y 0,3 MM$/mes.
+- **Redundancia, no interacción.** Coronel–Tap Loma Colorada, Concepción 154/66, A. de Ribera 154/66 y Talcahuano
+  154/66 mueven las mismas barras a la misma troncal. Cualquiera de ellos basta, y juntos no se contradicen.
+- **La lista basta.** La lista completa difiere de corregir los 668 tramos en solo 5–14 barras y 2–4 MM$/mes.
+- **Si se omite un tramo:** 49 de los 116 cambian el resultado final.
+- **Rondas.** Después de la ronda 5 (92 tramos) falta solo un 1–3 % de la plata (4–10 MM$/mes).
+  - Las rondas 1–2 acercan a PN2604: las barras distintas bajan de 245–262 a 218–225.
+  - La ronda 3 (Santiago oriente y Mulchén) aleja: sube a 241–268. Al final quedan 276–285.
+- **Correcciones al listado anterior:**
+  - Mulchén decía "se puede corregir solo"; se corrige con los 4 juntos.
+  - La columna MM$ "solo" quedó en Detalle, porque engaña: L.Changos–Kimal solo da 227 MM$/mes y Kimal
+    completa, 34.
+  - La hoja 16 de `resultados.xlsx` se reemplazó por las zonas definitivas.
 
 ## 5. Issues en `AlonsoFU/Balance-de-Potencia-Anual`
 
