@@ -690,6 +690,32 @@ variantes.
 - **Rondas.** Después de la ronda 5 (92 tramos) falta solo un 1–3 % de la plata (4–10 MM$/mes).
   - Las rondas 1–2 acercan a PN2604: las barras distintas bajan de 245–262 a 218–225.
   - La ronda 3 (Santiago oriente y Mulchén) aleja: sube a 241–268. Al final quedan 276–285.
+- **Imprescindibles: 50 tramos** (38 críticos, 9 vecinos y 3 de Mulchén). Columna nueva en la hoja Revisión.
+  - Con solo estos corregidos se obtiene el mismo resultado que con los 116, en las 4 variantes (0 barras
+    distintas).
+  - También funciona zona por zona y etapa por etapa. Única diferencia: Codegua 66, 1 barra y 0,1 MM$/mes.
+  - El conjunto no es único: se obtuvo quitando tramos de a uno, primero los vecinos y los de menos plata
+    (`nuc1.py`, `nucleo_zonas.py`).
+  - En Kimal son 6 de 19: L.Changos–Kimal, Crucero–Kimal, Kimal–Crucero Sal Aux, Kimal–Encuentro, Nueva
+    Chuqui–Chuquicamata y Kimal 500/220.
+  - En Mulchén son 3 de 4 (sobra Los Notros–Charrúa).
+- **Solo los críticos de cada zona** (`solo_criticos.py`):
+  - Dan lo mismo que la zona completa en Ventanas, Maule, Santiago oriente, Dichas, El Laurel y Codegua.
+  - Difieren poco en Aconcagua, Melipilla y Atacama (1–2 barras, 3–6 MM$/mes).
+  - En Kimal difieren 11 barras y 167 MM$/mes.
+  - En Mulchén ningún tramo es crítico.
+- **"Zona completa" significa revisar todos los tramos de la zona con ficha antes de recalcular, no cambiarlos
+  todos.** Se corrige lo que la ficha confirme como malo.
+- **Etapas** (`etapas.py`; plata acumulada = % del cambio total ya hecho, en el orden de revisión, no Pareto):
+
+  | Etapa | Qué | Tramos | Líneas / trafos | Imprescindibles | MM$/mes | Plata acumulada | Distintas a PN2604 (hoy 245–262) |
+  |---|---|---|---|---|---|---|---|
+  | 1 | Ventanas | 2 | 1 / 1 | 1 | 87 | 21–26 % | 210–227 |
+  | 2 | Maule | 13 | 6 / 7 | 5 | 6–62 | 24–37 % | 218–225 |
+  | 3 | Santiago oriente y Mulchén | 12 | 8 / 4 | 7 | 175–180 | 70–83 % | 241–268 |
+  | 4 | Aconcagua, Fopaco, Turibe, Melipilla, Atacama y Dichas | 46 | 24 / 22 | 18 | 24–80 | 87–91 % | 241–261 |
+  | 5 | Kimal | 19 | 17 / 2 | 6 | 34 | 97–99 % | 258–278 |
+  | 6 | El Laurel, Codegua e independientes chicos | 24 | 11 / 13 | 13 | 4–10 | 100 % | 276–285 |
 - **Correcciones al listado anterior:**
   - Mulchén decía "se puede corregir solo"; se corrige con los 4 juntos.
   - La columna MM$ "solo" quedó en Detalle, porque engaña: L.Changos–Kimal solo da 227 MM$/mes y Kimal

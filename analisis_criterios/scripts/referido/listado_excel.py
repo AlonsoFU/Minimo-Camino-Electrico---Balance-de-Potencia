@@ -44,7 +44,9 @@ for z in orden_filas:
 def ef_tramo(t, z):
     if z != 'Independiente': return efz[z]
     g = RZ[RZ.Zona == t]; return f"{rng(g['Barras que cambian'])} barras · {rng(g['Más cerca'])} cerca / {rng(g['Más lejos'])} lejos · {rng(g['MM$/mes'].round(1))} MM$/mes"
-Rev = pd.DataFrame({'Orden': Lst.Orden, 'Zona': Lst.Zona, 'Crítico / vecino': Lst['Crítico / vecino'].str.split(' \\(').str[0], 'Tipo': Lst.Tipo, 'Tramo': Lst.Tramo,
+NUC = set(pd.read_pickle(OUT + 'nucleo_N.pkl'))
+Rev = pd.DataFrame({'Orden': Lst.Orden, 'Zona': Lst.Zona, 'Crítico / vecino': Lst['Crítico / vecino'].str.split(' \\(').str[0],
+                    'Imprescindible (de los 50)': ['Sí' if t in NUC else '' for t in Lst.Tramo], 'Tipo': Lst.Tipo, 'Tramo': Lst.Tramo,
                     'Tensión (kV)': Lst['Tensión (kV)'], 'Unidades en paralelo': Lst['Circuitos/unidades en paralelo'], 'X ENT (Ω)': Lst['X ENT'], 'X sugerida (Ω)': Lst['X sugerida'],
                     'Fuente sugerida': Lst['Fuente sugerida'], 'Fuentes confiables (1/CNE/Infotec/0)': Lst['revision (1 / CNE / Infotec / 0)'],
                     'Efecto de corregir su zona (4 variantes)': [ef_tramo(t, z) for t, z in zip(Lst.Tramo, Lst.Zona)],
@@ -57,6 +59,7 @@ nota = ['QUÉ ES: los 116 tramos (líneas y trafos) del ENT cuyo dato difiere de
         'CRÍTICO: cambia la troncal de alguna barra por sí solo. VECINO: solo importa junto con un crítico de su zona. COMBINADO: Mulchén, ningún tramo mueve solo; mueven los 4 juntos.',
         'ORDEN: 1 Ventanas; 2 Maule–Itahue–Teno–Linares; 3 Santiago oriente y Mulchén (alejan barras: revisar bien); 4 Aconcagua, Melipilla–Isla de Maipo, Atacama, Dichas 220, Fopaco y Turibe–Esmeralda; 5 Kimal (completa); 6 El Laurel, Codegua e independientes chicos.',
         'VERIFICACIÓN (hoja Verificación): cada zona da el mismo efecto corregida sola que dentro de la lista completa (Ventanas difiere en 6 barras y 0,3 MM$/mes). La lista completa da lo mismo que corregir los 668 salvo 5–14 barras y 2–4 MM$/mes. Coronel, Concepción 154/66, A. de Ribera 154/66 y Talcahuano 154/66 mueven las mismas barras: cualquiera de ellos basta, y juntos no se contradicen.',
+        'IMPRESCINDIBLE (50 tramos): con solo estos corregidos se obtiene exactamente el mismo resultado que con los 116, en las 4 variantes (0 barras distintas). Funciona también zona por zona y etapa por etapa: los imprescindibles de cada zona dan lo mismo que la zona completa (única diferencia: Codegua 66, 1 barra y 0,1 MM$/mes). El conjunto no es único (se obtuvo quitando tramos de a uno) y vale para los valores sugeridos: si la ficha da otro valor, se recalcula. Los demás se revisan igual, pero no cambian el resultado.',
         'Fuentes confiables: 1 = CNE e Infotécnica confiables; CNE = solo CNE; Infotec = solo Infotécnica; 0 = ninguna. "Si se omite": cuánto cambia el resultado final si ese tramo no se corrige (máximo de las 4 variantes).',
         'MM$/mes = Σ |Δ precio| × MW de inyección y retiro de las barras que cambian. "Más cerca / más lejos": la troncal nueva queda a más de 5 km más cerca o más lejos de la barra que la anterior.',
         'Hojas: Revisión (para llenar) · Zonas (resumen, rango de las 4 variantes) · Zonas por variante · Rondas (avance acumulado y contra PN2604) · Verificación · Detalle (valores CNE e Infotécnica, R, pareo y efecto de cada tramo solo).']
@@ -79,7 +82,10 @@ for ws in wb.worksheets:
     ws.freeze_panes = 'A2'
 ws = wb['Leeme']; ws.column_dimensions['A'].width = 170
 for r in ws.iter_rows(min_row=2): r[0].alignment = Alignment(wrap_text=True, vertical='top')
-ws = wb['Revisión']; ws.freeze_panes = 'F2'
+ws = wb['Revisión']; ws.freeze_panes = 'G2'
+hd = [c.value for c in ws[1]]; ci = hd.index('Imprescindible (de los 50)')
+for r in ws.iter_rows(min_row=2):
+    if r[ci].value == 'Sí': r[ci].font = Font(bold=True, color='B23A48')
 hdr = [c.value for c in ws[1]]; i0 = hdr.index('X según ficha (Ω)')
 for c in ws[1][i0:]: c.fill = PatternFill('solid', fgColor='F2C14E'); c.font = Font(bold=True, color='1F2A44')
 for c in ws[1][i0:]: ws.column_dimensions[c.column_letter].width = 16
