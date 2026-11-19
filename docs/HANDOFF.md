@@ -690,15 +690,34 @@ variantes.
 - **Rondas.** Después de la ronda 5 (92 tramos) falta solo un 1–3 % de la plata (4–10 MM$/mes).
   - Las rondas 1–2 acercan a PN2604: las barras distintas bajan de 245–262 a 218–225.
   - La ronda 3 (Santiago oriente y Mulchén) aleja: sube a 241–268. Al final quedan 276–285.
-- **Imprescindibles: 50 tramos** (38 críticos, 9 vecinos y 3 de Mulchén). Columna nueva en la hoja Revisión.
+- **Imprescindibles: 48 tramos** (37 críticos, 8 vecinos y 3 de Mulchén). Columna en la hoja Revisión.
   - Con solo estos corregidos se obtiene el mismo resultado que con los 116, en las 4 variantes (0 barras
     distintas).
-  - También funciona zona por zona y etapa por etapa. Única diferencia: Codegua 66, 1 barra y 0,1 MM$/mes.
-  - El conjunto no es único: se obtuvo quitando tramos de a uno, primero los vecinos y los de menos plata
-    (`nuc1.py`, `nucleo_zonas.py`).
+  - Ninguno se puede quitar sin cambiar el resultado (`nuc1.py` y una segunda pasada en `nuc2.py`, que sacó
+    Cardones–Algarrobal y C.Calera1 62–Calera C. 62).
+  - También funciona zona por zona y etapa por etapa (`nucleo_zonas2.py`). Única diferencia: Codegua 66, 1 barra y
+    0,1 MM$/mes.
+  - El conjunto no es único.
   - En Kimal son 6 de 19: L.Changos–Kimal, Crucero–Kimal, Kimal–Crucero Sal Aux, Kimal–Encuentro, Nueva
     Chuqui–Chuquicamata y Kimal 500/220.
   - En Mulchén son 3 de 4 (sobra Los Notros–Charrúa).
+- **Grupos: un crítico solo puede dar un efecto falso.** "Crítico" solo dice que mueve alguna barra por sí solo.
+  - Ejemplos: Maule 154/66 solo deja 21 barras en una troncal equivocada, y Linares 154/66 solo, 12 (con TT).
+    Ambos necesitan a Itahue 154/66.
+  - Los imprescindibles de cada zona se agrupan (`grupos_min2.py` y `grupos_min3.py`; se probaron todas las
+    combinaciones en las 4 variantes) de modo que:
+    - cada grupo corregido solo da exactamente su parte del resultado final, sin barras en troncal equivocada;
+    - cualquier combinación de grupos da la suma de sus efectos.
+  - Resultado (columnas Grupo, Se corrige junto con y Efecto):
+    - Maule: 2 grupos (Teno 154/66 + Quinta–Teno 66; Maule + Linares + Itahue 154/66).
+    - Aconcagua: 3 grupos.
+    - Atacama: 2 grupos.
+    - Santiago oriente, Mulchén, Melipilla, Kimal y El Laurel: 1 grupo cada una.
+  - Efecto por tramo:
+    - 16 con efecto propio;
+    - 2 casi propio (Dichas 220/66 y L.Verde 110/66, que dejan 3 barras mal por menos de 1 MM$/mes);
+    - 30 que necesitan a su grupo;
+    - 68 que no cambian el resultado final.
 - **Solo los críticos de cada zona** (`solo_criticos.py`):
   - Dan lo mismo que la zona completa en Ventanas, Maule, Santiago oriente, Dichas, El Laurel y Codegua.
   - Difieren poco en Aconcagua, Melipilla y Atacama (1–2 barras, 3–6 MM$/mes).
@@ -708,12 +727,12 @@ variantes.
   todos.** Se corrige lo que la ficha confirme como malo.
 - **Etapas** (`etapas.py`; plata acumulada = % del cambio total ya hecho, en el orden de revisión, no Pareto):
 
-  | Etapa | Qué | Tramos | Líneas / trafos | Imprescindibles | MM$/mes | Plata acumulada | Distintas a PN2604 (hoy 245–262) |
+  | Etapa | Qué | Tramos | Líneas / trafos | Imprescindibles (de 48) | MM$/mes | Plata acumulada | Distintas a PN2604 (hoy 245–262) |
   |---|---|---|---|---|---|---|---|
   | 1 | Ventanas | 2 | 1 / 1 | 1 | 87 | 21–26 % | 210–227 |
   | 2 | Maule | 13 | 6 / 7 | 5 | 6–62 | 24–37 % | 218–225 |
   | 3 | Santiago oriente y Mulchén | 12 | 8 / 4 | 7 | 175–180 | 70–83 % | 241–268 |
-  | 4 | Aconcagua, Fopaco, Turibe, Melipilla, Atacama y Dichas | 46 | 24 / 22 | 18 | 24–80 | 87–91 % | 241–261 |
+  | 4 | Aconcagua, Fopaco, Turibe, Melipilla, Atacama y Dichas | 46 | 24 / 22 | 16 | 24–80 | 87–91 % | 241–261 |
   | 5 | Kimal | 19 | 17 / 2 | 6 | 34 | 97–99 % | 258–278 |
   | 6 | El Laurel, Codegua e independientes chicos | 24 | 11 / 13 | 13 | 4–10 | 100 % | 276–285 |
 - **Correcciones al listado anterior:**

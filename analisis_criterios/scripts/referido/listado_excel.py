@@ -44,9 +44,31 @@ for z in orden_filas:
 def ef_tramo(t, z):
     if z != 'Independiente': return efz[z]
     g = RZ[RZ.Zona == t]; return f"{rng(g['Barras que cambian'])} barras · {rng(g['Más cerca'])} cerca / {rng(g['Más lejos'])} lejos · {rng(g['MM$/mes'].round(1))} MM$/mes"
-NUC = set(pd.read_pickle(OUT + 'nucleo_N.pkl'))
+NUC = set(pd.read_pickle(OUT + 'nucleo_N2.pkl'))
+GR = pd.read_pickle(OUT + 'grupos_min2.pkl')['grupos']; TRs = pd.read_pickle(OUT + 'grupos_min.pkl')['TR']
+import re as _re
+def corto(t):
+    a, b = t.split('->'); na, va = _re.match(r'(.*?)_*(\d+)$', a).groups(); nb, vb = _re.match(r'(.*?)_*(\d+)$', b).groups()
+    na, nb = na.strip('_').replace('_', ' ').title(), nb.strip('_').replace('_', ' ').title(); va, vb = str(int(va)), str(int(vb))
+    return f'{na} {va}/{vb}' if va != vb else f'{na}–{nb} {va}'
+corta = {'Maule–Itahue–Teno–Linares': 'Maule', 'Aconcagua (Calera–S.Rafael)': 'Aconcagua', 'Melipilla–Isla de Maipo': 'Melipilla',
+         'Atacama (Cardones–Maitencillo–D.Almagro)': 'Atacama', 'Santiago oriente': 'Santiago oriente'}
+grupo_de, socios = {}, {}
+for z, bl in GR.items():
+    for i, b in enumerate(bl, 1):
+        lab = corta.get(z, z) + (f' {i}' if len(bl) > 1 else '')
+        for t in b: grupo_de[t] = lab; socios[t] = ', '.join(corto(x) for x in b if x != t)
+for t in Lst.Tramo:
+    if t in NUC and t not in grupo_de: grupo_de[t] = 'Independiente'; socios[t] = ''
+def tipo(t):
+    if t not in NUC: return 'No cambia el resultado final'
+    if socios[t] != '': return 'Necesita a su grupo'
+    return 'Efecto propio' if mal_solo.get(t, 0) == 0 else 'Efecto propio, casi (deja barras mal por menos de 1 MM$/mes)'
+mal_solo = {t: max(x[0] for x in TRs[t].values()) for t in TRs}
 Rev = pd.DataFrame({'Orden': Lst.Orden, 'Zona': Lst.Zona, 'Crítico / vecino': Lst['Crítico / vecino'].str.split(' \\(').str[0],
-                    'Imprescindible (de los 50)': ['Sí' if t in NUC else '' for t in Lst.Tramo], 'Tipo': Lst.Tipo, 'Tramo': Lst.Tramo,
+                    'Imprescindible (de los 48)': ['Sí' if t in NUC else '' for t in Lst.Tramo], 'Grupo': [grupo_de.get(t, '') for t in Lst.Tramo],
+                    'Se corrige junto con': [socios.get(t, '') for t in Lst.Tramo], 'Efecto': [tipo(t) for t in Lst.Tramo],
+                    'Solo: barras en troncal equivocada (máx.)': [mal_solo.get(t, 0) for t in Lst.Tramo], 'Tipo': Lst.Tipo, 'Tramo': Lst.Tramo,
                     'Tensión (kV)': Lst['Tensión (kV)'], 'Unidades en paralelo': Lst['Circuitos/unidades en paralelo'], 'X ENT (Ω)': Lst['X ENT'], 'X sugerida (Ω)': Lst['X sugerida'],
                     'Fuente sugerida': Lst['Fuente sugerida'], 'Fuentes confiables (1/CNE/Infotec/0)': Lst['revision (1 / CNE / Infotec / 0)'],
                     'Efecto de corregir su zona (4 variantes)': [ef_tramo(t, z) for t, z in zip(Lst.Tramo, Lst.Zona)],
@@ -59,7 +81,8 @@ nota = ['QUÉ ES: los 116 tramos (líneas y trafos) del ENT cuyo dato difiere de
         'CRÍTICO: cambia la troncal de alguna barra por sí solo. VECINO: solo importa junto con un crítico de su zona. COMBINADO: Mulchén, ningún tramo mueve solo; mueven los 4 juntos.',
         'ORDEN: 1 Ventanas; 2 Maule–Itahue–Teno–Linares; 3 Santiago oriente y Mulchén (alejan barras: revisar bien); 4 Aconcagua, Melipilla–Isla de Maipo, Atacama, Dichas 220, Fopaco y Turibe–Esmeralda; 5 Kimal (completa); 6 El Laurel, Codegua e independientes chicos.',
         'VERIFICACIÓN (hoja Verificación): cada zona da el mismo efecto corregida sola que dentro de la lista completa (Ventanas difiere en 6 barras y 0,3 MM$/mes). La lista completa da lo mismo que corregir los 668 salvo 5–14 barras y 2–4 MM$/mes. Coronel, Concepción 154/66, A. de Ribera 154/66 y Talcahuano 154/66 mueven las mismas barras: cualquiera de ellos basta, y juntos no se contradicen.',
-        'IMPRESCINDIBLE (50 tramos): con solo estos corregidos se obtiene exactamente el mismo resultado que con los 116, en las 4 variantes (0 barras distintas). Funciona también zona por zona y etapa por etapa: los imprescindibles de cada zona dan lo mismo que la zona completa (única diferencia: Codegua 66, 1 barra y 0,1 MM$/mes). El conjunto no es único (se obtuvo quitando tramos de a uno) y vale para los valores sugeridos: si la ficha da otro valor, se recalcula. Los demás se revisan igual, pero no cambian el resultado.',
+        'IMPRESCINDIBLE (48 tramos): con solo estos corregidos se obtiene exactamente el mismo resultado que con los 116, en las 4 variantes (0 barras distintas), y ninguno se puede quitar sin cambiarlo. Funciona también zona por zona y etapa por etapa (única diferencia: Codegua 66, 1 barra y 0,1 MM$/mes). El conjunto no es único (se obtuvo quitando tramos de a uno, en dos pasadas) y vale para los valores sugeridos: si la ficha da otro valor o confirma el del ENT, se recalcula. Los demás se revisan igual, pero no cambian el resultado.',
+        'GRUPO: imprescindibles que se corrigen juntos para ver su efecto real. Corregido solo, cada grupo da exactamente su parte del resultado final, sin dejar barras en una troncal equivocada, y cualquier combinación de grupos da la suma de sus efectos (probado con todas las combinaciones, 4 variantes). EFECTO: "Efecto propio" = el tramo solo ya da su efecto real; "Necesita a su grupo" = solo da un efecto falso, incompleto o ninguno (ej. Maule 154/66 solo deja 21 barras en una troncal equivocada). "Solo: barras en troncal equivocada": cuántas barras deja mal el tramo corregido solo (máximo de las 4 variantes).',
         'Fuentes confiables: 1 = CNE e Infotécnica confiables; CNE = solo CNE; Infotec = solo Infotécnica; 0 = ninguna. "Si se omite": cuánto cambia el resultado final si ese tramo no se corrige (máximo de las 4 variantes).',
         'MM$/mes = Σ |Δ precio| × MW de inyección y retiro de las barras que cambian. "Más cerca / más lejos": la troncal nueva queda a más de 5 km más cerca o más lejos de la barra que la anterior.',
         'Hojas: Revisión (para llenar) · Zonas (resumen, rango de las 4 variantes) · Zonas por variante · Rondas (avance acumulado y contra PN2604) · Verificación · Detalle (valores CNE e Infotécnica, R, pareo y efecto de cada tramo solo).']
@@ -83,7 +106,7 @@ for ws in wb.worksheets:
 ws = wb['Leeme']; ws.column_dimensions['A'].width = 170
 for r in ws.iter_rows(min_row=2): r[0].alignment = Alignment(wrap_text=True, vertical='top')
 ws = wb['Revisión']; ws.freeze_panes = 'G2'
-hd = [c.value for c in ws[1]]; ci = hd.index('Imprescindible (de los 50)')
+hd = [c.value for c in ws[1]]; ci = hd.index('Imprescindible (de los 48)')
 for r in ws.iter_rows(min_row=2):
     if r[ci].value == 'Sí': r[ci].font = Font(bold=True, color='B23A48')
 hdr = [c.value for c in ws[1]]; i0 = hdr.index('X según ficha (Ω)')
