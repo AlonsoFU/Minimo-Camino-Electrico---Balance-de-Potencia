@@ -6,7 +6,7 @@ Lst = pd.read_excel(X, sheet_name='Listado')
 D = pd.read_excel('/home/user/Minimo-Camino-Electrico---Balance-de-Potencia/analisis_criterios/datos/lista_revision.xlsx', sheet_name='Lista').set_index('Tramo')
 var = ['Trafo troncal X', 'Trafo troncal R', 'Misma subest. X', 'Misma subest. R']
 def crit(t):
-    if t not in D.index: return 'Vecino (acompaña a un crítico)'
+    if t not in D.index: return 'Vecino (acompaña a un crítico)'  # (si se re-ejecuta, partir del listado sin esta columna)
     return 'Crítico (cambia la troncal por sí solo)' if any(D.loc[t, v] == 'decisivo' for v in var) else 'Vecino (acompaña a un crítico)'
 zona_orig = dict(zip(Lst.Tramo, Lst.Zona))
 nombre = lambda t: re.sub(r'\s+', ' ', t.split('->')[0].strip('_').replace('_', ' ')).title()
