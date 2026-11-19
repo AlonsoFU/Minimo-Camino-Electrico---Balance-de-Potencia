@@ -575,15 +575,18 @@ Punteo para presentar: `analisis_criterios/LOGICA.md`. Resultados: `analisis_cri
 - `LOGICA.md`: resumen en punteo. Empieza con la **tabla comparativa contra PN2604** y el punteo "Qué decir al
   presentarla", que el dueño pidió conservar.
 - `datos/listado_tramos.xlsx`: **listado final de los 116 tramos a corregir** (rehecho y verificado el 2026-11-19,
-  ver §4l). Hojas:
-  - Leeme: base metodológica y cómo usarlo.
-  - **Revisión**: para llenar, con columnas amarillas (X y R según ficha, ficha, ¿corregir?, valor aplicado,
-    responsable, fecha, comentario).
-  - Zonas: resumen, con el rango de las 4 variantes.
-  - Zonas por variante.
-  - Rondas: avance acumulado y contra PN2604.
-  - Verificación.
-  - Detalle: X y R de ENT, CNE e Infotécnica, pareo, y efecto de cada tramo solo.
+  ver §4l; lo genera `scripts/referido/listado_excel2.py`). Hojas:
+  - Leeme: definiciones, en una línea cada una.
+  - **Etapas**: el plan. Por etapa: tramos, líneas y trafos, imprescindibles, grupos, MM$/mes, plata acumulada y
+    barras distintas a PN2604.
+  - **Revisión**: una fila por tramo, ordenada por etapa, zona y grupo, en 4 bloques:
+    - Identificación.
+    - Por qué importa: imprescindible, crítico/vecino, solo o en grupo, con quién se corrige, efecto del grupo y
+      de la zona.
+    - Datos: X y R de ENT, CNE e Infotécnica, X sugerida y su fuente, razón ENT/sugerida, nombres en las fuentes,
+      **confianza del valor sugerido** (alta/media/baja) y su motivo.
+    - Para llenar con la ficha (columnas amarillas).
+  - Zonas, Zonas por variante, Avance por etapa, Verificación y Detalle (efecto de cada tramo solo).
 - `datos/resultados.xlsx`, hojas 1–16. Las más usadas:
   - 13: todos los escenarios contra PN2604.
   - 14: plata que sube y que baja, y distancia promedio.
@@ -735,6 +738,15 @@ variantes.
   | 4 | Aconcagua, Fopaco, Turibe, Melipilla, Atacama y Dichas | 46 | 24 / 22 | 16 | 24–80 | 87–91 % | 241–261 |
   | 5 | Kimal | 19 | 17 / 2 | 6 | 34 | 97–99 % | 258–278 |
   | 6 | El Laurel, Codegua e independientes chicos | 24 | 11 / 13 | 13 | 4–10 | 100 % | 276–285 |
+- **Confianza del valor sugerido** (columna de la hoja Revisión):
+  - Alta: CNE e Infotécnica coinciden (hasta 20 %) y el pareo de nombres es bueno.
+  - Media: difieren hasta 2 veces, o hay una sola fuente.
+  - Baja: difieren más de 2 veces, una fuente trae un valor casi nulo, o el pareo es dudoso (menor a 80).
+  - De los 48 imprescindibles: 19 alta, 11 media y 18 baja. 10 de los 18 de confianza baja están en la etapa 4.
+  - Casos a mirar primero:
+    - Fopaco: la X sugerida es 0, viene de Infotécnica con pareo dudoso (CNE da 3,59 Ω).
+    - La Pólvora–Dichas y Nueva Chuqui–Chuquicamata: CNE trae 0,0001 Ω.
+    - Tap S.Rafael–Totoralillo: CNE e Infotécnica difieren 12,6 veces.
 - **Correcciones al listado anterior:**
   - Mulchén decía "se puede corregir solo"; se corrige con los 4 juntos.
   - La columna MM$ "solo" quedó en Detalle, porque engaña: L.Changos–Kimal solo da 227 MM$/mes y Kimal
