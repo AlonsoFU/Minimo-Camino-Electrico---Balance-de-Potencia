@@ -765,6 +765,24 @@ variantes.
     completa, 34.
   - La hoja 16 de `resultados.xlsx` se reemplazó por las zonas definitivas.
 
+### 4m. PowerFactory como fuente de datos (#307, 2026-11-20)
+
+- El dueño exportó desde el Administrador de datos de PowerFactory: líneas (1.906, con R1 y X1 en Ω), trafos de 2
+  devanados (1.429) y de 3 (269), y terminales (31.667). Los archivos no se suben al repo.
+- **Falta la impedancia de los trafos:** está en los tipos (`TypTr2` y `TypTr3`), que no vinieron. Lo que se
+  exportó de los trafos es la pestaña del cambiador de tomas.
+- **Primera prueba de red** (todas las barras de una subestación y tensión en un nodo, acoplamientos supuestos
+  cerrados): se ubica el 93 % de los extremos y queda una red conectada de 1.603 nodos. El 7 % restante son
+  barras con nombres genéricos; se resuelve con la ruta completa del objeto (`exportar_red.py`).
+- **Homologación de barras Balance ↔ PowerFactory** (`datos/homologacion_powerfactory.xlsx`; scripts en
+  `scripts/powerfactory/`):
+  - Es solo por nombre y tensión, con abreviaturas.
+  - De las 1.445 barras: 1.156 alta, 221 media, 42 baja y 26 sin candidato.
+  - De las 50 troncales: 42 alta, 7 media y 1 sin candidato (Cautín 220 no está en el modelo con ese nombre).
+  - Una muestra de las de confianza alta salió bien; hay que revisar a mano las de media, baja y sin candidato.
+- Solo hay que homologar los extremos (troncales y barras a asignar); la red se arma con los nombres de
+  PowerFactory.
+
 ## 5. Issues en `AlonsoFU/Balance-de-Potencia-Anual`
 
 - **#287: numeración del ENT.**
