@@ -1,6 +1,6 @@
 # HANDOFF — Minuta y análisis del mínimo camino eléctrico
 
-Rama: `claude/relaxed-ptolemy-70ek36`. Última actualización: 2026-10-30.
+Rama: `claude/relaxed-ptolemy-70ek36`. Última actualización: 2026-11-20.
 
 ## 1. Fuente de verdad (regla del dueño)
 
@@ -639,12 +639,14 @@ variantes; zonas definitivas de §4l; hoja Zonas del listado y hoja 16 de `resul
 **El dueño marcó estas dos tablas como las más importantes.**
 
 **Próxima sesión:**
-1. Leer este §4k y `analisis_criterios/LOGICA.md`.
-2. Esperar las decisiones del dueño: variante de la metodología (TT/MS, X/|Z|), fuente oficial de X,
-   confirmación del ×3, y #287/#288/Tap Pulelfu.
-3. Con fichas verificadas por el dueño: aplicar la ronda 1 (Ventanas, luego Maule), recalcular y repetir las
-   pruebas con `registro.py`.
-4. Si se elige |Z|: validar la R de los tramos del listado.
+1. Leer `analisis_criterios/LOGICA.md`: es el resumen consolidado, con las dos tablas clave, la recomendación y los
+   pendientes.
+2. Esperar las decisiones del dueño: variante de la metodología (TT/MS, X/|Z|; la recomendación es X), fuente
+   oficial de X, confirmación del ×3, y #287/#288/Tap Pulelfu.
+3. Completar la minuta (#308).
+4. Con fichas verificadas: aplicar por grupos completos, etapa por etapa (`datos/listado_tramos.xlsx`), recalcular
+   y repetir las pruebas.
+5. Línea nueva: usar el modelo PowerFactory como fuente de datos (#307).
 
 **Acotaciones acordadas:**
 - MM$/mes es absoluto (Σ |Δ precio| × MW). Contra PN2604, el código actual da +708 / −238 (neto +470); el método
@@ -786,6 +788,9 @@ variantes.
   Maule–Itahue–Teno–Linares, Mulchén, resto; más reglas de corrección.
 - Regla del repo: los pendientes van como issues, Claude no cierra issues y los comentarios
   llevan el footer de Claude Code.
+
+- #307: mínimo camino con los datos del modelo PowerFactory en vez del ENT.
+- #308: completar la minuta con la metodología referida y la revisión de datos.
 
 ## 6. Pendientes / ofrecidos (sin confirmar por el dueño)
 
