@@ -780,6 +780,23 @@ variantes.
   - De las 1.445 barras: 1.156 alta, 221 media, 42 baja y 26 sin candidato.
   - De las 50 troncales: 42 alta, 7 media y 1 sin candidato (Cautín 220 no está en el modelo con ese nombre).
   - Una muestra de las de confianza alta salió bien; hay que revisar a mano las de media, baja y sin candidato.
+- **Homologación de líneas ENT ↔ PowerFactory** (`homologar_lineas.py`; hojas "Líneas" en el mismo Excel):
+  - Se parean por extremos (barras homologadas en la misma subestación) o por el nombre de la línea PF. Se elige
+    por nombre y circuito, nunca por X.
+  - Resultado: 994 de 1.327 líneas pareadas.
+  - **PowerFactory no es independiente:** su X es idéntica a la del ENT en 316 de 990 líneas (y a la de
+    Infotécnica en 227). Si PowerFactory = ENT, no confirma el ENT; puede ser el origen del dato.
+  - **Líneas imprescindibles (31):**
+    - 17 PowerFactory confirma la sugerida: Mulchén ×3, Kimal ×4, La Pólvora–Dichas, Mauro–Quillota, El
+      Laurel ×2 y otras.
+    - 2 confirma, pero la sugerida también está cerca del ENT (Quinta–Teno y El Maitén–El Paico).
+    - 1 PowerFactory = ENT, contra la sugerida: Tap S.Rafael–Totoralillo (5,07 Ω; la sugerida de CNE es
+      0,22).
+    - 1 cerca del ENT (Sangra–P.Varas).
+    - 3 distinto de todas: El Salto–San Cristóbal, Nueva Chuqui–Chuquicamata e Isla de Maipo–El Monte (1,79
+      contra 1,45 sugerida y 130,6 del ENT).
+    - 7 sin pareo: Panquehue–S.Felipe, Sant Solar ×2, Fopaco, Turibe–Esmeralda, Coronel–Tap Loma Colorada y
+      A.Jahuel–Tap Sta Marta.
 - Solo hay que homologar los extremos (troncales y barras a asignar); la red se arma con los nombres de
   PowerFactory.
 
